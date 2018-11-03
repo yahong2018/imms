@@ -1,4 +1,4 @@
-package com.zhxh.imps;
+package com.zhxh.imms;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

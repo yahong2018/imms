@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.admin.dao">
+    <sql id="SYSTEM_PROGRAM_FIELDS">
+        program_id,program_name,url,glyph,show_order,parameters,status,parent
+    </sql>
+
+    <insert id="INSERT_ROLE_USER" parameterType="com.zhxh.admin.entity.RoleUser" useGeneratedKeys="true"
+            keyColumn="role_user_id" keyProperty="roleUserId">
+        insert into role_user(role_id,user_id) values(#{roleId},#{userId})
+    </insert>
+
+    <delete id="DELETE_ROLE_USER" parameterType="java.util.Map">
+        delete from role_user where role_id=#{roleId} and user_id=#{userId}
+    </delete>
+
+    <select id="GET_PARENT_PROGRAM" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemProgram">
+        select <include refid="SYSTEM_PROGRAM_FIELDS"/>
+        from system_program pp
+        where program_id =(
+	        select p.parent from system_program p
+	        where p.program_id=#{programId}
+        )
+    </select>
+
+    <insert id="INSERT_ROLE_PRIVILEGE" parameterType="com.zhxh.admin.entity.RolePrivilege" useGeneratedKeys="true"
+            keyProperty="rolePrivilegeId" keyColumn="role_privilege_id">
+        insert into role_privilege(program_privilege_id,role_id,program_id,privilege_id)
+        values(#{programPrivilegeId},#{roleId},#{programId},#{privilegeId})
+    </insert>
+
+    <select id="GET_OTHER_GRANTED_PRIVILEGE_COUNT" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        select count(*) from role_privilege rp
+        where rp.program_id = #{programId}
+          and rp.privilege_id <> #{runPrivilegeId}
+          and rp.role_privilege_id <> #{rolePrivilegeId}
+        ]]>
+    </select>
+
+    <select id="GET_BROTHER_GRANTED_PRIVILEGE_COUNT" parameterType="java.util.Map" resultType="java.lang.Integer">
+        <![CDATA[
+        select count(*) from role_privilege rp
+        where  rp.role_privilege_id <> #{rolePrivilegeId}
+          and rp.program_id in(
+            select program_id from system_program p
+            where parent = #{parent}
+        )
+        ]]>
+    </select>
+
+    <delete id="DELETE_ROLE_SUB_PROGRAM_PRIVILEGE" parameterType="java.util.Map">
+        delete from role_privilege
+        where role_id=#{roleId}
+        and program_id in(
+	        select program_id from system_program p
+	        where p.parent = #{programId}
+        )
+    </delete>
+
+    <select id="GET_USER_PROGRAM_MENU" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemProgram">
+        select  <include refid="SYSTEM_PROGRAM_FIELDS"/>
+        from system_program p
+        where p.status = 0
+        and p.program_id in (
+        select program_id from role_privilege rp
+	        where rp.role_id in(
+		        select role_id from role_user ru
+		        where ru.user_id = #{userId}
+	        )
+        )
+    </select>
+
+    <select id="GET_USER_PROGRAM_PRIVILEGE" parameterType="java.util.Map"
+            resultMap="com.zhxh.admin.entity.ProgramPrivilege">
+        select program_privilege_id,program_id,privilege_id,privilege_name
+        from program_privilege sp
+        where sp.program_id in(
+	        select p.program_id from system_program p
+	        where p.program_id in (
+		       select program_id from role_privilege rp
+			    where rp.role_id in(
+				    select role_id from role_user ru
+				     where ru.user_id = #{userId}
+			     )
+		     )
+        )
+    </select>
+
+    <select id="GET_ROLE_USERS" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemUser">
+        select user_id,user_name,pwd,user_status,email
+        from system_user
+        where user_id in(
+	        select user_id from role_user
+	        where role_id = #{roleId}
+        )
+    </select>
+
+    <select id="GET_PROGRAM_PRIVILEGES" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.ProgramPrivilege">
+        select program_privilege_id,program_id,privilege_id,privilege_name
+        from program_privilege
+        where program_id = #{programId}
+        order by privilege_id
+    </select>
+
+    <select id="GET_USER_ROLES" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemRole">
+        select role_id,role_name
+        from system_role
+        where role_id in(
+	        select role_id from role_user
+	        where user_id = #{userId}
+        )
+    </select>
+</mapper>
