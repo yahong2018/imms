@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
-import static com.zhxh.core.exception.ExceptionManager.throwException;
+import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("roleUserLogic")
 public class RoleUserLogic {

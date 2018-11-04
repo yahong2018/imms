@@ -1,6 +1,6 @@
 package com.zhxh.core.data;
 
-import com.zhxh.core.exception.BusinessError;
+import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
 
 import java.lang.reflect.ParameterizedType;
@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
-import static com.zhxh.core.exception.ExceptionManager.throwException;
+import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 
 public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
@@ -97,7 +97,7 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
     }
 
     @Override
-    public final void verify(Object item, int operationCode) throws BusinessError {
+    public final void verify(Object item, int operationCode) throws BusinessException {
         super.verify(item, operationCode);
         this.doVerify((T) item, operationCode);
     }

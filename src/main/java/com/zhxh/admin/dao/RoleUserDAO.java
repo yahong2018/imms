@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_ALREADY_EXISTS;
-import static com.zhxh.core.exception.ExceptionManager.*;
+import static com.zhxh.core.exception.ExceptionHelper.*;
 
 @Component("roleUserDAO")
 public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {

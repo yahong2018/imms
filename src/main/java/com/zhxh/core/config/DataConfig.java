@@ -1,11 +1,10 @@
-package com.zhxh.core.data.config;
+package com.zhxh.core.config;
 
 import com.github.miemiedev.mybatis.callable.CallableConvertInterceptor;
 import com.zhxh.core.data.EntitySqlMetaFactory;
 import com.zhxh.core.data.ResultTypeInterceptor;
 import com.zhxh.core.data.meta.MySqlMetaCreator;
 import com.zhxh.core.utils.Logger;
-import com.zhxh.core.utils.PropertyLoader;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -21,12 +20,10 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
-import java.util.Map;
-
 @Configuration
 public class DataConfig {
     @Autowired
-    private MyDataSource dataSource;
+    private DataSource dataSource;
 
     @Autowired
     private ResultTypeInterceptor resultTypeInterceptor;
@@ -35,21 +32,21 @@ public class DataConfig {
     private CallableConvertInterceptor callableConvertInterceptor;
 
     @Bean
-    CallableConvertInterceptor getCallableConvertInterceptor() {
+    CallableConvertInterceptor createCallableConvertInterceptor() {
         return new CallableConvertInterceptor();
     }
 
     @Bean
-    public DataSourceTransactionManager getTransactionManager() {
+    public DataSourceTransactionManager createTransactionManager() {
         return new org.springframework.jdbc.datasource.DataSourceTransactionManager(dataSource);
     }
 
     @Bean
-    public SqlSessionFactoryBean getSqlSessionFactory() {
+    public SqlSessionFactoryBean createSqlSessionFactory() {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
         try {
-            String mapperLocation = dataSource.getMapperLocations();
+            String mapperLocation = dataSource.getMyBatisMapperFileLocations();
             Resource[] mapperLocations = resolver.getResources(mapperLocation);
             sqlSessionFactoryBean.setMapperLocations(mapperLocations);
 
@@ -62,7 +59,7 @@ public class DataConfig {
         sqlSessionFactoryBean.setDataSource(dataSource);
         Interceptor[] interceptors = new Interceptor[]{this.resultTypeInterceptor, this.callableConvertInterceptor};
         sqlSessionFactoryBean.setPlugins(interceptors);
-        sqlSessionFactoryBean.setTypeAliasesPackage(dataSource.getTypeAliasesPackage());
+        sqlSessionFactoryBean.setTypeAliasesPackage(dataSource.getMyBatisTypeAliasesPackage());
 
         return sqlSessionFactoryBean;
     }
@@ -70,13 +67,13 @@ public class DataConfig {
 
     @Bean(name = "sqlSession")
     @Scope("prototype")
-    public SqlSessionTemplate getSqlSession(SqlSessionFactoryBean sqlSessionFactoryBean) throws Exception {
+    public SqlSessionTemplate createSqlSession(SqlSessionFactoryBean sqlSessionFactoryBean) throws Exception {
         SqlSessionFactory factory = sqlSessionFactoryBean.getObject();
-        return new org.mybatis.spring.SqlSessionTemplate(factory, ExecutorType.SIMPLE);
+        return new SqlSessionTemplate(factory, ExecutorType.SIMPLE);
     }
 
     @Bean(name = "validator")
-    public LocalValidatorFactoryBean getValidator() {
+    public LocalValidatorFactoryBean createValidator() {
         LocalValidatorFactoryBean result = new LocalValidatorFactoryBean();
         result.setProviderClass(org.hibernate.validator.HibernateValidator.class);
 
@@ -84,15 +81,15 @@ public class DataConfig {
     }
 
     @Bean
-    public EntitySqlMetaFactory getEntitySqlMetaFactory(SqlSessionTemplate sqlSession) {
+    public EntitySqlMetaFactory createEntitySqlMetaFactory(SqlSessionTemplate sqlSession) {
         EntitySqlMetaFactory result = new EntitySqlMetaFactory();
 
         MySqlMetaCreator mySqlMetaCreator = new MySqlMetaCreator();
         result.setSqlMetaCreator(mySqlMetaCreator);
         result.setSqlSession(sqlSession);
-        String mapperLocation = dataSource.getDataTablePropertyFile();
-        Map<String, String> propertyMap = PropertyLoader.getPropertyMap(mapperLocation);
-        result.setInitEntry(propertyMap);
+//        String mapperLocation = dataSource.getDataTablePropertyFile();
+//        Map<String, String> propertyMap = PropertyLoader.getPropertyMap(mapperLocation);
+//        result.setInitEntry(propertyMap);
         result.init();
 
         return result;

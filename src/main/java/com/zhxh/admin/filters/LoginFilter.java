@@ -26,13 +26,13 @@ public class LoginFilter implements Filter {
 				String redirectUrl = "";
 				String url = httpServletRequest.getRequestURI();
 
-				if (!url.contains(SysEnv.URL_LOGIN_PAGE)) {
-					SystemUserLogic systemUserLogic = (SystemUserLogic)SysEnv.getCurrent().getContext().getBean("systemUserLogic");
-					AuthenticateLogic authenticateLogic =(AuthenticateLogic) SysEnv.getCurrent().getContext().getBean("authenticateLogic");
+				if (!url.contains(SysEnv.getUrlLoginPage())) {
+					SystemUserLogic systemUserLogic = (SystemUserLogic)SysEnv.getBean("systemUserLogic");
+					AuthenticateLogic authenticateLogic =(AuthenticateLogic) SysEnv.getBean("authenticateLogic");
 					SystemUser currentLogin = authenticateLogic.getCurrentLogin();
 					if(currentLogin==null /* 没有登录 */
 							|| !systemUserLogic.canRun(currentLogin.getUserId(), url)/* 当前用户没有权限 */) {
-						redirectUrl = SysEnv.URL_APP_ROOT + SysEnv.URL_LOGIN_PAGE;
+						redirectUrl = SysEnv.getAppRoot() + SysEnv.getUrlLoginPage();
 					}
 				}
 				if (!redirectUrl.isEmpty()) {

@@ -6,7 +6,6 @@ import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.*;
 import com.zhxh.core.env.SysEnv;
-import com.zhxh.core.exception.ErrorCode;
 import com.zhxh.core.utils.StringUtilsExt;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,8 +14,9 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhxh.core.exception.ErrorCode.*;
-import static com.zhxh.core.exception.ExceptionManager.throwException;
+import static com.zhxh.admin.misc.ErrorCode.ERROR_ADMIN_OLD_PASSWORD_ERROR;
+import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
+import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("systemUserLogic")
 public class SystemUserLogic {
@@ -42,7 +42,7 @@ public class SystemUserLogic {
     public int changePassword(SystemUser user, String pwd, String oldPwd) throws Exception {
         String md5 = StringUtilsExt.getMd5(oldPwd);
         if (!md5.equals(user.getPassword())) {
-            throwException(ERROR_OLD_PASSWORD_ERROR);
+            throwException(ERROR_ADMIN_OLD_PASSWORD_ERROR);
         }
         user.setPassword(pwd);
         return systemUserDAO.update(user);
@@ -83,7 +83,7 @@ public class SystemUserLogic {
 	        roleUserDAO.revokeUserAllRoles(userId);
 	        int result = systemUserDAO.deleteById(userId);
 	        if(result!=1){
-	            throwException(ErrorCode.ERROR_UNKNOWN_EXCEPTION);
+	            throwException(ERROR_UNKNOWN_EXCEPTION);
 	        }
     	}
         //
@@ -169,14 +169,14 @@ public class SystemUserLogic {
     
 	public boolean canRun(String userId, String url) {
 	    List<SystemRole> roleList= this.getUserRoles(userId);
-	    String pureUrl = url.replace(SysEnv.URL_APP_ROOT,"");
+	    String pureUrl = url.replace(SysEnv.getAppRoot(),"");
 		/**
 		 * 1.首页：所有人都有权限:  "/mes";"/"
 		 * 2.登录页：所有人都有权限:"/login.jsp"
 		 * 3.其他页：要根据权限判断
 		 */
-		if(SysEnv.URL_APP_ROOT.equals(pureUrl) || SysEnv.URL_APP_INDEX.equals(pureUrl)
-                || SysEnv.URL_APP_ABSOLUTE_ROOT.equals(pureUrl) || SysEnv.URL_LOGIN_PAGE.equals(pureUrl)) {
+		if(SysEnv.getAppRoot().equals(pureUrl) || SysEnv.getUrlAppIndex().equals(pureUrl)
+                || SysEnv.getAppAbsoluteRootPath().equals(pureUrl) || SysEnv.getUrlLoginPage().equals(pureUrl)) {
 			return true;
 		}
 		SystemProgram program = systemProgramDAO.getSystemProgramByUrl(pureUrl);

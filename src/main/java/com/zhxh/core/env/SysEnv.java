@@ -1,113 +1,123 @@
 package com.zhxh.core.env;
 
 import com.zhxh.core.backservice.ServiceManager;
+import com.zhxh.core.utils.PropertyLoader;
+import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
-public class SysEnv {
-    public static String URL_LOGIN_PAGE = "";
-    public static String URL_APP_ABSOLUTE_ROOT = "";
-    public static String URL_APP_ROOT = "";
-    public static String SYSTEM_TITLE = "";
-    public static String URL_APP_INDEX = "";
+@Component
+public class SysEnv implements ApplicationContextAware {
+    private static String urlLoginPage = "";
+    private static String urlAppIndex = "";
+    private static String appAbsoluteRootPath = "";
+    private static String appRoot = "";
+    private static String systemTitle = "";
+    private static String shellExecuteName;
+    private static String fileUploadPath = "";
 
-    private static SysEnv current;
-    private ApplicationContext context;
-    private ServiceManager serviceManager;
-//    private PropertyPlaceholder errorsPropertyConfigurer;
-//    private PropertyPlaceholder fieldsPropertyConfigurer;
-//    private PropertyPlaceholder settingsPropertyConfigurer;
+    private static ApplicationContext applicationContext;
+    private static ServiceManager serviceManager;
 
-    public static String ATTACH_FILE_UPLOAD_PATH = "";
+    private static Map<String, String> errorsMessageHolder;
+    private static Map<String, String> entityFieldLabelHolder;
+    private static Map<String, String> entityTableMappingHolder;
 
-    private static Map<String, String> errorsPropertyConfigurer;
-    private static Map<String, String> fieldsPropertyConfigurer;
-    private static Map<String, String> settingsPropertyConfigurer;
+    private static final String configLocation = "classpath:settings/env.properties";
 
-    public void init() {
+    @Override
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        if (SysEnv.applicationContext == null) {
+            SysEnv.applicationContext = applicationContext;
+        }
+
+        Map<String, String> propertyMap = PropertyLoader.getPropertyMap(configLocation);
+        urlLoginPage = propertyMap.get("sysenv.urlLoginPage");
+        urlAppIndex = propertyMap.get("sysenv.urlAppIndex");
+        appAbsoluteRootPath = propertyMap.get("sysenv.appAbsoluteRootPath");
+        appRoot = propertyMap.get("sysenv.appRoot");
+        systemTitle = propertyMap.get("sysenv.systemTitle");
+        shellExecuteName = propertyMap.get("sysenv.shellExecuteName");
+        fileUploadPath = propertyMap.get("sysenv.fileUploadPath");
+
+        String messageErrorLocation = propertyMap.get("sysenv.messageErrorLocation");
+        errorsMessageHolder = PropertyLoader.getPropertyMap(messageErrorLocation);
+
+        String entityTableMappingLocation = propertyMap.get("sysenv.entityTableMappingLocation");
+        entityTableMappingHolder = PropertyLoader.getPropertyMap(entityTableMappingLocation);
+
+        String fieldLabelLocation = propertyMap.get("sysenv.fieldLabelLocation");
+        entityFieldLabelHolder = PropertyLoader.getPropertyMap(fieldLabelLocation);
     }
 
-
-    public static SysEnv getCurrent() {
-        return SysEnv.current;
+    public static ApplicationContext getApplicationContext() {
+        return applicationContext;
     }
 
-    public static void setCurrent(SysEnv current) {
-        SysEnv.current = current;
-    }
-
-    public ApplicationContext getContext() {
-        return context;
-    }
-
-    public void setContext(ApplicationContext context) {
-        this.context = context;
-
-//        settingsPropertyConfigurer = (PropertyPlaceholder) this.context.getBean("settingsPropertyConfigurer");
-//
-//        URL_LOGIN_PAGE = settingsPropertyConfigurer.getProperty("URL_LOGIN_PAGE").toString();
-//        URL_APP_ABSOLUTE_ROOT = settingsPropertyConfigurer.getProperty("URL_APP_ABSOLUTE_ROOT").toString();
-//        URL_APP_ROOT = settingsPropertyConfigurer.getProperty("URL_APP_ROOT").toString();
-//        SYSTEM_TITLE = settingsPropertyConfigurer.getProperty("SYSTEM_TITLE").toString();
-//        URL_APP_INDEX = settingsPropertyConfigurer.getProperty("URL_APP_INDEX").toString();
-//
-//        ATTACH_FILE_UPLOAD_PATH = settingsPropertyConfigurer.getProperty("ATTACH_FILE_UPLOAD_PATH").toString();
-    }
-
-    public ServiceManager getServiceManager() {
+    public static ServiceManager getServiceManager() {
         return serviceManager;
     }
 
-    public void setServiceManager(ServiceManager serviceManager) {
-        this.serviceManager = serviceManager;
-    }
-
-//    public synchronized PropertyPlaceholder getErrorsPropertyConfigurer() {
-//        if(errorsPropertyConfigurer==null){
-//            errorsPropertyConfigurer = (PropertyPlaceholder)context.getBean("errorsPropertyConfigurer");
-//        }
-//        return errorsPropertyConfigurer;
-//    }
-//
-//    public synchronized PropertyPlaceholder getFieldsPropertyConfigurer(){
-//        if(fieldsPropertyConfigurer==null){
-//            fieldsPropertyConfigurer = (PropertyPlaceholder)context.getBean("fieldsPropertyConfigurer");
-//        }
-//        return fieldsPropertyConfigurer;
-//    }
-
-    private String shellExecuteName;
-
-    public String getShellExecuteName() {
+    public static String getShellExecuteName() {
         return shellExecuteName;
     }
 
-    public void setShellExecuteName(String shellExecuteName) {
-        this.shellExecuteName = shellExecuteName;
+    public static String getUrlLoginPage() {
+        return urlLoginPage;
     }
 
-    public Map<String, String> getErrorsPropertyConfigurer() {
-        return errorsPropertyConfigurer;
+    public static String getUrlAppIndex() {
+        return urlAppIndex;
     }
 
-    public void setErrorsPropertyConfigurer(Map<String, String> errorsPropertyConfigurer) {
-        SysEnv.errorsPropertyConfigurer = errorsPropertyConfigurer;
+    public static String getAppAbsoluteRootPath() {
+        return appAbsoluteRootPath;
     }
 
-    public Map<String, String> getFieldsPropertyConfigurer() {
-        return fieldsPropertyConfigurer;
+    public static String getAppRoot() {
+        return appRoot;
     }
 
-    public void setFieldsPropertyConfigurer(Map<String, String> fieldsPropertyConfigurer) {
-        SysEnv.fieldsPropertyConfigurer = fieldsPropertyConfigurer;
+    public static String getFileUploadPath() {
+        return fileUploadPath;
     }
 
-    public Map<String, String> getSettingsPropertyConfigurer() {
-        return settingsPropertyConfigurer;
+    public static String getSystemTitle() {
+        return systemTitle;
     }
 
-    public void setSettingsPropertyConfigurer(Map<String, String> settingsPropertyConfigurer) {
-        SysEnv.settingsPropertyConfigurer = settingsPropertyConfigurer;
+
+    public static String getErrorMessage(String errorCode){
+        if(errorsMessageHolder.containsKey(errorCode)){
+            return errorsMessageHolder.get(errorCode);
+        }
+        return "";
     }
+
+    public static String getFieldLabel(String fieldName){
+        if(entityFieldLabelHolder.containsKey(fieldName)){
+            return entityFieldLabelHolder.get(fieldName);
+        }
+        return "";
+    }
+
+    public static Map<String, String> getEntityTableMappingHolder() {
+        return entityTableMappingHolder;
+    }
+
+    public static Object getBean(String name) {
+        return getApplicationContext().getBean(name);
+    }
+
+    public static <T> T getBean(Class<T> clazz) {
+        return getApplicationContext().getBean(clazz);
+    }
+
+    public static <T> T getBean(String name, Class<T> clazz) {
+        return getApplicationContext().getBean(name, clazz);
+    }
+
 }

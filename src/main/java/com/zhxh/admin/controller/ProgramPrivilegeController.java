@@ -42,13 +42,6 @@ public class ProgramPrivilegeController {
             }
         });
     }
-
-    @RequestMapping("create.handler")
-    @ResponseBody
-    public ProgramPrivilege create(ProgramPrivilege item) throws Exception {
-    	programPrivilegeLogic.create(item);
-        return item;
-    }
     
     @RequestMapping("update.handler")
     @ResponseBody

@@ -33,7 +33,7 @@ public  class ProcessGuard extends ThreadService {
 
         try {
             processReader = null;
-            targetProcess = rt.exec(SysEnv.getCurrent().getShellExecuteName() + " " + appFullPath);
+            targetProcess = rt.exec(SysEnv.getShellExecuteName() + " " + appFullPath);
             processReader = new BufferedReader(new InputStreamReader(targetProcess.getInputStream()));
 
             //targetProcess.waitFor();

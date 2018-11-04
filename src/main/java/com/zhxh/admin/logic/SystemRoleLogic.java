@@ -6,7 +6,7 @@ import com.zhxh.admin.vo.ProgramPrivilegeVO;
 import com.zhxh.admin.vo.SystemMenuWithPrivilege;
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.exception.ErrorCode;
-import com.zhxh.core.exception.ExceptionManager;
+import com.zhxh.core.exception.ExceptionHelper;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,7 +16,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.zhxh.core.exception.ExceptionManager.throwException;
+import static com.zhxh.admin.misc.ErrorCode.ERROR_ADMIN_ROLE_CONTAINS_USERS;
+import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("systemRoleLogic")
 public class SystemRoleLogic {
@@ -67,7 +68,7 @@ public class SystemRoleLogic {
         //3.通知系统管理员
         for(String roleId:roleIdList) {
             if(!this.getRoleUsers(roleId).isEmpty()){
-                throwException(ErrorCode.ERROR_ROLE_CONTAINS_USERS,roleId);
+                throwException(ERROR_ADMIN_ROLE_CONTAINS_USERS,roleId);
             }
 
             int result = systemRoleDAO.deleteById(roleId);
@@ -196,7 +197,7 @@ public class SystemRoleLogic {
                     List<SystemProgram> allPrograms = systemProgramDAO.getAll();
                     this.revokeChildrenPrivilege(allPrograms, roleId, program);
                 } catch (Exception e) {
-                    throw new Exception("撤销下级权限失败:" + ExceptionManager.exceptionStackTrace(e));
+                    throw new Exception("撤销下级权限失败:" + ExceptionHelper.exceptionStackTrace(e));
                 }
             }
         }

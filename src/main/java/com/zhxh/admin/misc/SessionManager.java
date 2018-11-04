@@ -61,7 +61,7 @@ public class SessionManager implements HttpSessionListener {
         HttpSession session = event.getSession();
         synchronized (sessions) {
             if (sessions.contains(session)) {
-                AuthenticateLogic authenticateLogic= (AuthenticateLogic)SysEnv.getCurrent().getContext().getBean("authenticateLogic");
+                AuthenticateLogic authenticateLogic= (AuthenticateLogic)SysEnv.getBean("authenticateLogic");
                 SystemUser user = authenticateLogic.getSessionLogin(session);
                 if (user != null) {
                     Logger.debug("用户" + user.getUserId() + "退出");

@@ -69,27 +69,7 @@ public class MainPageController {
 	public List<SystemProgramWithChildren> getAll(){
         return  systemProgramLogic.getAllWithChildren();
     }
-    
-    @RequestMapping("create.handler")
-    @ResponseBody
-    public SystemProgram create(SystemProgram item) throws Exception {
-    	systemProgramLogic.create(item);
-        return item;
-    }
 
-    @RequestMapping("update.handler")
-    @ResponseBody
-    public SystemProgram update(SystemProgram item) throws Exception {
-    	systemProgramLogic.update(item);
-        return item;
-    }
-
-    @RequestMapping("delete.handler")
-    @ResponseBody
-    public int delete(@RequestBody Object[] idList) throws Exception {
-        return systemProgramLogic.delete(idList);
-    }
-    
     @RequestMapping("getAllByPage.handler")
     @ResponseBody
     public ExtJsResult getAllByPage(HttpServletRequest request, HttpServletResponse response) {

@@ -39,8 +39,8 @@ public class ListRequestProcessHandler {
         try {
             int resultCode = actionHandler.handleAction(item);
             result.setResultCode(resultCode);
-            result.setResultId(ExceptionManager.getErrorId(resultCode));
-            result.setErrorMessage(ExceptionManager.getErrorMessage(resultCode));
+            result.setResultId(ExceptionHelper.getErrorId(resultCode));
+            result.setErrorMessage(ExceptionHelper.getErrorMessage(resultCode));
             result.setEntityObject(item);
         } catch (Exception e) {
             Logger.error(e);

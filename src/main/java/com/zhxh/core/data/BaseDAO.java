@@ -1,7 +1,8 @@
 package com.zhxh.core.data;
 
 import com.zhxh.core.env.SysEnv;
-import com.zhxh.core.exception.BusinessError;
+import com.zhxh.core.exception.BusinessException;
+import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
 
 import javax.annotation.Resource;
@@ -14,7 +15,7 @@ import java.util.Set;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_ALREADY_EXISTS;
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
-import static com.zhxh.core.exception.ExceptionManager.throwException;
+import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 public class BaseDAO {
     public static final int DATA_OPERATION_INSERT = 1;
@@ -150,7 +151,7 @@ public class BaseDAO {
         return dbItem;
     }
 
-    public <T> void verifyBean(T item, int operationCode) throws BusinessError {
+    public <T> void verifyBean(T item, int operationCode) throws BusinessException {
         Set<ConstraintViolation<T>> errorSet = validator.validate(item);
         StringBuffer msgBuffer = new StringBuffer();
         for (ConstraintViolation<T> error : errorSet) {
@@ -160,7 +161,7 @@ public class BaseDAO {
             msgBuffer.append(fieldLabel).append(error.getMessage()).append("\n");
         }
         if (errorSet.size() > 0) {
-            throw new BusinessError(msgBuffer.toString());
+            throw new BusinessException(msgBuffer.toString());
         }
     }
 
@@ -174,11 +175,11 @@ public class BaseDAO {
     }
 
     protected String getPropertyLabel(String property) {
-        String fieldLabel = SysEnv.getCurrent().getFieldsPropertyConfigurer().get(property);
+        String fieldLabel = SysEnv.getFieldLabel(property);
         return fieldLabel;
     }
 
-    public void verify(Object item, int operationCode) throws BusinessError {
+    public void verify(Object item, int operationCode) throws BusinessException {
         this.verifyBean(item, operationCode);
     }
 
