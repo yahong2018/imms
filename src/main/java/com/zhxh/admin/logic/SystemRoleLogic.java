@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.zhxh.admin.misc.ErrorCode.ERROR_ADMIN_ROLE_CONTAINS_USERS;
+import static com.zhxh.admin.misc.ErrorCode.ERROR_ROLE_CONTAINS_USERS;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("systemRoleLogic")
@@ -68,7 +68,7 @@ public class SystemRoleLogic {
         //3.通知系统管理员
         for(String roleId:roleIdList) {
             if(!this.getRoleUsers(roleId).isEmpty()){
-                throwException(ERROR_ADMIN_ROLE_CONTAINS_USERS,roleId);
+                throwException(ERROR_ROLE_CONTAINS_USERS,roleId);
             }
 
             int result = systemRoleDAO.deleteById(roleId);

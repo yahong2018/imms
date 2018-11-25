@@ -1,17 +1,15 @@
 package com.zhxh.imms;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement(proxyTargetClass = true)
-@SpringBootApplication
-@ServletComponentScan
 @ComponentScan("com.zhxh.*")
+@EnableAutoConfiguration
 public class ImmsApplication extends SpringBootServletInitializer {
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.zhxh.admin.misc.ErrorCode.ERROR_ADMIN_OLD_PASSWORD_ERROR;
+import static com.zhxh.admin.misc.ErrorCode.ERROR_OLD_PASSWORD_ERROR;
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
@@ -42,7 +42,7 @@ public class SystemUserLogic {
     public int changePassword(SystemUser user, String pwd, String oldPwd) throws Exception {
         String md5 = StringUtilsExt.getMd5(oldPwd);
         if (!md5.equals(user.getPassword())) {
-            throwException(ERROR_ADMIN_OLD_PASSWORD_ERROR);
+            throwException(ERROR_OLD_PASSWORD_ERROR);
         }
         user.setPassword(pwd);
         return systemUserDAO.update(user);
@@ -172,7 +172,7 @@ public class SystemUserLogic {
 	    String pureUrl = url.replace(SysEnv.getAppRoot(),"");
 		/**
 		 * 1.首页：所有人都有权限:  "/mes";"/"
-		 * 2.登录页：所有人都有权限:"/login.jsp"
+		 * 2.登录页：所有人都有权限:"/login"
 		 * 3.其他页：要根据权限判断
 		 */
 		if(SysEnv.getAppRoot().equals(pureUrl) || SysEnv.getUrlAppIndex().equals(pureUrl)

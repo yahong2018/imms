@@ -4,16 +4,30 @@ import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.logic.AuthenticateLogic;
 import com.zhxh.admin.logic.SystemUserLogic;
 import com.zhxh.core.env.SysEnv;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.boot.web.servlet.ServletComponentScan;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
+@ServletComponentScan
+@WebFilter(urlPatterns = "/*")
 public class LoginFilter implements Filter {
+	@Resource(name="systemUserLogic")
+	private SystemUserLogic systemUserLogic;
+
+	@Resource(name="authenticateLogic")
+	private AuthenticateLogic authenticateLogic;
+
 
 	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
+	public void init(FilterConfig filterConfig) {
 	}
 
 	@Override
@@ -25,10 +39,12 @@ public class LoginFilter implements Filter {
 			
 				String redirectUrl = "";
 				String url = httpServletRequest.getRequestURI();
+				if(StringUtils.endsWith(url,".handler")){ //忽略掉所有的handler
+					chain.doFilter(request,response);
+					return;
+				}
 
 				if (!url.contains(SysEnv.getUrlLoginPage())) {
-					SystemUserLogic systemUserLogic = (SystemUserLogic)SysEnv.getBean("systemUserLogic");
-					AuthenticateLogic authenticateLogic =(AuthenticateLogic) SysEnv.getBean("authenticateLogic");
 					SystemUser currentLogin = authenticateLogic.getCurrentLogin();
 					if(currentLogin==null /* 没有登录 */
 							|| !systemUserLogic.canRun(currentLogin.getUserId(), url)/* 当前用户没有权限 */) {

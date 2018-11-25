@@ -1,4 +1,4 @@
-package com.zhxh.core.config;
+package com.zhxh.imms.config;
 
 import com.github.miemiedev.mybatis.callable.CallableConvertInterceptor;
 import com.zhxh.core.data.EntitySqlMetaFactory;

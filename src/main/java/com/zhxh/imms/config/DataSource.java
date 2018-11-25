@@ -1,6 +1,5 @@
-package com.zhxh.core.config;
+package com.zhxh.imms.config;
 
-import com.zhxh.imms.config.ImmsApplicationConfig;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 @Configuration
 @AutoConfigureBefore(ImmsApplicationConfig.class)
 @ConfigurationProperties(prefix = "datasource")
-@PropertySource(value={"classpath:settings/data-source.properties"})
+@PropertySource(value={"classpath:config/settings/data-source.properties"})
 public class DataSource extends org.apache.commons.dbcp2.BasicDataSource {
     private String myBatisMapperFileLocations;
     private String myBatisTypeAliasesPackage;

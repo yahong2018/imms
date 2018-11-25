@@ -12,8 +12,8 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import static com.zhxh.admin.misc.ErrorCode.ERROR_ADMIN_LOGIN_ACCOUNT_DISABLED;
-import static com.zhxh.admin.misc.ErrorCode.ERROR_ADMIN_LOGIN_ACCOUNT_ERROR;
+import static com.zhxh.admin.misc.ErrorCode.ERROR_LOGIN_ACCOUNT_DISABLED;
+import static com.zhxh.admin.misc.ErrorCode.ERROR_LOGIN_ACCOUNT;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("authenticateLogic")
@@ -39,10 +39,10 @@ public class AuthenticateLogic {
         SystemUser dbUser = systemUserDAO.getById(user.getUserId());
         String md5 = StringUtilsExt.getMd5(user.getPassword());
         if (dbUser == null || !md5.equals(dbUser.getPassword())) {
-            throwException(ERROR_ADMIN_LOGIN_ACCOUNT_ERROR);
+            throwException(ERROR_LOGIN_ACCOUNT);
         }
         if (dbUser.isDisabled()) {
-            throwException(ERROR_ADMIN_LOGIN_ACCOUNT_DISABLED);
+            throwException(ERROR_LOGIN_ACCOUNT_DISABLED);
         }
         //2.更新Session
         setCurrentLogin(dbUser);

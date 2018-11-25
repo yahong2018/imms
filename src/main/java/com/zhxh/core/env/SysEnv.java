@@ -26,7 +26,7 @@ public class SysEnv implements ApplicationContextAware {
     private static Map<String, String> entityFieldLabelHolder;
     private static Map<String, String> entityTableMappingHolder;
 
-    private static final String configLocation = "classpath:settings/env.properties";
+    private static final String configLocation = "classpath:config/settings/env.properties";
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
