@@ -15,7 +15,8 @@ public class BusinessErrorHandler {
         Logger.error(e);
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("message", e.getMessage());
+        modelAndView.addObject("errorMessage", e.getMessage());
+        modelAndView.addObject("stackTrace",ExceptionHelper.exceptionStackTrace(e));
         modelAndView.setViewName("error/businessError");
 
         return modelAndView;
