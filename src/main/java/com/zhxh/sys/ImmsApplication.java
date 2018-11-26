@@ -1,4 +1,4 @@
-package com.zhxh.imms.sys;
+package com.zhxh.sys;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

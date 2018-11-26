@@ -1,4 +1,4 @@
-package com.zhxh.imms.sys.config;
+package com.zhxh.sys.config;
 
 import com.github.miemiedev.mybatis.callable.CallableConvertInterceptor;
 import com.zhxh.core.data.EntitySqlMetaFactory;
@@ -38,7 +38,7 @@ public class DataConfig {
 
     @Bean
     public DataSourceTransactionManager createTransactionManager() {
-        return new org.springframework.jdbc.datasource.DataSourceTransactionManager(dataSource);
+        return new DataSourceTransactionManager(dataSource);
     }
 
     @Bean

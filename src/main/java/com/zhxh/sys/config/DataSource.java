@@ -1,4 +1,4 @@
-package com.zhxh.imms.sys.config;
+package com.zhxh.sys.config;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.context.properties.ConfigurationProperties;
