@@ -14,6 +14,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @ServletComponentScan
@@ -24,7 +26,6 @@ public class LoginFilter implements Filter {
 
 	@Resource(name="authenticateLogic")
 	private AuthenticateLogic authenticateLogic;
-
 
 	@Override
 	public void init(FilterConfig filterConfig) {
@@ -39,8 +40,8 @@ public class LoginFilter implements Filter {
 			
 				String redirectUrl = "";
 				String url = httpServletRequest.getRequestURI();
-				if(StringUtils.endsWith(url,".handler")){ //忽略掉所有的handler
-					chain.doFilter(request,response);
+				if(!"/".equalsIgnoreCase(url)){
+					chain.doFilter(request, response);
 					return;
 				}
 

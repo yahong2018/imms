@@ -42,4 +42,15 @@ public class LoginController {
 
         return "admin/login";
     }
+
+    @RequestMapping("/login/logout")
+    public String logout(){
+        try {
+            authenticateLogic.kickOffUser();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "admin/login";
+    }
 }

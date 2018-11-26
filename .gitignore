@@ -1,5 +1,8 @@
 /target/
 /logs/
+src/main/resources/static/js/ext
+src/main/resources/static/js/ext.rar
+
 !.mvn/wrapper/maven-wrapper.jar
 
 ### STS ###

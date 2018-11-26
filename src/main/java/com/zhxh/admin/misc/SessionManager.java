@@ -4,16 +4,22 @@ import com.zhxh.admin.entity.SystemUser;
 import com.zhxh.admin.logic.AuthenticateLogic;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.Logger;
+import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 import java.util.HashSet;
 
+@Component
 public class SessionManager implements HttpSessionListener {
+    @Resource(name="authenticateLogic")
+    private AuthenticateLogic authenticateLogic;
+
     public SessionManager(){
     }
 
@@ -61,8 +67,7 @@ public class SessionManager implements HttpSessionListener {
         HttpSession session = event.getSession();
         synchronized (sessions) {
             if (sessions.contains(session)) {
-                AuthenticateLogic authenticateLogic= (AuthenticateLogic)SysEnv.getBean("authenticateLogic");
-                SystemUser user = authenticateLogic.getSessionLogin(session);
+                SystemUser user = this.authenticateLogic.getSessionLogin(session);
                 if (user != null) {
                     Logger.debug("用户" + user.getUserId() + "退出");
                     try {

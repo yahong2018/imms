@@ -12,7 +12,6 @@ public class SystemProgram extends EntityObject {
     private String url;
     private int showOrder;
     private String parameters;
-    private int status;
     private String parent;
     private String glyph;
 
@@ -72,10 +71,6 @@ public class SystemProgram extends EntityObject {
         return parameters;
     }
 
-    public int getStatus() {
-        return status;
-    }
-
     public void setParameters(String parameters) {
         this.parameters = parameters;
     }
@@ -84,7 +79,4 @@ public class SystemProgram extends EntityObject {
         this.showOrder = showOrder;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

@@ -41,10 +41,10 @@ public class SqlHelper {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.getSelectByPageSql(listMap,true);
         Map<String, Object> map = new HashMap<>();
-        /*
+
         map.put("start", listMap.get("start"));
         map.put("limit", listMap.get("limit"));
-        */
+
         if (parameters != null && parameters.size() > 0) {
             map.putAll(parameters);
         }
