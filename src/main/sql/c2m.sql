@@ -1,4 +1,39 @@
 -- ----------------------------
+-- Table structure for data_dict
+-- ----------------------------
+DROP TABLE IF EXISTS `data_dict`;
+CREATE TABLE `data_dict`  (
+  `id`                        bigint(20)            NOT NULL        AUTO_INCREMENT,
+  `CODE`                      varchar(32)           NOT NULL,
+  `name`                      varchar(64)           NOT NULL,
+  `type`                      varchar(64)           NOT NULL,
+  `locale`                    varchar(32)           NOT NULL DEFAULT 'zh_CN',
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_DD_01`(`CODE`) ,
+  INDEX `IDX_DD_02`(`locale`) ,
+  INDEX `IDX_DD_03`(`type`)
+) COMMENT = '数据字典表';
+
+
+-- ----------------------------
+-- Table structure for customer
+-- ----------------------------
+DROP TABLE IF EXISTS `customer`;
+CREATE TABLE `customer`  (
+  `id`                          bigint(20)         NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `production_order_id`         bigint(20)         NULL                    COMMENT '生产订单主键',
+  `name`                        varchar(20)        NULL                    COMMENT '姓名',
+  `sex`                         varchar(10)        NULL                    COMMENT '性别',
+  `mail_address`                varchar(100)       NULL                    COMMENT '邮寄地址',
+  `telephone`                   varchar(20)        NULL                    COMMENT '电话',
+  `type`                        varchar(20)        NULL,
+  PRIMARY KEY (`id`),
+  INDEX `IDX_CUSTOMER_01`(`production_order_id`),
+  INDEX `IDX_CUSTOMER_02`(`name`)
+) COMMENT = '客户信息';
+
+
+-- ----------------------------
 -- Table structure for bom
 -- ----------------------------
 DROP TABLE IF EXISTS `bom`;
@@ -52,111 +87,7 @@ CREATE TABLE `capability`  (
   INDEX `IDX_CAPABILITY_02`(`operation_id`)
 ) COMMENT = '能力';
 
--- ----------------------------
--- Table structure for customer
--- ----------------------------
-DROP TABLE IF EXISTS `customer`;
-CREATE TABLE `customer`  (
-  `id`                          bigint(20)         NOT NULL AUTO_INCREMENT COMMENT '主键',
-  `production_order_id`         bigint(20)         NULL                    COMMENT '生产订单主键',
-  `name`                        varchar(20)        NULL                    COMMENT '姓名',
-  `sex`                         varchar(10)        NULL                    COMMENT '性别',
-  `mail_address`                varchar(100)       NULL                    COMMENT '邮寄地址',
-  `telephone`                   varchar(20)        NULL                    COMMENT '电话',
-  `type`                        varchar(20)        NULL,
-  PRIMARY KEY (`id`),
-  INDEX `IDX_CUSTOMER_01`(`production_order_id`),
-  INDEX `IDX_CUSTOMER_02`(`name`)
-) COMMENT = '客户信息';
 
--- ----------------------------
--- Table structure for cutting_marker
--- ----------------------------
-DROP TABLE IF EXISTS `cutting_marker`;
-CREATE TABLE `cutting_marker`  (
-  `id`                          bigint(20)         NOT NULL AUTO_INCREMENT,
-  `cutting_order_id`            bigint(20)         NOT NULL,
-  `line_no`                     int(11)            NULL                   COMMENT '行项目',
-  `media_id`                    bigint(20)         NULL,
-  `remark`                      varchar(64)        NULL,
-  `marker_file_id`              bigint(20)         NULL,
-  PRIMARY KEY (`id`),
-  INDEX `IDX_CUTTING_MARKER_01`(`cutting_order_id`),
-  INDEX `IDX_CUTTING_MARKER_02`(`media_id`)
-) COMMENT = '生产裁剪排料图' ;
-
--- ----------------------------
--- Table structure for cutting_order
--- ----------------------------
-DROP TABLE IF EXISTS `cutting_order`;
-CREATE TABLE `cutting_order`  (
-  `id`                          bigint(20)          NOT NULL AUTO_INCREMENT,
-  `cutting_order_no`            varchar(64)         NULL                 COMMENT '裁剪单号',
-  `line_no`                     int(11)             NULL                 COMMENT '行项目',
-  `production_order_id`         bigint(20)          NOT NULL             COMMENT '生产订单主键',
-  `cutting_table_no`            varchar(64)         NULL                 COMMENT '床次',
-  `status`                      varchar(10)         NULL                 COMMENT '状态',
-  `container_no`                varchar(64)         NULL                 COMMENT '裁剪单容器',
-  `planned_qty`                 int(11)             NOT NULL   DEFAULT 0 COMMENT '计划数量',
-  `finished_qty`                int(11)             NOT NULL   DEFAULT 0 COMMENT '实际完工数量',
-  `fg_material_id`              varchar(64)         NULL                 COMMENT '成品物料号',
-  `fabric_material_type`        varchar(64)         NULL                 COMMENT '面料类型',
-  `fabric_material_id`          varchar(64)         NULL                 COMMENT '面料物料主键',
-  `plies`                       int(11)             NULL                 COMMENT '层数',
-  `width`                       double              NULL                 COMMENT '幅宽',
-  `length`                      double              NULL                 COMMENT '长度',
-  `cutting_efficiency`          double              NULL                 COMMENT '利用率',
-  `work_station_id`             bigint(20)          NULL                 COMMENT '裁剪工位',
-  `planned_cutting_date`        datetime(0)         NULL                 COMMENT '计划领料时间',
-  `actual_cutting_date`         datetime(0)         NULL                 COMMENT '实际领料时间',
-  `planned_end_date`            datetime(0)         NULL                 COMMENT '计划完成时间',
-  `actual_end_date`             datetime(0)         NULL                 COMMENT '实际完成时间',
-  `hanging_station_id`          bigint(20)          NULL                 COMMENT '上吊挂工位',
-  
-  `created_by`                  varchar(20)         NOT NULL,
-  `created_date`                datetime(0)         NOT NULL,
-  `last_modified_by`            varchar(20)         NOT NULL,
-  `last_modified_date`          datetime(0)         NOT NULL,  
-  
-  PRIMARY KEY (`id`),
-  INDEX `IDX_CUTTING_ORDER_01`(`cutting_order_no`),
-  INDEX `IDX_CUTTING_ORDER_02`(`production_order_id`),
-  INDEX `IDX_CUTTING_ORDER_03`(`work_station_id`)
-)COMMENT = '裁剪单' ;
-
--- ----------------------------
--- Table structure for cutting_order_size
--- ----------------------------
-DROP TABLE IF EXISTS `cutting_order_size`;
-CREATE TABLE `cutting_order_size`  (
-  `id`                          bigint(20)          NOT NULL        AUTO_INCREMENT,
-  `cutting_order_id`            bigint(20)          NOT NULL        COMMENT '裁剪单主键',
-  `line_no`                     int(11)             NULL            COMMENT '行项目',
-  `size`                        varchar(10)         NULL            COMMENT '尺码',
-  `layer_qty`                   int(11)             NULL            COMMENT '单层配比数量',
-  `planned_qty`                 int(11)             NULL            COMMENT '计划裁剪数量',
-  `actual_qty`                  int(11)             NULL            COMMENT '实际裁剪数量',
-  `created_work_order_qty`      int(11)             NULL            COMMENT '已创建作业单数量',
-  
-  PRIMARY KEY (`id`),
-  INDEX `IDX_CUTTING_ORDER_SIZE_01`(`cutting_order_id`)
-)COMMENT = '裁剪单尺码明细';
-
--- ----------------------------
--- Table structure for data_dict
--- ----------------------------
-DROP TABLE IF EXISTS `data_dict`;
-CREATE TABLE `data_dict`  (
-  `id`                        bigint(20)            NOT NULL        AUTO_INCREMENT,
-  `CODE`                      varchar(32)           NOT NULL,
-  `name`                      varchar(64)           NOT NULL,
-  `type`                      varchar(64)           NOT NULL,
-  `locale`                    varchar(32)           NOT NULL DEFAULT 'zh_CN',
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_DD_01`(`CODE`) ,
-  INDEX `IDX_DD_02`(`locale`) ,
-  INDEX `IDX_DD_03`(`type`) 
-) COMMENT = '数据字典表';
 
 -- ----------------------------
 -- Table structure for defect_code
@@ -172,7 +103,7 @@ CREATE TABLE `defect_code`  (
   PRIMARY KEY (`id`) ,
   INDEX `IDX_DEFECT_CODE_01`(`defect_code_no`) ,
   INDEX `IDX_DEFECT_CODE_02`(`name`) ,
-  INDEX `IDX_DEFECT_CODE_03`(`defect_group_id`) 
+  INDEX `IDX_DEFECT_CODE_03`(`defect_group_id`)
 ) COMMENT = '不合格代码';
 
 -- ----------------------------
@@ -187,27 +118,9 @@ CREATE TABLE `defect_group`  (
 
   PRIMARY KEY (`id`) ,
   INDEX `IDX_DEFECT_GROUP_01`(`defect_group_no`) ,
-  INDEX `IDX_DEFECT_GROUP_02`(`name`) 
+  INDEX `IDX_DEFECT_GROUP_02`(`name`)
 ) COMMENT = '不合格代码组';
 
--- ----------------------------
--- Table structure for interface_log_visualization
--- ----------------------------
-DROP TABLE IF EXISTS `interface_log_visualization`;
-CREATE TABLE `interface_log_visualization`  (
-  `id`                         bigint(20)             NOT NULL        AUTO_INCREMENT,
-  `chart_type`                 varchar(20)            NOT NULL                COMMENT '图表类型',
-  `chart_code`                 varchar(20)            NOT NULL                COMMENT '图表编码',
-  `chart_series_name`          varchar(20)            NOT NULL                COMMENT '图表数据-类型',
-  `chart_data_key`             varchar(64)            NOT NULL                COMMENT '图表数据-键',
-  `chart_data_value`           varchar(64)            NOT NULL                COMMENT '图表数据-值',
-
-  `created_by`                 varchar(20)            NOT NULL                COMMENT '创建人',
-  `created_date`               datetime(0)            NOT NULL                COMMENT '创建日期',
-  `last_modified_by`           varchar(20)            NOT NULL                COMMENT '修改人',
-  `last_modified_date`         datetime(0)            NOT NULL                COMMENT '修改日期',
-  PRIMARY KEY (`id`) 
-) COMMENT = '可视化接口日志';
 
 -- ----------------------------
 -- Table structure for line
@@ -231,7 +144,7 @@ CREATE TABLE `line`  (
   INDEX `IDX_LINE_01`(`work_center_id`) ,
   INDEX `IDX_LINE_02`(`production_line_code`) ,
   INDEX `IDX_LINE_03`(`start_main_line_id`) ,
-  INDEX `IDX_LINE_04`(`end_main_line_id`) 
+  INDEX `IDX_LINE_04`(`end_main_line_id`)
 )  COMMENT = '产线';
 
 -- ----------------------------
@@ -251,7 +164,7 @@ CREATE TABLE `machine`  (
   INDEX `IDX_MACHINE_01`(`machine_no`) ,
   INDEX `IDX_MACHINE_02`(`name`) ,
   INDEX `IDX_MACHINE_03`(`machine_type_id`) ,
-  INDEX `IDX_MACHINE_04`(`work_station_id`) 
+  INDEX `IDX_MACHINE_04`(`work_station_id`)
 ) COMMENT = '设备';
 
 -- ----------------------------
@@ -266,8 +179,280 @@ CREATE TABLE `machine_type`  (
 
   PRIMARY KEY (`id`) ,
   INDEX `IDX_MACHINE_TYPE_01`(`machine_type_no`) ,
-  INDEX `IDX_MACHINE_TYPE_02`(`name`) 
+  INDEX `IDX_MACHINE_TYPE_02`(`name`)
 )  COMMENT = '设备类型';
+
+
+-- ----------------------------
+-- Table structure for size
+-- ----------------------------
+DROP TABLE IF EXISTS `size`;
+CREATE TABLE `size`  (
+  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
+  `size`                     varchar(20)          NULL DEFAULT NULL        COMMENT '尺码',
+  `description`              varchar(1000)        NULL DEFAULT NULL        COMMENT '描述',
+  `size_group_id`            bigint(20)           NOT NULL                 COMMENT '尺码组主键',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_SIZE_01`(`size`) ,
+  INDEX `IDX_SIZE_02`(`size_group_id`)
+) COMMENT = '尺码';
+
+-- ----------------------------
+-- Table structure for size_group
+-- ----------------------------
+DROP TABLE IF EXISTS `size_group`;
+CREATE TABLE `size_group`  (
+  `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
+  `size_group_no`            varchar(100)        NULL DEFAULT NULL        COMMENT '尺码组编码',
+  `description`              varchar(1000)       NULL DEFAULT NULL        COMMENT '描述',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_SIZE_GROUP_01`(`size_group_no`) ,
+  INDEX `IDX_SIZE_GROUP_02`(`description`(255))
+) COMMENT = '尺码组';
+
+-- ----------------------------
+-- Table structure for size_label_match_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `size_label_match_rule`;
+CREATE TABLE `size_label_match_rule`  (
+  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
+  `rule_no`                 varchar(10)          NULL DEFAULT NULL        COMMENT '规则编码',
+  `product_category_id`     bigint(20)           NULL DEFAULT NULL        COMMENT '产品品类',
+  `product_size`            varchar(10)          NULL DEFAULT NULL        COMMENT '产品尺码',
+  `size_label_size`         varchar(10)          NULL DEFAULT NULL        COMMENT '号标尺码',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_SLMR_01`(`rule_no`) ,
+  INDEX `IDX_SLMR_02`(`product_category_id`)
+)  COMMENT = '号标匹配规则';
+
+-- ----------------------------
+-- Table structure for size_match_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `size_match_rule`;
+CREATE TABLE `size_match_rule`  (
+  `id`                      bigint(20)            NOT NULL AUTO_INCREMENT,
+  `rule_no`                 varchar(10)           NULL DEFAULT NULL      COMMENT '规则编码',
+  `description`             varchar(200)          NULL DEFAULT NULL      COMMENT '规则描述',
+  `fg_material_size`        varchar(10)           NULL DEFAULT NULL      COMMENT '产品规格',
+  `assist_material_size`    varchar(10)           NULL DEFAULT NULL      COMMENT '辅材规格',
+  `unit`                    varchar(10)           NULL DEFAULT NULL      COMMENT '单位',
+  `type`                    varchar(10)           NOT NULL               COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_SMR_01`(`rule_no`)
+) COMMENT = '规格匹配规则';
+
+-- ----------------------------
+-- Table structure for uom
+-- ----------------------------
+DROP TABLE IF EXISTS `uom`;
+CREATE TABLE `uom`  (
+  `id`                      bigint(20)            NOT NULL AUTO_INCREMENT,
+  `name`                    varchar(10)           NULL DEFAULT NULL      COMMENT '名称',
+  `description`             varchar(100)          NULL DEFAULT NULL      COMMENT '描述',
+  `uom_no`                  varchar(20)           NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`)
+) COMMENT = '单位';
+
+-- ----------------------------
+-- Table structure for work_center
+-- ----------------------------
+DROP TABLE IF EXISTS `work_center`;
+CREATE TABLE `work_center`  (
+  `id`                     bigint(20)             NOT NULL AUTO_INCREMENT,
+  `work_center_no`         varchar(10)            NOT NULL,
+  `name`                   varchar(100)           NOT NULL,
+  `description`            varchar(1000)          NULL DEFAULT NULL,
+  `plant_id`               bigint(20)             NOT NULL,
+  `work_center_group_id`   bigint(20)             NOT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_WORK_CENTER_01`(`work_center_no`) ,
+  INDEX `IDX_WORK_CENTER_02`(`name`) ,
+  INDEX `IDX_WORK_CENTER_03`(`plant_id`) ,
+  INDEX `IDX_WORK_CENTER_04`(`work_center_group_id`)
+) COMMENT = '工作中心';
+
+-- ----------------------------
+-- Table structure for work_center_group
+-- ----------------------------
+DROP TABLE IF EXISTS `work_center_group`;
+CREATE TABLE `work_center_group`  (
+  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
+  `work_center_group_no`    varchar(10)          NOT NULL,
+  `plant_id`                bigint(20)           NOT NULL,
+  `name`                    varchar(100)         NOT NULL,
+  `description`             varchar(1000)        NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_WORK_CENTER_GROUP_01`(`work_center_group_no`) ,
+  INDEX `IDX_WORK_CENTER_GROUP_02`(`plant_id`) ,
+  INDEX `IDX_WORK_CENTER_GROUP_03`(`name`)
+) COMMENT = '工作中心组';
+
+-- ----------------------------
+-- Table structure for work_station
+-- ----------------------------
+DROP TABLE IF EXISTS `work_station`;
+CREATE TABLE `work_station`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `work_station_no`           varchar(10)        NOT NULL,
+  `plant_id`                  bigint(20)         NOT NULL,
+  `description`               varchar(100)       NULL DEFAULT NULL,
+  `type`                      varchar(10)        NOT NULL,
+  `status`                    varchar(10)        NOT NULL,
+  `ip_address`                varchar(20)        NULL DEFAULT NULL,
+  `max_wip_qty`               int(11)            NOT NULL,
+  `allowed_wip_qty`           int(11)            NULL DEFAULT NULL,
+  `work_center_id`            int(11)            NULL DEFAULT NULL,
+  `remote_file_address`       varchar(20)        NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_WORK_STATION_01`(`work_station_no`) ,
+  INDEX `IDX_WORK_STATION_02`(`plant_id`) ,
+  INDEX `IDX_WORK_STATION_03`(`work_center_id`)
+) COMMENT = '工位';
+
+-- ----------------------------
+-- Table structure for work_station_configure
+-- ----------------------------
+DROP TABLE IF EXISTS `work_station_configure`;
+CREATE TABLE `work_station_configure`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `work_station_id`           bigint(20)         NULL DEFAULT NULL,
+  `line_id`                   bigint(20)         NULL DEFAULT NULL,
+  `type`                      varchar(10)        NULL DEFAULT NULL      COMMENT 'REALITY	真实工位     FICTITIOUS 虚拟工位',
+  `direction`                 varchar(10)        NULL DEFAULT NULL      COMMENT 'right   left',
+  `no`                        int(11)            NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_WORK_STATION_C_01`(`work_station_id`) ,
+  INDEX `IDX_WORK_STATION_C_02`(`line_id`)
+) COMMENT = '工位配置';
+
+-- ----------------------------
+-- Table structure for work_station_wip
+-- ----------------------------
+DROP TABLE IF EXISTS `work_station_wip`;
+CREATE TABLE `work_station_wip`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `work_station_id`           bigint(20)         NOT NULL               COMMENT '工位主键',
+  `wip_qty`                   int(11)            NOT NULL               COMMENT 'wip数量',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_MATERIAL_01`(`work_station_id`)
+) COMMENT = '工位wip';
+
+-- ----------------------------
+-- Table structure for zipper_match_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `zipper_match_rule`;
+CREATE TABLE `zipper_match_rule`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `rule_no`                   varchar(10)        NULL DEFAULT NULL     COMMENT '规则编码',
+  `product_category_id`       bigint(20)         NULL DEFAULT NULL     COMMENT '产品品类',
+  `product_size`              varchar(10)        NULL DEFAULT NULL     COMMENT '产品尺码',
+  `zipper_category_id`        bigint(20)         NULL DEFAULT NULL     COMMENT '拉链品类',
+  `zipper_size`               varchar(10)        NULL DEFAULT NULL     COMMENT '拉链长度',
+  `unit`                      varchar(10)        NULL DEFAULT NULL     COMMENT '单位',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_ZMR_01`(`rule_no`) ,
+  INDEX `IDX_ZMR_02`(`product_category_id`) ,
+  INDEX `IDX_ZMR_03`(`zipper_category_id`)
+) COMMENT = '拉链长度匹配规则';
+
+
+-- ----------------------------
+-- Table structure for plant
+-- ----------------------------
+DROP TABLE IF EXISTS `plant`;
+CREATE TABLE `plant`  (
+  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
+  `plant_no`                   varchar(10)       NOT NULL,
+  `name`                       varchar(100)      NULL DEFAULT NULL,
+  `description`                varchar(1000)     NULL DEFAULT NULL,
+  `cost_price_ratio`           decimal(8, 4)     NOT NULL DEFAULT 0.0100  COMMENT '工资提成',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PLANT_01`(`plant_no`) ,
+  INDEX `IDX_PLANT_02`(`name`)
+) COMMENT = '工厂';
+
+-- ----------------------------
+-- Table structure for price_scopes
+-- ----------------------------
+DROP TABLE IF EXISTS `price_scopes`;
+CREATE TABLE `price_scopes`  (
+  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
+  `price_scopes_no`            varchar(10)       NULL DEFAULT NULL        COMMENT '价格带编码',
+  `price`                      decimal(10, 2)    NULL DEFAULT NULL        COMMENT '价格',
+  `material_group_id`          bigint(20)        NULL DEFAULT NULL        COMMENT '物料组',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PRICE_SCOPES_01`(`price_scopes_no`) ,
+  INDEX `IDX_PRICE_SCOPES_02`(`material_group_id`)
+) COMMENT = '价格带';
+
+-- ----------------------------
+-- Table structure for price_scopes_match_rule
+-- ----------------------------
+DROP TABLE IF EXISTS `price_scopes_match_rule`;
+CREATE TABLE `price_scopes_match_rule`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `main_material_id`          bigint(20)         NULL DEFAULT NULL       COMMENT '主材物料',
+  `rule_no`                   varchar(10)        NULL DEFAULT NULL       COMMENT '规则编码',
+  `assist_material_id`        bigint(20)         NULL DEFAULT NULL       COMMENT '辅材物料',
+  `description`               varchar(200)       NULL DEFAULT NULL       COMMENT '规则描述',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PSMR_01`(`main_material_id`) ,
+  INDEX `IDX_PSMR_02`(`rule_no`) ,
+  INDEX `IDX_PSMR_03`(`assist_material_id`)
+) COMMENT = '价格带匹配规则';
+
+-- ----------------------------
+-- Table structure for principal_axis
+-- ----------------------------
+DROP TABLE IF EXISTS `principal_axis`;
+CREATE TABLE `principal_axis`  (
+  `id`                       bigint(20)         NOT NULL AUTO_INCREMENT,
+  `principal_axis_no`        varchar(10)        NULL DEFAULT NULL,
+  `sequence_number`          int(11)            NULL DEFAULT NULL,
+  `rotating_direction`       varchar(20)        NULL DEFAULT NULL,
+  `length`                   double             NULL DEFAULT NULL,
+  `width`                    double             NULL DEFAULT NULL,
+  `speed`                    double             NULL DEFAULT NULL,
+  `work_center_id`           bigint(20)         NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PRICIPAL_AXIS_01`(`principal_axis_no`) ,
+  INDEX `IDX_PRICIPAL_AXIS_02`(`work_center_id`)
+) COMMENT = '主轨';
+
+
+-- ----------------------------
+-- Table structure for interface_log_visualization
+-- ----------------------------
+DROP TABLE IF EXISTS `interface_log_visualization`;
+CREATE TABLE `interface_log_visualization`  (
+  `id`                         bigint(20)             NOT NULL        AUTO_INCREMENT,
+  `chart_type`                 varchar(20)            NOT NULL                COMMENT '图表类型',
+  `chart_code`                 varchar(20)            NOT NULL                COMMENT '图表编码',
+  `chart_series_name`          varchar(20)            NOT NULL                COMMENT '图表数据-类型',
+  `chart_data_key`             varchar(64)            NOT NULL                COMMENT '图表数据-键',
+  `chart_data_value`           varchar(64)            NOT NULL                COMMENT '图表数据-值',
+
+  `created_by`                 varchar(20)            NOT NULL                COMMENT '创建人',
+  `created_date`               datetime(0)            NOT NULL                COMMENT '创建日期',
+  `last_modified_by`           varchar(20)            NOT NULL                COMMENT '修改人',
+  `last_modified_date`         datetime(0)            NOT NULL                COMMENT '修改日期',
+  PRIMARY KEY (`id`) 
+) COMMENT = '可视化接口日志';
 
 -- ----------------------------
 -- Table structure for match_rule
@@ -316,6 +501,23 @@ CREATE TABLE `material`  (
   INDEX `IDX_MATERIAL_06`(`material_group_id`) ,
   INDEX `IDX_MATERIAL_07`(`size_group_id`) 
 ) COMMENT = '物料';
+
+
+-- ----------------------------
+-- Table structure for material_type
+-- ----------------------------
+DROP TABLE IF EXISTS `material_type`;
+CREATE TABLE `material_type`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `material_type_no`          varchar(10)        NOT NULL               COMMENT '物料类型编码',
+  `NAME`                      varchar(20)        NULL DEFAULT NULL      COMMENT '物料类型名称',
+  `description`               varchar(30)        NULL DEFAULT NULL      COMMENT '物料类型描述',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_MT_01`(`material_type_no`) ,
+  INDEX `IDX_MT_02`(`NAME`)
+) COMMENT = '物料类型';
+
 
 -- ----------------------------
 -- Table structure for material_group
@@ -375,6 +577,140 @@ CREATE TABLE `material_media`  (
   INDEX `IDX_MM_01`(`media_id`(255)) ,
   INDEX `IDX_MM_02`(`material_id`) 
 ) AUTO_INCREMENT = 397  COMMENT = '物料多媒体';
+
+
+-- ----------------------------
+-- Table structure for media
+-- ----------------------------
+DROP TABLE IF EXISTS `media`;
+CREATE TABLE `media`  (
+  `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
+  `type`                     varchar(10)         NOT NULL,            -- 类型：Pad需要根据类型来显示图片或者播放视频
+  `url`                      varchar(1000)       NULL DEFAULT NULL,
+  `name`                     varchar(100)        NULL DEFAULT NULL,
+  `size`                     varchar(100)        NULL DEFAULT NULL,
+  `description`              varchar(200)        NULL DEFAULT NULL,
+  `source`                   varchar(10)         NULL DEFAULT NULL,   -- 内部Url存储的是相对路径，外部Url地址存储的是绝对路径
+
+  PRIMARY KEY (`id`)
+) COMMENT = '多媒体';
+
+-- ----------------------------
+-- Table structure for operation
+-- ----------------------------
+DROP TABLE IF EXISTS `operation`;
+CREATE TABLE `operation`  (
+  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
+  `operation_no`             varchar(20)          NOT NULL,
+  `description`              varchar(1000)        NULL DEFAULT NULL,
+  `standard_operation_procedure` varchar(200)     NULL DEFAULT NULL,
+  `machine_type_id`          bigint(20)           NULL DEFAULT NULL,
+  `standard_time`            varchar(64)          NULL DEFAULT NULL,
+  `standard_price`           varchar(10)          NULL DEFAULT NULL,
+  `part_type`                varchar(40)          NULL DEFAULT NULL,
+  `section_type`             varchar(10)          NULL DEFAULT NULL,
+  `section_name`             varchar(40)          NULL DEFAULT NULL,
+  `if_outsource`             tinyint(1)           NULL DEFAULT NULL,
+  `qa_procedure`             varchar(1000)        NULL DEFAULT NULL,
+  `requirement`              varchar(1000)        NULL DEFAULT NULL,
+  `level`                    varchar(10)          NULL DEFAULT NULL,
+  `design_part_code`         varchar(10)          NULL DEFAULT NULL,
+  `part_code`                varchar(10)          NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_OPERATION_01`(`operation_no`) ,
+  INDEX `IDX_OPERATION_02`(`machine_type_id`)
+) COMMENT = '工艺';
+
+-- ----------------------------
+-- Table structure for operation_media
+-- ----------------------------
+DROP TABLE IF EXISTS `operation_media`;
+CREATE TABLE `operation_media`  (
+  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
+  `operation_id`             varchar(10)          NOT NULL,
+  `media_id`                 varchar(1000)        NULL DEFAULT NULL,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_OM_01`(`operation_id`) ,
+  INDEX `IDX_OM_02`(`media_id`(255))
+) COMMENT = '工艺多媒体';
+
+
+-- ----------------------------
+-- Table structure for cutting_marker
+-- ----------------------------
+DROP TABLE IF EXISTS `cutting_marker`;
+CREATE TABLE `cutting_marker`  (
+  `id`                          bigint(20)         NOT NULL AUTO_INCREMENT,
+  `cutting_order_id`            bigint(20)         NOT NULL,
+  `line_no`                     int(11)            NULL                   COMMENT '行项目',
+  `media_id`                    bigint(20)         NULL,
+  `remark`                      varchar(64)        NULL,
+  `marker_file_id`              bigint(20)         NULL,
+  PRIMARY KEY (`id`),
+  INDEX `IDX_CUTTING_MARKER_01`(`cutting_order_id`),
+  INDEX `IDX_CUTTING_MARKER_02`(`media_id`)
+) COMMENT = '生产裁剪排料图' ;
+
+-- ----------------------------
+-- Table structure for cutting_order
+-- ----------------------------
+DROP TABLE IF EXISTS `cutting_order`;
+CREATE TABLE `cutting_order`  (
+  `id`                          bigint(20)          NOT NULL AUTO_INCREMENT,
+  `cutting_order_no`            varchar(64)         NULL                 COMMENT '裁剪单号',
+  `line_no`                     int(11)             NULL                 COMMENT '行项目',
+  `production_order_id`         bigint(20)          NOT NULL             COMMENT '生产订单主键',
+  `cutting_table_no`            varchar(64)         NULL                 COMMENT '床次',
+  `status`                      varchar(10)         NULL                 COMMENT '状态',
+  `container_no`                varchar(64)         NULL                 COMMENT '裁剪单容器',
+  `planned_qty`                 int(11)             NOT NULL   DEFAULT 0 COMMENT '计划数量',
+  `finished_qty`                int(11)             NOT NULL   DEFAULT 0 COMMENT '实际完工数量',
+  `fg_material_id`              varchar(64)         NULL                 COMMENT '成品物料号',
+  `fabric_material_type`        varchar(64)         NULL                 COMMENT '面料类型',
+  `fabric_material_id`          varchar(64)         NULL                 COMMENT '面料物料主键',
+  `plies`                       int(11)             NULL                 COMMENT '层数',
+  `width`                       double              NULL                 COMMENT '幅宽',
+  `length`                      double              NULL                 COMMENT '长度',
+  `cutting_efficiency`          double              NULL                 COMMENT '利用率',
+  `work_station_id`             bigint(20)          NULL                 COMMENT '裁剪工位',
+  `planned_cutting_date`        datetime(0)         NULL                 COMMENT '计划领料时间',
+  `actual_cutting_date`         datetime(0)         NULL                 COMMENT '实际领料时间',
+  `planned_end_date`            datetime(0)         NULL                 COMMENT '计划完成时间',
+  `actual_end_date`             datetime(0)         NULL                 COMMENT '实际完成时间',
+  `hanging_station_id`          bigint(20)          NULL                 COMMENT '上吊挂工位',
+
+  `created_by`                  varchar(20)         NOT NULL,
+  `created_date`                datetime(0)         NOT NULL,
+  `last_modified_by`            varchar(20)         NOT NULL,
+  `last_modified_date`          datetime(0)         NOT NULL,
+
+  PRIMARY KEY (`id`),
+  INDEX `IDX_CUTTING_ORDER_01`(`cutting_order_no`),
+  INDEX `IDX_CUTTING_ORDER_02`(`production_order_id`),
+  INDEX `IDX_CUTTING_ORDER_03`(`work_station_id`)
+)COMMENT = '裁剪单' ;
+
+-- ----------------------------
+-- Table structure for cutting_order_size
+-- ----------------------------
+DROP TABLE IF EXISTS `cutting_order_size`;
+CREATE TABLE `cutting_order_size`  (
+  `id`                          bigint(20)          NOT NULL        AUTO_INCREMENT,
+  `cutting_order_id`            bigint(20)          NOT NULL        COMMENT '裁剪单主键',
+  `line_no`                     int(11)             NULL            COMMENT '行项目',
+  `size`                        varchar(10)         NULL            COMMENT '尺码',
+  `layer_qty`                   int(11)             NULL            COMMENT '单层配比数量',
+  `planned_qty`                 int(11)             NULL            COMMENT '计划裁剪数量',
+  `actual_qty`                  int(11)             NULL            COMMENT '实际裁剪数量',
+  `created_work_order_qty`      int(11)             NULL            COMMENT '已创建作业单数量',
+
+  PRIMARY KEY (`id`),
+  INDEX `IDX_CUTTING_ORDER_SIZE_01`(`cutting_order_id`)
+)COMMENT = '裁剪单尺码明细';
+
+
 
 -- ----------------------------
 -- Table structure for material_picking_list
@@ -455,95 +791,6 @@ CREATE TABLE `material_picking_order_bom`  (
 ) COMMENT = '领料单物料清单';
 
 -- ----------------------------
--- Table structure for material_type
--- ----------------------------
-DROP TABLE IF EXISTS `material_type`;
-CREATE TABLE `material_type`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `material_type_no`          varchar(10)        NOT NULL               COMMENT '物料类型编码',
-  `NAME`                      varchar(20)        NULL DEFAULT NULL      COMMENT '物料类型名称',
-  `description`               varchar(30)        NULL DEFAULT NULL      COMMENT '物料类型描述',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MT_01`(`material_type_no`) ,
-  INDEX `IDX_MT_02`(`NAME`) 
-) COMMENT = '物料类型';
-
--- ----------------------------
--- Table structure for measure_body_classify
--- ----------------------------
-DROP TABLE IF EXISTS `measure_body_classify`;
-CREATE TABLE `measure_body_classify`  (
-  `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
-  `classify_no`              varchar(10)         NOT NULL               COMMENT '选项编码',
-  `name`                     varchar(20)         NULL DEFAULT NULL      COMMENT '选项名称',
-  `parent_id`                bigint(20)          NULL DEFAULT NULL      COMMENT '上层选项主键',
-  `unit`                     varchar(10)         NULL DEFAULT NULL      COMMENT '数据单位',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MBC_01`(`classify_no`) ,
-  INDEX `IDX_MBC_02`(`name`) ,
-  INDEX `IDX_MBC_03`(`parent_id`) 
-) COMMENT = '针对服装类型 定义量体选项的内容 ';
-
--- ----------------------------
--- Table structure for media
--- ----------------------------
-DROP TABLE IF EXISTS `media`;
-CREATE TABLE `media`  (
-  `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
-  `type`                     varchar(10)         NOT NULL,            -- 类型：Pad需要根据类型来显示图片或者播放视频
-  `url`                      varchar(1000)       NULL DEFAULT NULL,
-  `name`                     varchar(100)        NULL DEFAULT NULL,
-  `size`                     varchar(100)        NULL DEFAULT NULL,
-  `description`              varchar(200)        NULL DEFAULT NULL,
-  `source`                   varchar(10)         NULL DEFAULT NULL,   -- 内部Url存储的是相对路径，外部Url地址存储的是绝对路径
-
-  PRIMARY KEY (`id`) 
-) COMMENT = '多媒体';
-
--- ----------------------------
--- Table structure for operation
--- ----------------------------
-DROP TABLE IF EXISTS `operation`;
-CREATE TABLE `operation`  (
-  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
-  `operation_no`             varchar(20)          NOT NULL,
-  `description`              varchar(1000)        NULL DEFAULT NULL,
-  `standard_operation_procedure` varchar(200)     NULL DEFAULT NULL,
-  `machine_type_id`          bigint(20)           NULL DEFAULT NULL,
-  `standard_time`            varchar(64)          NULL DEFAULT NULL,
-  `standard_price`           varchar(10)          NULL DEFAULT NULL,
-  `part_type`                varchar(40)          NULL DEFAULT NULL,
-  `section_type`             varchar(10)          NULL DEFAULT NULL,
-  `section_name`             varchar(40)          NULL DEFAULT NULL,
-  `if_outsource`             tinyint(1)           NULL DEFAULT NULL,
-  `qa_procedure`             varchar(1000)        NULL DEFAULT NULL,
-  `requirement`              varchar(1000)        NULL DEFAULT NULL,
-  `level`                    varchar(10)          NULL DEFAULT NULL,
-  `design_part_code`         varchar(10)          NULL DEFAULT NULL,
-  `part_code`                varchar(10)          NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OPERATION_01`(`operation_no`) ,
-  INDEX `IDX_OPERATION_02`(`machine_type_id`) 
-) COMMENT = '工艺';
-
--- ----------------------------
--- Table structure for operation_media
--- ----------------------------
-DROP TABLE IF EXISTS `operation_media`;
-CREATE TABLE `operation_media`  (
-  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
-  `operation_id`             varchar(10)          NOT NULL,
-  `media_id`                 varchar(1000)        NULL DEFAULT NULL,
-  
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OM_01`(`operation_id`) ,
-  INDEX `IDX_OM_02`(`media_id`(255)) 
-) COMMENT = '工艺多媒体';
-
--- ----------------------------
 -- Table structure for operation_routing
 -- ----------------------------
 DROP TABLE IF EXISTS `operation_routing`;
@@ -595,22 +842,6 @@ CREATE TABLE `operation_routing_order`  (
 ) COMMENT = '工艺路线单';
 
 -- ----------------------------
--- Table structure for operator
--- ----------------------------
-DROP TABLE IF EXISTS `operator`;
-CREATE TABLE `operator`  (
-  `id`                         bigint(20)          NOT NULL AUTO_INCREMENT,
-  `user_id`                    bigint(20)          NOT NULL,
-  `plant_id`                   bigint(20)          NOT NULL,
-  `supervisor_id`              bigint(20)          NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OPERATOR_01`(`user_id`) ,
-  INDEX `IDX_OPERATOR_02`(`plant_id`) ,
-  INDEX `IDX_OPERATOR_03`(`supervisor_id`) 
-) COMMENT = '操作员';
-
--- ----------------------------
 -- Table structure for operator_check_in
 -- ----------------------------
 DROP TABLE IF EXISTS `operator_check_in`;
@@ -627,72 +858,24 @@ CREATE TABLE `operator_check_in`  (
   INDEX `IDX_OPERATOR_CHECK_IN_02`(`work_station_id`) 
 ) COMMENT = '操作员入岗';
 
+
 -- ----------------------------
--- Table structure for plant
+-- Table structure for operator
 -- ----------------------------
-DROP TABLE IF EXISTS `plant`;
-CREATE TABLE `plant`  (
-  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
-  `plant_no`                   varchar(10)       NOT NULL,
-  `name`                       varchar(100)      NULL DEFAULT NULL,
-  `description`                varchar(1000)     NULL DEFAULT NULL,
-  `cost_price_ratio`           decimal(8, 4)     NOT NULL DEFAULT 0.0100  COMMENT '工资提成',
+DROP TABLE IF EXISTS `operator`;
+CREATE TABLE `operator`  (
+  `id`                         bigint(20)          NOT NULL AUTO_INCREMENT,
+  `user_id`                    bigint(20)          NOT NULL,
+  `plant_id`                   bigint(20)          NOT NULL,
+  `supervisor_id`              bigint(20)          NULL DEFAULT NULL,
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_PLANT_01`(`plant_no`) ,
-  INDEX `IDX_PLANT_02`(`name`) 
-) COMMENT = '工厂';
+  INDEX `IDX_OPERATOR_01`(`user_id`) ,
+  INDEX `IDX_OPERATOR_02`(`plant_id`) ,
+  INDEX `IDX_OPERATOR_03`(`supervisor_id`)
+) COMMENT = '操作员';
 
--- ----------------------------
--- Table structure for price_scopes
--- ----------------------------
-DROP TABLE IF EXISTS `price_scopes`;
-CREATE TABLE `price_scopes`  (
-  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
-  `price_scopes_no`            varchar(10)       NULL DEFAULT NULL        COMMENT '价格带编码',
-  `price`                      decimal(10, 2)    NULL DEFAULT NULL        COMMENT '价格',
-  `material_group_id`          bigint(20)        NULL DEFAULT NULL        COMMENT '物料组',
 
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRICE_SCOPES_01`(`price_scopes_no`) ,
-  INDEX `IDX_PRICE_SCOPES_02`(`material_group_id`) 
-) COMMENT = '价格带';
-
--- ----------------------------
--- Table structure for price_scopes_match_rule
--- ----------------------------
-DROP TABLE IF EXISTS `price_scopes_match_rule`;
-CREATE TABLE `price_scopes_match_rule`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `main_material_id`          bigint(20)         NULL DEFAULT NULL       COMMENT '主材物料',
-  `rule_no`                   varchar(10)        NULL DEFAULT NULL       COMMENT '规则编码',
-  `assist_material_id`        bigint(20)         NULL DEFAULT NULL       COMMENT '辅材物料',
-  `description`               varchar(200)       NULL DEFAULT NULL       COMMENT '规则描述',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PSMR_01`(`main_material_id`) ,
-  INDEX `IDX_PSMR_02`(`rule_no`) ,
-  INDEX `IDX_PSMR_03`(`assist_material_id`) 
-) COMMENT = '价格带匹配规则';
-
--- ----------------------------
--- Table structure for principal_axis
--- ----------------------------
-DROP TABLE IF EXISTS `principal_axis`;
-CREATE TABLE `principal_axis`  (
-  `id`                       bigint(20)         NOT NULL AUTO_INCREMENT,
-  `principal_axis_no`        varchar(10)        NULL DEFAULT NULL,
-  `sequence_number`          int(11)            NULL DEFAULT NULL,
-  `rotating_direction`       varchar(20)        NULL DEFAULT NULL,
-  `length`                   double             NULL DEFAULT NULL,
-  `width`                    double             NULL DEFAULT NULL,
-  `speed`                    double             NULL DEFAULT NULL,
-  `work_center_id`           bigint(20)         NULL DEFAULT NULL,
-  
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRICIPAL_AXIS_01`(`principal_axis_no`) ,
-  INDEX `IDX_PRICIPAL_AXIS_02`(`work_center_id`) 
-) COMMENT = '主轨';
 
 -- ----------------------------
 -- Table structure for production_cutting_plan
@@ -774,21 +957,6 @@ CREATE TABLE `production_order`  (
   `last_modified_date` datetime(0) NOT NULL,
   PRIMARY KEY (`id`) 
 ) COMMENT = '生产订单';
-
--- ----------------------------
--- Table structure for production_order_measure_data
--- ----------------------------
-DROP TABLE IF EXISTS `production_order_measure_data`;
-CREATE TABLE `production_order_measure_data`  (
-  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
-  `production_order_id`         bigint(20)        NULL DEFAULT NULL      COMMENT '生产订单主键',
-  `measure_body`                varchar(20)       NULL DEFAULT NULL      COMMENT '量体部位',
-  `measure_data`                varchar(20)       NULL DEFAULT NULL      COMMENT '量体数据',
-  `measure_body_no`             varchar(20)       NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRO_ORDER_MD_01`(`production_order_id`) 
-) COMMENT = '生产订单量体数据';
 
 -- ----------------------------
 -- Table structure for production_order_routing
@@ -992,214 +1160,40 @@ CREATE TABLE `sequence`  (
   INDEX `IDX_SEQ_01`(`sequence_key`) 
 ) COMMENT = 'ID序列';
 
--- ----------------------------
--- Table structure for size
--- ----------------------------
-DROP TABLE IF EXISTS `size`;
-CREATE TABLE `size`  (
-  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
-  `size`                     varchar(20)          NULL DEFAULT NULL        COMMENT '尺码',
-  `description`              varchar(1000)        NULL DEFAULT NULL        COMMENT '描述',
-  `size_group_id`            bigint(20)           NOT NULL                 COMMENT '尺码组主键',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_SIZE_01`(`size`) ,
-  INDEX `IDX_SIZE_02`(`size_group_id`) 
-) COMMENT = '尺码';
 
 -- ----------------------------
--- Table structure for size_group
+-- Table structure for measure_body_classify
 -- ----------------------------
-DROP TABLE IF EXISTS `size_group`;
-CREATE TABLE `size_group`  (
+DROP TABLE IF EXISTS `measure_body_classify`;
+CREATE TABLE `measure_body_classify`  (
   `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
-  `size_group_no`            varchar(100)        NULL DEFAULT NULL        COMMENT '尺码组编码',
-  `description`              varchar(1000)       NULL DEFAULT NULL        COMMENT '描述',
+  `classify_no`              varchar(10)         NOT NULL               COMMENT '选项编码',
+  `name`                     varchar(20)         NULL DEFAULT NULL      COMMENT '选项名称',
+  `parent_id`                bigint(20)          NULL DEFAULT NULL      COMMENT '上层选项主键',
+  `unit`                     varchar(10)         NULL DEFAULT NULL      COMMENT '数据单位',
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_SIZE_GROUP_01`(`size_group_no`) ,
-  INDEX `IDX_SIZE_GROUP_02`(`description`(255)) 
-) COMMENT = '尺码组';
+  INDEX `IDX_MBC_01`(`classify_no`) ,
+  INDEX `IDX_MBC_02`(`name`) ,
+  INDEX `IDX_MBC_03`(`parent_id`)
+) COMMENT = '针对服装类型 定义量体选项的内容 ';
+
 
 -- ----------------------------
--- Table structure for size_label_match_rule
+-- Table structure for production_order_measure_data
 -- ----------------------------
-DROP TABLE IF EXISTS `size_label_match_rule`;
-CREATE TABLE `size_label_match_rule`  (
-  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
-  `rule_no`                 varchar(10)          NULL DEFAULT NULL        COMMENT '规则编码',
-  `product_category_id`     bigint(20)           NULL DEFAULT NULL        COMMENT '产品品类',
-  `product_size`            varchar(10)          NULL DEFAULT NULL        COMMENT '产品尺码',
-  `size_label_size`         varchar(10)          NULL DEFAULT NULL        COMMENT '号标尺码',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_SLMR_01`(`rule_no`) ,
-  INDEX `IDX_SLMR_02`(`product_category_id`) 
-)  COMMENT = '号标匹配规则';
-
--- ----------------------------
--- Table structure for size_match_rule
--- ----------------------------
-DROP TABLE IF EXISTS `size_match_rule`;
-CREATE TABLE `size_match_rule`  (
-  `id`                      bigint(20)            NOT NULL AUTO_INCREMENT,
-  `rule_no`                 varchar(10)           NULL DEFAULT NULL      COMMENT '规则编码',
-  `description`             varchar(200)          NULL DEFAULT NULL      COMMENT '规则描述',
-  `fg_material_size`        varchar(10)           NULL DEFAULT NULL      COMMENT '产品规格',
-  `assist_material_size`    varchar(10)           NULL DEFAULT NULL      COMMENT '辅材规格',
-  `unit`                    varchar(10)           NULL DEFAULT NULL      COMMENT '单位',
-  `type`                    varchar(10)           NOT NULL               COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
+DROP TABLE IF EXISTS `production_order_measure_data`;
+CREATE TABLE `production_order_measure_data`  (
+  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
+  `production_order_id`         bigint(20)        NULL DEFAULT NULL      COMMENT '生产订单主键',
+  `measure_body`                varchar(20)       NULL DEFAULT NULL      COMMENT '量体部位',
+  `measure_data`                varchar(20)       NULL DEFAULT NULL      COMMENT '量体数据',
+  `measure_body_no`             varchar(20)       NULL DEFAULT NULL,
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_SMR_01`(`rule_no`) 
-) COMMENT = '规格匹配规则';
+  INDEX `IDX_PRO_ORDER_MD_01`(`production_order_id`)
+) COMMENT = '生产订单量体数据';
 
--- ----------------------------
--- Table structure for uom
--- ----------------------------
-DROP TABLE IF EXISTS `uom`;
-CREATE TABLE `uom`  (
-  `id`                      bigint(20)            NOT NULL AUTO_INCREMENT,
-  `name`                    varchar(10)           NULL DEFAULT NULL      COMMENT '名称',
-  `description`             varchar(100)          NULL DEFAULT NULL      COMMENT '描述',
-  `uom_no`                  varchar(20)           NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) 
-) COMMENT = '单位';
-
--- ----------------------------
--- Table structure for work_center
--- ----------------------------
-DROP TABLE IF EXISTS `work_center`;
-CREATE TABLE `work_center`  (
-  `id`                     bigint(20)             NOT NULL AUTO_INCREMENT,
-  `work_center_no`         varchar(10)            NOT NULL,
-  `name`                   varchar(100)           NOT NULL,
-  `description`            varchar(1000)          NULL DEFAULT NULL,
-  `plant_id`               bigint(20)             NOT NULL,
-  `work_center_group_id`   bigint(20)             NOT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_CENTER_01`(`work_center_no`) ,
-  INDEX `IDX_WORK_CENTER_02`(`name`) ,
-  INDEX `IDX_WORK_CENTER_03`(`plant_id`) ,
-  INDEX `IDX_WORK_CENTER_04`(`work_center_group_id`) 
-) COMMENT = '工作中心';
-
--- ----------------------------
--- Table structure for work_center_group
--- ----------------------------
-DROP TABLE IF EXISTS `work_center_group`;
-CREATE TABLE `work_center_group`  (
-  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
-  `work_center_group_no`    varchar(10)          NOT NULL,
-  `plant_id`                bigint(20)           NOT NULL,
-  `name`                    varchar(100)         NOT NULL,
-  `description`             varchar(1000)        NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_CENTER_GROUP_01`(`work_center_group_no`) ,
-  INDEX `IDX_WORK_CENTER_GROUP_02`(`plant_id`) ,
-  INDEX `IDX_WORK_CENTER_GROUP_03`(`name`) 
-) COMMENT = '工作中心组';
-
--- ----------------------------
--- Table structure for work_order_routing
--- ----------------------------
-DROP TABLE IF EXISTS `work_order_routing`;
-CREATE TABLE `work_order_routing`  (
-  `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
-  `operation_id`             bigint(20)          NULL DEFAULT NULL,
-  `production_work_order_id` bigint(20)          NOT NULL,
-  `line_no`                  int(11)             NULL DEFAULT NULL         COMMENT '行项目',
-  `qa_procedure`             varchar(200)        NULL DEFAULT NULL         COMMENT '品质说明',
-  `standard_price`           varchar(20)         NULL DEFAULT NULL         COMMENT '标准单价',
-  `section_type`             varchar(20)         NULL DEFAULT NULL         COMMENT '所属工段',
-  `machine_type_id`          bigint(20)          NULL DEFAULT NULL         COMMENT '机器类型',
-  `actual_station`           varchar(64)         NULL DEFAULT NULL,
-  `standard_time`            varchar(20)         NULL DEFAULT NULL         COMMENT '标准时间',
-  `actual_time`              varchar(20)         NULL DEFAULT NULL,
-  `pre_operation_id`         bigint(20)          NULL DEFAULT NULL         COMMENT '依赖关系-上道工序',
-  `sop_file_path`            varchar(1000)       NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_ORDER_ROUTING_01`(`operation_id`) ,
-  INDEX `IDX_WORK_ORDER_ROUTING_02`(`production_work_order_id`) ,
-  INDEX `IDX_WORK_ORDER_ROUTING_03`(`machine_type_id`) ,
-  INDEX `IDX_WORK_ORDER_ROUTING_04`(`pre_operation_id`) 
-) COMMENT = '作业单的工艺路线';
-
--- ----------------------------
--- Table structure for work_station
--- ----------------------------
-DROP TABLE IF EXISTS `work_station`;
-CREATE TABLE `work_station`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `work_station_no`           varchar(10)        NOT NULL,
-  `plant_id`                  bigint(20)         NOT NULL,
-  `description`               varchar(100)       NULL DEFAULT NULL,
-  `type`                      varchar(10)        NOT NULL,
-  `status`                    varchar(10)        NOT NULL,
-  `ip_address`                varchar(20)        NULL DEFAULT NULL,
-  `max_wip_qty`               int(11)            NOT NULL,
-  `allowed_wip_qty`           int(11)            NULL DEFAULT NULL,
-  `work_center_id`            int(11)            NULL DEFAULT NULL,
-  `remote_file_address`       varchar(20)        NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_STATION_01`(`work_station_no`) ,
-  INDEX `IDX_WORK_STATION_02`(`plant_id`) ,
-  INDEX `IDX_WORK_STATION_03`(`work_center_id`) 
-) COMMENT = '工位';
-
--- ----------------------------
--- Table structure for work_station_configure
--- ----------------------------
-DROP TABLE IF EXISTS `work_station_configure`;
-CREATE TABLE `work_station_configure`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `work_station_id`           bigint(20)         NULL DEFAULT NULL,
-  `line_id`                   bigint(20)         NULL DEFAULT NULL,
-  `type`                      varchar(10)        NULL DEFAULT NULL      COMMENT 'REALITY	真实工位     FICTITIOUS 虚拟工位',
-  `direction`                 varchar(10)        NULL DEFAULT NULL      COMMENT 'right   left',
-  `no`                        int(11)            NULL DEFAULT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_STATION_C_01`(`work_station_id`) ,
-  INDEX `IDX_WORK_STATION_C_02`(`line_id`) 
-) COMMENT = '工位配置';
-
--- ----------------------------
--- Table structure for work_station_wip
--- ----------------------------
-DROP TABLE IF EXISTS `work_station_wip`;
-CREATE TABLE `work_station_wip`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `work_station_id`           bigint(20)         NOT NULL               COMMENT '工位主键',
-  `wip_qty`                   int(11)            NOT NULL               COMMENT 'wip数量',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_01`(`work_station_id`) 
-) COMMENT = '工位wip';
-
--- ----------------------------
--- Table structure for zipper_match_rule
--- ----------------------------
-DROP TABLE IF EXISTS `zipper_match_rule`;
-CREATE TABLE `zipper_match_rule`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `rule_no`                   varchar(10)        NULL DEFAULT NULL     COMMENT '规则编码',
-  `product_category_id`       bigint(20)         NULL DEFAULT NULL     COMMENT '产品品类',
-  `product_size`              varchar(10)        NULL DEFAULT NULL     COMMENT '产品尺码',
-  `zipper_category_id`        bigint(20)         NULL DEFAULT NULL     COMMENT '拉链品类',
-  `zipper_size`               varchar(10)        NULL DEFAULT NULL     COMMENT '拉链长度',
-  `unit`                      varchar(10)        NULL DEFAULT NULL     COMMENT '单位',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_ZMR_01`(`rule_no`) ,
-  INDEX `IDX_ZMR_02`(`product_category_id`) ,
-  INDEX `IDX_ZMR_03`(`zipper_category_id`) 
-) COMMENT = '拉链长度匹配规则';
 
 -- ----------------------------
 -- Function structure for nextval
@@ -1228,4 +1222,5 @@ BEGIN
   END
 ;;
 delimiter ;
+
 

@@ -1,4 +1,4 @@
-package com.zhxh.imms.config;
+package com.zhxh.imms.sys.config;
 
 import org.springframework.context.annotation.Configuration;
 

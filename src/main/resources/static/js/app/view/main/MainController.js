@@ -37,7 +37,7 @@ Ext.define('app.view.main.MainController', {
 				theTab.applyPrivileges({ programId: programId, model: 0 });
 			}
 		}
-		desktopContainer.setActiveTab(theTab);
+		desktopContainer.setActiveTab(theTab);		
 	},
 
 	hiddenTopBottom: function () {
