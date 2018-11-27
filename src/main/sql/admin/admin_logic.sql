@@ -38,7 +38,25 @@ INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES 
 INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS01_03', 'INSERT', '新增');
 INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS01_03', 'UPDATE', '修改');
 INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS01_03', 'DELETE', '删除');
-------------------------------------------------------------------------------------------------------------------------
+-- ----------------------------------------------------------------------------------------------------------------------
+
+INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
+VALUES ('SYS02', '编码管理', '', 1, '', 0, 'SYS02', '0xf0c0');
+
+INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
+VALUES ('SYS02_01', '缺陷代码', 'app.view.imms.code.defectCode.DefectCode', 1, '', 0, 'SYS02', '0xf0c0');
+
+INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02', 'PROGRAM_RUN', '系统运行');
+INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02_01', 'PROGRAM_RUN', '系统运行');
+INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02_01', 'INSERT', '新增');
+INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02_01', 'UPDATE', '修改');
+INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02_01', 'DELETE', '删除');
+
+
+
+-- ----------------------------------------------------------------------------------------------------------------------
+
+
 
 INSERT INTO role_privilege (role_id, program_privilege_id, program_id, privilege_id)
   SELECT
