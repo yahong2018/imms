@@ -53,6 +53,9 @@ CREATE TABLE `defect_code`  (
 
 /*
 set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'D', '缺陷', NULL, @id);
+
+set @id = UUID();
 INSERT INTO `defect_code` VALUES (@id, 'M', '材料', NULL, @id);
 
 set @id = UUID();
