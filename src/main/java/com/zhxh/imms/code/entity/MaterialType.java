@@ -1,16 +1,29 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.TreeTable;
+import com.zhxh.core.data.meta.TreeTableParentKey;
 
+@TreeTable
 public class MaterialType implements EntityObject {
-    private long id;
+    private String rowId;
+
+    @CheckUnique
     private String materialTypeNo;
     private String materialTypeName;
     private String description;
-    private long parentMaterialTypeId;
 
-    public long getId() {
-        return id;
+    @TreeTableParentKey
+    private String parentMaterialTypeId;
+
+
+    public String getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(String rowId) {
+        this.rowId = rowId;
     }
 
     public String getMaterialTypeNo() {
@@ -25,12 +38,8 @@ public class MaterialType implements EntityObject {
         return description;
     }
 
-    public long getParentMaterialTypeId() {
+    public String getParentMaterialTypeId() {
         return parentMaterialTypeId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setMaterialTypeNo(String materialTypeNo) {
@@ -45,7 +54,7 @@ public class MaterialType implements EntityObject {
         this.description = description;
     }
 
-    public void setParentMaterialTypeId(long parentMaterialTypeId) {
+    public void setParentMaterialTypeId(String parentMaterialTypeId) {
         this.parentMaterialTypeId = parentMaterialTypeId;
     }
 }

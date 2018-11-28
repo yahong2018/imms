@@ -1,16 +1,29 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.TreeTable;
+import com.zhxh.core.data.meta.TreeTableParentKey;
 
+@TreeTable
 public class Size implements EntityObject {
-    private long id;
+    private String rowId;
+
+    @CheckUnique
     private String sizeNo;
+
     private String sizeName;
     private String description;
-    private long parentSizeId;
 
-    public long getId() {
-        return id;
+    @TreeTableParentKey
+    private String parentSizeId;
+
+    public String getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(String rowId) {
+        this.rowId = rowId;
     }
 
     public String getSizeNo() {
@@ -25,12 +38,8 @@ public class Size implements EntityObject {
         return description;
     }
 
-    public long getParentSizeId() {
+    public String getParentSizeId() {
         return parentSizeId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setSizeNo(String sizeNo) {
@@ -45,7 +54,7 @@ public class Size implements EntityObject {
         this.description = description;
     }
 
-    public void setParentSizeId(long parentSizeId) {
+    public void setParentSizeId(String parentSizeId) {
         this.parentSizeId = parentSizeId;
     }
 }

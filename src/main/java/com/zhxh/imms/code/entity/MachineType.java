@@ -1,16 +1,29 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.TreeTable;
+import com.zhxh.core.data.meta.TreeTableParentKey;
 
+@TreeTable
 public class MachineType implements EntityObject {
-    private long id;
+    private String rowId;
+
+    @CheckUnique
     private String machineTypeNo;
+
     private String machineTypeName;
     private String description;
-    private long parentMachineTypeId;
 
-    public long getId() {
-        return id;
+    @TreeTableParentKey
+    private String parentMachineTypeId;
+
+    public String getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(String rowId) {
+        this.rowId = rowId;
     }
 
     public String getMachineTypeNo() {
@@ -25,12 +38,8 @@ public class MachineType implements EntityObject {
         return description;
     }
 
-    public long getParentMachineTypeId() {
+    public String getParentMachineTypeId() {
         return parentMachineTypeId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setMachineTypeNo(String machineTypeNo) {
@@ -45,7 +54,7 @@ public class MachineType implements EntityObject {
         this.description = description;
     }
 
-    public void setParentMachineTypeId(long parentMachineTypeId) {
+    public void setParentMachineTypeId(String parentMachineTypeId) {
         this.parentMachineTypeId = parentMachineTypeId;
     }
 }

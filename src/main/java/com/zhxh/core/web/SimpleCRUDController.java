@@ -1,7 +1,6 @@
 package com.zhxh.core.web;
 
 import com.zhxh.core.data.BaseDAOWithEntity;
-import com.zhxh.core.utils.Logger;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

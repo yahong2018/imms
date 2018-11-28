@@ -26,17 +26,21 @@ CREATE TABLE `customer`  (
 -- -------------------------------------------------------------------------------------------------------------------
 
 CREATE TABLE `size`  (
-  `id`                     bigint(10)           NOT NULL AUTO_INCREMENT,
+  `row_id`                 char(36)             NOT NULL,
   `size_no`                varchar(10)          NULL          COMMENT '尺码编码',
   `size_name`              varchar(30)          NULL          COMMENT '尺码名称',
-  `parent_size_id`         bigint(10)           NOT NULL,
+  `description`            varchar(250) NULL,
+  `parent_size_id`         char(36)             NOT NULL,
 
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`row_id`) ,
   INDEX `IDX_SIZE_01`(`size_no`) ,
   INDEX `IDX_SIZE_02`(`size_name`) ,
   INDEX `IDX_SIZE_03`(`parent_size_id`)
 ) COMMENT = '尺码';
-
+/*
+set @id = UUID();
+INSERT INTO `size` VALUES (@id, 'RL', '尺码', NULL, @id);
+*/
 
 CREATE TABLE `defect_code`  (
   `row_id`                    char(36)              NOT NULL,
@@ -78,40 +82,51 @@ INSERT INTO `defect_code` VALUES (@id, 'W1', '脱线', NULL, @id);
 */
 
 CREATE TABLE `machine_type`  (
-  `id`                       bigint(10)   NOT NULL AUTO_INCREMENT,
+  `row_id`                   char(36)     NOT NULL,
   `machine_type_no`          varchar(10)  NOT NULL,
   `machine_type_name`        varchar(30)  NOT NULL ,
   `description`              varchar(250) NULL,
-  `parent_machine_type_id`   bigint(10)   NOT NULL,
+  `parent_machine_type_id`   char(36)     NOT NULL,
 
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`row_id`) ,
   INDEX `IDX_MACHINE_TYPE_01`(`machine_type_no`) ,
   INDEX `IDX_MACHINE_TYPE_02`(`machine_type_name`),
   INDEX `IDX_MACHINE_TYPE_03`(`parent_machine_type_id`)
 )  COMMENT = '设备类型';
 
+/*
+set @id = UUID();
+INSERT INTO `machine_type` VALUES (@id, 'MT', '设备类别', NULL, @id);
+*/
+
 CREATE TABLE `material_type`  (
-  `id`                        bigint(10)         NOT NULL AUTO_INCREMENT,
+  `row_id`                    char(36)           NOT NULL,
   `material_type_no`          varchar(10)        NOT NULL               COMMENT '物料类型编码',
   `material_type_name`        varchar(30)        NOT NULL               COMMENT '物料类型名称',
   `description`               varchar(250)       NULL                   COMMENT '物料类型描述',
-  `parent_material_type_id`   bigint(10)         NOT NULL,
+  `parent_material_type_id`   char(36)           NOT NULL,
 
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`row_id`) ,
   INDEX `IDX_MT_01`(`material_type_no`) ,
   INDEX `IDX_MT_02`(`material_type_name`),
   INDEX `IDX_MT_03`(`parent_material_type_id`)
 ) COMMENT = '物料类型';
 
+/*
+set @id = UUID();
+INSERT INTO `material_type` VALUES (@id, 'M', '物料类型', NULL, @id);
+*/
+
+
 CREATE TABLE `uom`  (
-  `id`                      bigint(10)            NOT NULL AUTO_INCREMENT,
+  `row_id`                  varchar(10)           NOT NULL,
   `uom_no`                  varchar(10)           NOT NULL ,
-  `unom_name`               varchar(30)           NOT NULL               COMMENT '名称',
+  `uom_name`               varchar(30)           NOT NULL               COMMENT '名称',
   `description`             varchar(250)          NULL                   COMMENT '描述',
 
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`row_id`),
   INDEX `IDX_UOM_01`(`uom_no`) ,
-  INDEX `IDX_UOM_02`(`unom_name`)
+  INDEX `IDX_UOM_02`(`uom_name`)
 ) COMMENT = '单位';
 
 

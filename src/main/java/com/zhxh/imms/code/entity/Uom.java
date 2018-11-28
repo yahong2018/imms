@@ -1,15 +1,23 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.CheckUnique;
 
 public class Uom implements EntityObject {
-    private long id;
+    private String rowId;
+
+    @CheckUnique
     private String uomNo;
+
     private String uomName;
     private String description;
 
-    public long getId() {
-        return id;
+    public String getRowId() {
+        return rowId;
+    }
+
+    public void setRowId(String rowId) {
+        this.rowId = rowId;
     }
 
     public String getUomNo() {
@@ -22,10 +30,6 @@ public class Uom implements EntityObject {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setUomNo(String uomNo) {
