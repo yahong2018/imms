@@ -6,5 +6,16 @@ Ext.define('app.Application', {
 	views: [],
 	controllers: [],
 	stores: [],
-	launch: function() {}
+	launch: function() {
+        Ext.override(Ext.form.field.Base,{
+            initComponent:function(){
+                if(this.allowBlank!==undefined && !this.allowBlank){
+                    if(this.fieldLabel){
+                        this.fieldLabel += '<font color=red>*</font>';
+                    }
+                }
+                this.callParent(arguments);
+            }
+        });
+	}
 });
