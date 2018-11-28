@@ -24,21 +24,20 @@
 </head>
 
 <body>
-<input type="hidden" id="HIDDEN_GLOBAL_SYSTEM_TITLE" th:value="${T(com.zhxh.core.env.SysEnv).appRoot}"
+<input type="hidden" id="HIDDEN_GLOBAL_SYSTEM_TITLE" th:value="${T(com.zhxh.core.env.SysEnv).systemTitle}"
        style="display: none">
-<input type="hidden" id="HIDDEN_GLOBAL_APP_ROOT" th:value="${T(com.zhxh.core.env.SysEnv).systemTitle}"
+<input type="hidden" id="HIDDEN_GLOBAL_APP_ROOT" th:value="${T(com.zhxh.core.env.SysEnv).appRoot}"
        style="display: none">
 <script type="text/javascript">
     var txtSystemTitle = document.getElementById('HIDDEN_GLOBAL_SYSTEM_TITLE');
     var txtAppRoot = document.getElementById('HIDDEN_GLOBAL_APP_ROOT');
 
-    var webRoot = txtSystemTitle.value;
+    var webRoot = txtAppRoot.value;
     var jsRoot = webRoot + '/js';
-    var systemTitle = txtAppRoot.value;
+    var systemTitle = txtSystemTitle.value;
 
     console.log("webRoot:" + webRoot + ",systemTitle:" + systemTitle);
 </script>
 <script type="text/javascript" th:src="@{/js/app/app.js(v=${T(java.lang.System).currentTimeMillis()})}"></script>
-<script type="text/javascript" th:src="@{/js/app/view/mes/basic/classInfo/FormRed.js}"></script>
 </body>
 </html>
