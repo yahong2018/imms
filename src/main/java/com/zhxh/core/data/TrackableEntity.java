@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TrackableEntity extends EntityObject {
+public class TrackableEntity implements EntityObject {
     public static void fillCreateInfo(TrackableEntity entity){
         entity.setCreateBy(AuthenticateLogic.getCurrentLogin().getUserId());
         entity.setCreateDate(new Date());

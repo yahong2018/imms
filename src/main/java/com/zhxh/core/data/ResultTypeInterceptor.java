@@ -16,21 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-/**
- * 动态设置 MyBatis 返回值类型，该拦截器需要配置在第一个
- * <p>
- * 在写接口方法或者用Map传参数时，需要有一个key=resultType的值，类型可以是Class或者类的全限定名称字符串
- * <p>
- * 接口如：Object selectById(@Param("id")Long id, @Param("resultType")String resultType);
- * 接口如：Object selectById(@Param("id")Long id, @Param("resultType")Class resultType);
- * <p>
- * 调用方法参考：City city = (City) mapper.selectById(1L, City.class);
- * <p>
- * 插件提供一个resultType属性，可以修改默认的key的名称
- *
- * @author liuzh
- */
-
 @Component
 @Intercepts(@Signature(
         type = Executor.class,
@@ -50,22 +35,11 @@ public class ResultTypeInterceptor implements Interceptor {
         if (resultType == null) {
             return invocation.proceed();
         }
-        //复制ms，重设类型
         args[0] = newMappedStatement(ms, resultType);
         return invocation.proceed();
     }
 
-    /**
-     * 根据现有的 ms 创建一个新的，使用新的返回值类型
-     *
-     * @param ms
-     * @return
-     */
     public MappedStatement newMappedStatement(MappedStatement ms, Class resultType) {
-        /*
-        下面是新建的过程，考虑效率和复用对象的情况下，这里最后生成的ms可以缓存起来，
-        下次根据 ms.getId() + "_" + getShortName(resultType) 直接返回 ms,省去反复创建的过程
-        */
         MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId() + "_" + getShortName(resultType), ms.getSqlSource(), ms.getSqlCommandType());
         builder.resource(ms.getResource());
         builder.fetchSize(ms.getFetchSize());
@@ -106,19 +80,12 @@ public class ResultTypeInterceptor implements Interceptor {
         return className.substring(className.lastIndexOf(".") + 1);
     }
 
-    /**
-     * 获取设置的返回值类型
-     *
-     * @param parameterObject
-     * @return
-     */
     private Class getResultType(Object parameterObject) {
         if (parameterObject == null) {
             return null;
         } else if (parameterObject instanceof Class) {
             return (Class) parameterObject;
         } else if (parameterObject instanceof Map) {
-            //解决不可变Map的情况
             if (((Map) (parameterObject)).containsKey(resultType)) {
                 Object result = ((Map) (parameterObject)).get(resultType);
                 return objectToClass(result);
@@ -132,12 +99,6 @@ public class ResultTypeInterceptor implements Interceptor {
         }
     }
 
-    /**
-     * 将结果转换为Class
-     *
-     * @param object
-     * @return
-     */
     private Class objectToClass(Object object) {
         if (object == null) {
             return null;

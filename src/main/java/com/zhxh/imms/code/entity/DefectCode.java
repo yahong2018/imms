@@ -1,16 +1,27 @@
 package com.zhxh.imms.code.entity;
-
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.TreeTableParentKey;
+import com.zhxh.core.data.meta.TreeTable;
 
-public class DefectCode extends EntityObject {
-    private long id;
+@TreeTable
+public class DefectCode implements EntityObject {
+    @CheckUnique
     private String defectCodeNo;
+
     private String defectCodeName;
     private String description;
-    private long parentDefectId;
 
-    public long getId() {
-        return id;
+    @TreeTableParentKey
+    private String parentDefectId;
+
+    private String rowId;
+
+    public String getRowId() {
+        return rowId;
+    }
+    public void setRowId(String rowId) {
+        this.rowId = rowId;
     }
 
     public String getDefectCodeNo() {
@@ -25,12 +36,8 @@ public class DefectCode extends EntityObject {
         return description;
     }
 
-    public long getParentDefectId() {
+    public String getParentDefectId() {
         return parentDefectId;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public void setDefectCodeNo(String defectCodeNo) {
@@ -45,7 +52,7 @@ public class DefectCode extends EntityObject {
         this.description = description;
     }
 
-    public void setParentDefectId(long parentDefectId) {
+    public void setParentDefectId(String parentDefectId) {
         this.parentDefectId = parentDefectId;
     }
 }

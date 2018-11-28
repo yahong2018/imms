@@ -4,17 +4,16 @@ import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_ALREADY_EXISTS;
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
+import static com.zhxh.core.exception.ErrorCode.ERROR_ROOT_CANNOT_DELETE;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 public class BaseDAO {
@@ -63,34 +62,31 @@ public class BaseDAO {
         return this.getPropertyLabel(this.getPropertyFullName(clazz, EntitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
     }
 
+    private final static UUID EMPTY_UUID = new UUID(0, 0);
+
     public int insert(Object item) throws Exception {
-        if(item instanceof TrackableEntity){
-            TrackableEntity.fillCreateInfo((TrackableEntity)item);
+        if (item instanceof TrackableEntity) {
+            TrackableEntity.fillCreateInfo((TrackableEntity) item);
         }
-
-        if (this.exists(item)) {
-            String keyProperty = getKeyProperty(item.getClass());
-            Object keyValue = BeanUtils.getValue(item, keyProperty);
-            String idLabel = this.getIdLabel(item.getClass());
-
-            throwException(ERROR_DATA_ALREADY_EXISTS, idLabel, keyValue);
+        Class clazz = item.getClass();
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        String rowId = "rowId";
+        if (meta.getProperties().contains(rowId)) {
+            Object rowIdValue = BeanUtils.getValue(item, rowId);
+            if (rowIdValue == null || StringUtils.isEmpty(rowIdValue.toString()) || EMPTY_UUID.toString().equals(rowId)) {
+                BeanUtils.setValue(item, rowId, UUID.randomUUID().toString());
+            }
         }
         this.verify(item, DATA_OPERATION_INSERT);
+
 
         return this.doInternalInsert(item);
     }
 
+
     public int update(Object item) throws Exception {
-        if(item instanceof TrackableEntity){
+        if (item instanceof TrackableEntity) {
             TrackableEntity.fillUpdateInfo((TrackableEntity) item);
-        }
-
-        if (!this.exists(item)) {
-            String keyProperty = getKeyProperty(item.getClass());
-            Object keyValue = BeanUtils.getValue(item, keyProperty);
-            String idLabel = this.getIdLabel(item.getClass());
-
-            throwException(ERROR_DATA_NOT_EXISTS, idLabel, keyValue);
         }
         this.verify(item, DATA_OPERATION_UPDATE);
 
@@ -166,8 +162,8 @@ public class BaseDAO {
     }
 
     protected String getPropertyFullName(Class clazz, String shortPropertyName) {
-        if(TrackableEntity.class.isAssignableFrom(clazz)){
-            if(TrackableEntity.internal_fields.contains(shortPropertyName)) {
+        if (TrackableEntity.class.isAssignableFrom(clazz)) {
+            if (TrackableEntity.internal_fields.contains(shortPropertyName)) {
                 return TrackableEntity.class.getCanonicalName() + "." + shortPropertyName;
             }
         }
@@ -180,7 +176,80 @@ public class BaseDAO {
     }
 
     public void verify(Object item, int operationCode) throws BusinessException {
-        this.verifyBean(item, operationCode);
+        Class clazz = item.getClass();
+
+        if (operationCode == DATA_OPERATION_INSERT || operationCode == DATA_OPERATION_UPDATE) {
+            this.verifyBean(item, operationCode);
+
+            EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+            if (meta.getUniqueFields().size() > 0) {
+                if (!this.checkUnique(item)) {
+                    StringBuffer buffer = new StringBuffer();
+                    for (String field : meta.getUniqueFields()) {
+                        String fieldFullName = this.getPropertyFullName(clazz, field);
+                        String fieldLabel = this.getPropertyLabel(fieldFullName);
+                        buffer.append("\n ").append(fieldLabel).append("=").append(BeanUtils.getValue(item, field)).append(" ").append("\n 或");
+                    }
+                    buffer.deleteCharAt(buffer.length() - 1);
+                    buffer.append(" 的数据已存在！");
+
+                    throwException(ERROR_DATA_ALREADY_EXISTS, buffer.toString());
+                }
+            }
+        }
+
+        if (operationCode == DATA_OPERATION_INSERT) {
+            if (this.exists(item)) {
+                String keyProperty = getKeyProperty(clazz);
+                Object keyValue = BeanUtils.getValue(item, keyProperty);
+                String idLabel = this.getIdLabel(clazz);
+
+                throwException(ERROR_DATA_ALREADY_EXISTS, idLabel, keyValue);
+            }
+        } else if (operationCode == DATA_OPERATION_UPDATE) {
+            if (!this.exists(item)) {
+                String keyProperty = getKeyProperty(item.getClass());
+                Object keyValue = BeanUtils.getValue(item, keyProperty);
+                String idLabel = this.getIdLabel(item.getClass());
+
+                throwException(ERROR_DATA_NOT_EXISTS, idLabel, keyValue);
+            }
+        }
+
+        if (operationCode == DATA_OPERATION_DELETE) {
+            if (this.isTreeRoot(item)) {
+                throwException(ERROR_ROOT_CANNOT_DELETE);
+            }
+        }
+    }
+
+    private boolean isTreeRoot(Object item) {
+        Class clazz = item.getClass();
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        if (!meta.isTreeTable()) {
+            return false;
+        }
+        Object dbItem = sqlHelper.executeScalar(clazz, meta.getGetTreeRootSql(), null);
+        Object key1 = BeanUtils.getValue(item, meta.getKeyProperty());
+        Object key2 = BeanUtils.getValue(dbItem, meta.getKeyProperty());
+
+        return key1.equals(key2);
+    }
+
+
+    private boolean checkUnique(Object item) {
+        Class clazz = item.getClass();
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        String sql = meta.getCheckUniqueSql();
+        Map parameters = new HashMap();
+        String key = meta.getKeyProperty();
+        parameters.put(key, BeanUtils.getValue(item, key));
+        for (String field : meta.getUniqueFields()) {
+            parameters.put(field, BeanUtils.getValue(item, field));
+        }
+        parameters.put("resultType", Integer.class);
+        int count = sqlHelper.executeScalar(clazz, sql, parameters);
+        return count == 0;
     }
 
     protected int doInternalInsert(Object item) {

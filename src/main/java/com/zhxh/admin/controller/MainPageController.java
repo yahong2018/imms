@@ -9,6 +9,7 @@ import com.zhxh.admin.logic.SystemUserLogic;
 import com.zhxh.admin.vo.SystemMenu;
 import com.zhxh.admin.vo.SystemProgramWithChildren;
 import com.zhxh.admin.vo.SystemUserWithPrivilege;
+import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
@@ -55,7 +56,7 @@ public class MainPageController {
         result.setPassword("");
         List<RolePrivilege> privileges = systemUserLogic.getUserAllPrivileges(result.getUserId());
         SystemUserWithPrivilege systemUserWithPrivilege = new SystemUserWithPrivilege();
-        SystemUserWithPrivilege.copy(result,systemUserWithPrivilege);
+        EntityObject.copy(result,systemUserWithPrivilege);
         systemUserWithPrivilege.setPrivilegeList(privileges);
 
         return systemUserWithPrivilege;

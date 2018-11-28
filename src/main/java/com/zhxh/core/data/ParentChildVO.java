@@ -1,6 +1,6 @@
 package com.zhxh.core.data;
 
-public interface ParentChildVO<T> {
+public interface ParentChildVO {
     default boolean isLeaf() {
         return this.getChildren() == null || this.getChildren().length == 0;
     }
@@ -8,7 +8,7 @@ public interface ParentChildVO<T> {
         return !this.isLeaf();
     }
 
-    T[] getChildren();
-    void setChildren(T[] children);
+    Object[] getChildren();
+    void setChildren(Object[] children);
 
 }

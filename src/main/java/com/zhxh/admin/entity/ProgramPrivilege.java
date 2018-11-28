@@ -2,7 +2,7 @@ package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class ProgramPrivilege extends EntityObject {
+public class ProgramPrivilege implements EntityObject {
     public final static String PROGRAM_RUN = "PROGRAM_RUN";
     public final static String DATA_INSERT = "INSERT";
     public final static String DATA_UPDATE = "UPDATE";

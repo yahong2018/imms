@@ -39,26 +39,39 @@ CREATE TABLE `size`  (
 
 
 CREATE TABLE `defect_code`  (
-  `id`                        bigint(10)            NOT NULL         AUTO_INCREMENT,
+  `row_id`                    char(36)              NOT NULL,
   `defect_code_no`            varchar(10)           NOT NULL,
   `defect_code_name`          varchar(30)           NOT NULL,
   `description`               varchar(250)          NULL ,
-  `parent_defect_id`          bigint(10)            NOT NULL,
+  `parent_defect_id`          char(36)              NOT NULL,
 
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`row_id`) ,
   INDEX `IDX_DEFECT_CODE_01`(`defect_code_no`) ,
   INDEX `IDX_DEFECT_CODE_02`(`defect_code_name`) ,
   INDEX `IDX_DEFECT_CODE_03`(`parent_defect_id`)
 ) COMMENT = '不合格代码';
 
 /*
-INSERT INTO `defect_code` VALUES (1, 'M', '材料', NULL, 1);
-INSERT INTO `defect_code` VALUES (2, 'W', '工艺问题', NULL, 2);
-INSERT INTO `defect_code` VALUES (3, 'M0', '来料不良', NULL, 1);
-INSERT INTO `defect_code` VALUES (4, 'M1', '物料过期', NULL, 1);
-INSERT INTO `defect_code` VALUES (5, 'M2', '物料损毁', NULL, 1);
-INSERT INTO `defect_code` VALUES (6, 'W0', '假焊', NULL, 2);
-INSERT INTO `defect_code` VALUES (7, 'W1', '脱线', NULL, 2);
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'M', '材料', NULL, @id);
+
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'W', '工艺问题', NULL, @id);
+
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'M0', '来料不良', NULL, @id);
+
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'M1', '物料过期', NULL, @id);
+
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'M2', '物料损毁', NULL, @id);
+
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'W0', '假焊', NULL, @id);
+
+set @id = UUID();
+INSERT INTO `defect_code` VALUES (@id, 'W1', '脱线', NULL, @id);
 */
 
 CREATE TABLE `machine_type`  (

@@ -9,7 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import java.sql.Timestamp;
 
 @DataTable(tableName = "system_user")
-public class SystemUser extends EntityObject {
+public class SystemUser implements EntityObject {
     public final static int USER_STATUS_NORMAL = 0;
     public final static int USER_STATUS_DISABLED = 1;
     public final static String DEFAULT_PASSWORD = "888888";

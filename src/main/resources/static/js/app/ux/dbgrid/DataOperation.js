@@ -100,7 +100,7 @@ Ext.define("app.ux.dbgrid.DataOperation", {
 
         var deailWindow = Ext.create(this.insertDetailWindowClass, {
             isNew: true,
-            title: this.detailWindowTitle,
+            title:'新增 — [' + this.detailWindowTitle +']', 
             store: this.store,
             listGrid: grid,
             items: [{
@@ -147,7 +147,7 @@ Ext.define("app.ux.dbgrid.DataOperation", {
 
         var deailWindow = Ext.create(this.editDetailWindowClass, {
             isNew: false,
-            title: this.detailWindowTitle,
+            title: '修改 — [' + this.detailWindowTitle+']',
             store: this.store,
             listGrid: grid,
             items: [{
@@ -159,11 +159,12 @@ Ext.define("app.ux.dbgrid.DataOperation", {
             form.beforeLoadRecord({ isNew: false, record: record });
         }
         form.loadRecord(record);
-
+        
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
-        }
+        }  
+
         if (form.afterLoadRecord) {
             form.afterLoadRecord({ isNew: false, record: record });
         }
@@ -197,23 +198,15 @@ Ext.define("app.ux.dbgrid.DataOperation", {
             }]
         });
         var form = deailWindow.down(this.detailFormClass);
+        if (form.beforeLoadRecord) {
+            form.beforeLoadRecord({ isNew: false, record: record });
+        }
         form.loadRecord(record);
-
+       
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
-        }
-
-        /*
-        var model = this.store.getModel();
-        for (var i = 0; i < model.fields.length; i++) {
-            var dbField = model.fields[i];
-            var field = form.down('[name="' + dbField.name + '"]');
-            if (field) {
-                field.readOnly = true;
-            }
-        }
-        */
+        }    
 
         if (form.afterLoadRecord) {
             form.afterLoadRecord({ isNew: false, record: record });
@@ -221,7 +214,7 @@ Ext.define("app.ux.dbgrid.DataOperation", {
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
-        debugger;
+       
         var canUpdate = app.ux.Utils.hasPrivilege({programId:programId,privilegeId:"UPDATE"});
         if(!canUpdate){
             deailWindow.down('[buttonName="save"]').setDisabled(true);

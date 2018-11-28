@@ -31,7 +31,7 @@ public class DefectCodeController extends SimpleCRUDController<DefectCode> {
         List<DefectCode> result = new ArrayList<>();
 
         try {
-            List<DefectCodeWithChildren> children = ParentChildConverter.getAllWithChildren(source, DefectCodeWithChildren.class,"id","parentDefectId");
+            List<DefectCodeWithChildren> children = ParentChildConverter.getAllWithChildren(source, DefectCodeWithChildren.class,"rowId","parentDefectId");
             result.addAll(children);
         } catch (Exception e) {
             Logger.error(e);

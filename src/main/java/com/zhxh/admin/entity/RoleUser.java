@@ -1,8 +1,10 @@
 package com.zhxh.admin.entity;
 
+import com.zhxh.core.data.EntityObject;
+
 import javax.validation.constraints.NotEmpty;
 
-public class RoleUser {
+public class RoleUser implements EntityObject {
     private int roleUserId;
     
     @NotEmpty

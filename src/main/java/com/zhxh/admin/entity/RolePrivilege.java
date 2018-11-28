@@ -2,7 +2,7 @@ package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class RolePrivilege extends EntityObject {
+public class RolePrivilege implements EntityObject {
     private int rolePrivilegeId;
     private int programPrivilegeId;
     private String roleId;

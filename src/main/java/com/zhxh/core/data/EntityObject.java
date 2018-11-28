@@ -8,10 +8,10 @@ import java.lang.reflect.Field;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class EntityObject implements Serializable {
-    private static final long serialVersionUID = 1L;
+public interface EntityObject extends Serializable {
+   long serialVersionUID = 1L;
 
-    public static void copy(Object from,Object dest){
+    static void copy(Object from,Object dest){
         if(from==null || dest==null){
             return;
         }

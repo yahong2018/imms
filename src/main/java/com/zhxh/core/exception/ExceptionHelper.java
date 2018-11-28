@@ -12,7 +12,11 @@ public class ExceptionHelper {
         return sw.toString();
     }
 
-    public static void throwException(Enum errorCode, Object... args) throws Exception {
+    public static void throwException(Enum errorCode, String message) throws BusinessException {
+        throw new BusinessException( "[" + errorCode + "]:" + message);
+    }
+
+    public static void throwException(Enum errorCode, Object... args) throws BusinessException {
         String message = buildExceptionMessage(errorCode, args);
         throw new BusinessException(message);
     }

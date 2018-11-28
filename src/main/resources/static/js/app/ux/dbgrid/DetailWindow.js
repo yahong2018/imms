@@ -1,7 +1,7 @@
 Ext.define('app.ux.dbgrid.DetailWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.detailwindow',
-    uses: ['app.ux.Utils'],
+    uses: ['app.ux.Utils','Ext.window.Toast'],
 
     modal: true,
     maximizable: true,
@@ -39,6 +39,7 @@ Ext.define('app.ux.dbgrid.DetailWindow', {
         var store = me.store;
         var formCmp = me.down('form');
         var form = formCmp.getForm();
+        var grid = me.listGrid;
 
         if (form.isValid()) {
             var theUrl = store.getUpdateUrl();
@@ -79,10 +80,16 @@ Ext.define('app.ux.dbgrid.DetailWindow', {
                             }
 
                             if (saveAndNew != true && form.owner.afterSaveAction == 'keep') {
-                                Ext.Msg.alert('系统提示', '已成功保存！');
+                               // Ext.Msg.alert('系统提示', '已成功保存！');
                             } else if (saveAndNew != true) {
                                 me.close();
                             }
+                            Ext.toast({
+                                html: '数据已保存',
+                                title: '系统提示',
+                                width: 200,
+                                align: 't'
+                            });
                         }
                     });
 

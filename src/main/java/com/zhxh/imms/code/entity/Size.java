@@ -2,7 +2,7 @@ package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Size extends EntityObject {
+public class Size implements EntityObject {
     private long id;
     private String sizeNo;
     private String sizeName;

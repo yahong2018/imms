@@ -2,6 +2,7 @@ package com.zhxh.core.web;
 
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.utils.Logger;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +17,7 @@ public abstract class SimpleCRUDController<T> {
     @RequestMapping("getAll.handler")
     @ResponseBody
     public final List<T> getAll() {
-       return this.internalGetAll();
+        return this.internalGetAll();
     }
 
     @RequestMapping("getAllByPage.handler")
@@ -37,55 +38,46 @@ public abstract class SimpleCRUDController<T> {
 
     @RequestMapping("create.handler")
     @ResponseBody
-    public final T create(T item) {
+    @Transactional(rollbackFor = Exception.class)
+    public T create(T item) throws Exception {
         return this.internalCreate(item);
     }
 
     @RequestMapping("update.handler")
-    public final T update(T item) {
+    @ResponseBody
+    @Transactional(rollbackFor = Exception.class)
+    public T update(T item) throws Exception {
         return this.internalUpdate(item);
     }
 
     @RequestMapping("delete.handler")
     @ResponseBody
-    public final int delete(@RequestBody Object[] ids) {
+    @Transactional(rollbackFor = Exception.class)
+    public int delete(@RequestBody Object[] ids) throws Exception {
         return this.internalDelete(ids);
     }
 
-    protected List<T> internalGetAll(){
+    protected List<T> internalGetAll() {
         return this.getCrudDao().getAll();
     }
 
-    protected int internalDelete(Object[] ids) {
-        int result = 0;
-        try {
-            for (Object id : ids) {
-                this.getCrudDao().deleteById(id);
-                result += 1;
-            }
-        } catch (Exception e) {
-            Logger.error(e);
+    protected int internalDelete(Object[] ids) throws Exception {
+        int result =0;
+        for (Object id : ids) {
+            this.getCrudDao().deleteById(id);
+            result += 1;
         }
-
         return result;
     }
 
 
-    protected T internalUpdate(T item) {
-        try {
-            this.getCrudDao().update(item);
-        } catch (Exception e) {
-            Logger.error(e);
-        }
+    protected T internalUpdate(T item) throws Exception {
+        this.getCrudDao().update(item);
         return item;
     }
 
-    protected T internalCreate(T item) {
-        try {
-            this.getCrudDao().insert(item);
-        } catch (Exception e) {
-            Logger.error(e);
-        }
+    protected T internalCreate(T item) throws Exception {
+        this.getCrudDao().insert(item);
         return item;
     }
 

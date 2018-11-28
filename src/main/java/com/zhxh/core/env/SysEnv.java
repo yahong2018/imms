@@ -101,7 +101,8 @@ public class SysEnv implements ApplicationContextAware {
         if(entityFieldLabelHolder.containsKey(fieldName)){
             return entityFieldLabelHolder.get(fieldName);
         }
-        return "";
+        int index = fieldName.lastIndexOf(".");
+        return fieldName.substring(index+1);
     }
 
     public static Map<String, String> getEntityTableMappingHolder() {

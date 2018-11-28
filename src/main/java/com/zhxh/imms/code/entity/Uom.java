@@ -2,7 +2,7 @@ package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Uom extends EntityObject {
+public class Uom implements EntityObject {
     private long id;
     private String uomNo;
     private String uomName;

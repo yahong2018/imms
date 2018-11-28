@@ -3,7 +3,7 @@ package com.zhxh.admin.entity;
 import com.zhxh.core.data.EntityObject;
 import org.apache.commons.lang3.StringUtils;
 
-public class SystemProgram extends EntityObject {
+public class SystemProgram implements EntityObject {
     public final static int PROGRAM_STATUS_STOPPED = 1;
     public final static int PROGRAM_STATUS_NORMAL = 0;
 

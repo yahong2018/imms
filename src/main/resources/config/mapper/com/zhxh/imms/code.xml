@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.code.entity">
     <resultMap id="DefectCode" type="com.zhxh.imms.code.entity.DefectCode">
-        <id property="id" column="id"/>
-        <result property="id" column="id"/>
+        <id property="rowId" column="row_id"/>
+        <result property="rowId" column="row_id"/>
         <result property="defectCodeNo" column="defect_code_no"/>
         <result property="defectCodeName" column="defect_code_name"/>
         <result property="description" column="description"/>

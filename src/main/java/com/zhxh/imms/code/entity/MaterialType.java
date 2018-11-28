@@ -2,7 +2,7 @@ package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class MaterialType extends EntityObject {
+public class MaterialType implements EntityObject {
     private long id;
     private String materialTypeNo;
     private String materialTypeName;

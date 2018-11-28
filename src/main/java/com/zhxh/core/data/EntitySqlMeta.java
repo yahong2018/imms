@@ -1,14 +1,16 @@
 package com.zhxh.core.data;
 
+import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.TreeTableParentKey;
+import com.zhxh.core.data.meta.TreeTable;
+import com.zhxh.core.utils.ClassUtils;
 import com.zhxh.core.utils.StringUtilsExt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.mapping.ResultMapping;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.lang.reflect.Field;
+import java.util.*;
 
 public abstract class EntitySqlMeta {
     public void buildSql() {
@@ -16,6 +18,10 @@ public abstract class EntitySqlMeta {
         this.buildDeleteSql();
         this.buildUpdateSql();
         this.buildSelectSql();
+        this.buildCheckUniqueSql();
+
+        this.initIsTreeTable();
+        this.buildGetTreeRootSql();
     }
 
     private void buildInsertSql() {
@@ -57,7 +63,7 @@ public abstract class EntitySqlMeta {
 
     public String getSelectSql(Map listMap) {
         StringBuffer buffer = new StringBuffer(this.sqlSelect);
-        if(listMap!=null) {
+        if (listMap != null) {
             map2StringBuffer(listMap, buffer);
         }
 
@@ -69,26 +75,54 @@ public abstract class EntitySqlMeta {
         if (StringUtils.isNotEmpty(where)) {
             buffer.append(" where ").append(where).append("\n");
         }
-        String orderBy=(String)listMap.get("orderBy");
+        String orderBy = (String) listMap.get("orderBy");
         if (StringUtils.isNotEmpty(orderBy)) {
             buffer.append(" order by ").append(orderBy).append(" ");
         }
         String sortDir = (String) listMap.get("sortDir");
-        if(StringUtils.isNotEmpty(sortDir)){
+        if (StringUtils.isNotEmpty(sortDir)) {
             buffer.append(sortDir);
         }
     }
 
     public String getDeleteByWhereSql(String where) {
-    	if(StringUtils.isEmpty(where)) {
-    		return "";
-    	}
-    	
-    	return new StringBuffer(this.sqlDeleteAll).append(" ").append(where).toString();
-    }
-    
+        if (StringUtils.isEmpty(where)) {
+            return "";
+        }
 
-    public abstract String getSelectByPageSql(Map listMap,boolean isCount);
+        return new StringBuffer(this.sqlDeleteAll).append(" ").append(where).toString();
+    }
+
+    private void buildCheckUniqueSql() {
+        StringBuffer buffer = new StringBuffer("select count(*) from ").append(tableName)
+                .append("  where ")
+                .append(this.keyColumn).append("<>").append(this.propertyExprs.get(this.keyProperty))
+                .append(" and (");
+        int i = 0;
+        for (String property : this.uniqueFields) {
+            String col = this.propertyColumns.get(property);
+            buffer.append(this.fieldsAssigns.get(col));
+
+            if (i > 0) {
+                buffer.append(" or ");
+            }
+            i++;
+        }
+        buffer.append(")");
+
+        this.checkUniqueSql = buffer.toString();
+    }
+
+    private void buildGetTreeRootSql(){
+        StringBuffer buffer = new StringBuffer("select * from ").append(tableName)
+                .append("  where ")
+                .append(this.keyColumn).append("=").append(this.propertyColumns.get(this.parentKeyField));
+
+        this.getTreeRootSql = buffer.toString();
+    }
+
+
+    public abstract String getSelectByPageSql(Map listMap, boolean isCount);
 
     private String tableName;
     private String keyProperty;
@@ -97,13 +131,21 @@ public abstract class EntitySqlMeta {
     private String sqlDeleteById;
     private String sqlUpdate;
     private String sqlSelect;
-    private String sqlDeleteAll;    
+    private String sqlDeleteAll;
+    private String checkUniqueSql;
+    private String getTreeRootSql;
+
     private ResultMap resultMap;
+    private boolean treeTable;
+    private String parentKeyField;
 
     private List<String> columns = new ArrayList<>();
     private List<String> properties = new ArrayList<>();
+    private List<String> uniqueFields = new ArrayList<>();
+    private Map<String, String> propertyColumns = new HashMap<>();
     private Map<String, String> fieldsAssigns = new HashMap<>();
     private Map<String, String> propertyExprs = new HashMap<>();
+
 
     public String getTableName() {
         return tableName;
@@ -133,6 +175,17 @@ public abstract class EntitySqlMeta {
         return sqlSelect;
     }
 
+    public boolean isTreeTable() {
+        return treeTable;
+    }
+
+    public String getParentKeyField() {
+        return parentKeyField;
+    }
+
+    public String getGetTreeRootSql() {
+        return getTreeRootSql;
+    }
 
     public void setTableName(String tableName) {
         this.tableName = tableName;
@@ -182,6 +235,22 @@ public abstract class EntitySqlMeta {
         return properties;
     }
 
+    public List<String> getUniqueFields() {
+        return uniqueFields;
+    }
+
+    public Map<String, String> getPropertyColumns() {
+        return propertyColumns;
+    }
+
+    public String getCheckUniqueSql() {
+        return checkUniqueSql;
+    }
+
+    public void setCheckUniqueSql(String checkUniqueSql) {
+        this.checkUniqueSql = checkUniqueSql;
+    }
+
     public void setResultMap(ResultMap resultMap) {
         this.resultMap = resultMap;
 
@@ -191,6 +260,8 @@ public abstract class EntitySqlMeta {
             if (columns.contains(column)) {
                 continue;
             }
+
+            propertyColumns.put(property, column);
             columns.add(column);
             properties.add(property);
             propertyExprs.put(property, "#{" + property + "}");
@@ -198,11 +269,32 @@ public abstract class EntitySqlMeta {
             fieldsAssigns.put(column, column + "=#{" + property + "}");
         }
 
+        Class checkUniqueType = CheckUnique.class;
+        Class clazz = resultMap.getType();
+        Object[] fieldsList = Arrays.stream(ClassUtils.getDeclaredFields(clazz)).filter(x ->
+                x.getAnnotation(checkUniqueType) != null
+        ).toArray();
+        for (int i = 0; i < fieldsList.length; i++) {
+            Field field = (Field) fieldsList[i];
+            this.uniqueFields.add(field.getName());
+        }
+
         if (StringUtils.isEmpty(this.keyProperty)) {
             if (resultMap.getIdResultMappings().size() > 0) {
                 this.keyColumn = resultMap.getIdResultMappings().get(0).getColumn();
                 this.keyProperty = resultMap.getIdResultMappings().get(0).getProperty();
             }
+        }
+    }
+
+    private void initIsTreeTable() {
+        Class clazz = resultMap.getType();
+        this.treeTable = clazz.getAnnotation(TreeTable.class) != null;
+
+        if (this.treeTable) {
+            this.parentKeyField = Arrays.stream(ClassUtils.getDeclaredFields(clazz)).filter(x ->
+                    x.getAnnotation(TreeTableParentKey.class) != null
+            ).findFirst().get().getName();
         }
     }
 }

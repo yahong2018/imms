@@ -44,7 +44,7 @@ Ext.define('app.ux.dbgrid.DbGridDeleteButton', {
                         url: grid.getStore().getDeleteUrl(),
                         method: 'POST',
                         jsonData: deleteRecords,
-                        successCallback:function(result, response, opts){
+                        successCallback:function(result, response, opts){           
                             if (grid.store) {
                                 Ext.each(records, function (item, index, itemsItSelf) {
                                     grid.store.remove(item);
@@ -54,8 +54,15 @@ Ext.define('app.ux.dbgrid.DbGridDeleteButton', {
                             if (grid.afterDelete) {
                                 grid.afterDelete(response, opts);
                             }
+  
+                            Ext.toast({
+                                html: '数据已删除',
+                                title: '系统提示',
+                                width: 200,
+                                align: 't'
+                            });
                         },
-                        failureCallback:function(response, opts){                            
+                        failureCallback:function(response, opts){
                             if (grid.afterFailure) {
                                 grid.afterFailure(response, opts);
                             }

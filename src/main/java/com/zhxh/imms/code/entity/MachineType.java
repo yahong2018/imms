@@ -2,7 +2,7 @@ package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class MachineType extends EntityObject {
+public class MachineType implements EntityObject {
     private long id;
     private String machineTypeNo;
     private String machineTypeName;

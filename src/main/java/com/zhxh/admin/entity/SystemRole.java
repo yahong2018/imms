@@ -1,6 +1,8 @@
 package com.zhxh.admin.entity;
 
-public class SystemRole {
+import com.zhxh.core.data.EntityObject;
+
+public class SystemRole implements EntityObject {
     private String roleId;
     private String roleName;
 
