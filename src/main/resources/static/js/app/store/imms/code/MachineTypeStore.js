@@ -1,6 +1,6 @@
 Ext.define("app.store.imms.code.MachineTypeStore",{
     extend:"app.store.BaseTreeStore",
-    model: 'app.model.imms.code.SizeModel',
+    model: 'app.model.imms.code.MachineTypeModel',
     alias:'widget.app_store_imms_code_MachineTypeStore',
      
     dao:{

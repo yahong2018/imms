@@ -22,7 +22,6 @@
     </style>
     <script type="text/javascript" th:src="@{/js/ext/build/include-ext.js(theme=triton)}"></script>
 </head>
-
 <body>
 <input type="hidden" id="HIDDEN_GLOBAL_SYSTEM_TITLE" th:value="${T(com.zhxh.core.env.SysEnv).systemTitle}"
        style="display: none">
@@ -35,8 +34,6 @@
     var webRoot = txtAppRoot.value;
     var jsRoot = webRoot + '/js';
     var systemTitle = txtSystemTitle.value;
-
-    console.log("webRoot:" + webRoot + ",systemTitle:" + systemTitle);
 </script>
 <script type="text/javascript" th:src="@{/js/app/app.js(v=${T(java.lang.System).currentTimeMillis()})}"></script>
 </body>
