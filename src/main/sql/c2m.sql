@@ -203,7 +203,7 @@ CREATE TABLE `bom`  (
   `parent_id`                      varchar(36)     NULL                   COMMENT '上级BOM id',
   `material_match_rule_id`         varchar(36)     NULL                   COMMENT '匹配规则主键',
   `if_main_fabric`                 tinyint(1)      NULL                   COMMENT '是否主面料',
-  `source`                         enum('I','O')   NOT NULL DEFAULT 'I'   COMMENT '来源(I:内部维护生成,O.外部系统导入)',
+  `source`                         enum('I','O')   NOT NULL DEFAULT 'I'   COMMENT '来源(I:内部维护,O.外部导入)',
   
   PRIMARY KEY (`row_id`),
   INDEX `IDX_BOM_01`(`component_material_id`),

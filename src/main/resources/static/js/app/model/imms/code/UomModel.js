@@ -1,5 +1,5 @@
 Ext.define('app.model.imms.code.UomModel', {
-    extend: 'Ext.data.TreeModel',
+    extend: 'Ext.data.Model',
     requires: ["app.model.EmptyGenerator"],
     identifier:'empty',
     fields: [

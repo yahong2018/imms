@@ -7,7 +7,6 @@ public class MaterialMedia implements EntityObject {
     private String mediaId;
     private String materialId;
 
-
     public String getRowId() {
         return rowId;
     }

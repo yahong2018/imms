@@ -1,14 +1,23 @@
 package com.zhxh.imms.media.controller;
 
-import com.zhxh.imms.media.logic.MediaLogic;
+import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.web.SimpleCRUDController;
+import com.zhxh.imms.media.dao.MediaDAO;
+import com.zhxh.imms.media.entity.Media;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
 
 @Controller
-public class MediaController {
+@RequestMapping("imms/media/media")
+public class MediaController extends SimpleCRUDController<com.zhxh.imms.media.entity.Media> {
 
-    @Resource(name="mediaLogic")
-    private MediaLogic mediaLogic;
+    @Resource(name="mediaDAO")
+    private MediaDAO mediaDAO;
 
+    @Override
+    protected BaseDAOWithEntity<Media> getCrudDao() {
+        return this.mediaDAO;
+    }
 }

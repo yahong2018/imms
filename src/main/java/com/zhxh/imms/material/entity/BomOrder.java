@@ -1,9 +1,12 @@
 package com.zhxh.imms.material.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.CheckUnique;
 
 public class BomOrder implements EntityObject {
     private String rowId;
+
+    @CheckUnique
     private String bomOrderNo;
     private String type;
 

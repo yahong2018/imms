@@ -1,5 +1,5 @@
 Ext.define("app.store.imms.code.UomStore",{
-    extend:"app.store.BaseTreeStore",
+    extend:"app.store.BaseStore",
     model: 'app.model.imms.code.UomModel',
     alias:'widget.app_store_imms_code_UomStore',
      

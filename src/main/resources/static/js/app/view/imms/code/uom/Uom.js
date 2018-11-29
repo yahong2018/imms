@@ -2,8 +2,7 @@ Ext.define("app.view.imms.code.uom.Uom", {
     extend: "app.ux.dbgrid.DbGrid",
     xtype: "app_view_imms_code_uom_Uom",
     requires:['app.store.imms.code.UomStore', "app.model.imms.code.UomModel"],
-    uses:["app.view.imms.code.uom.UomDetailForm"],
-    rootVisible: false,        
+    uses:["app.view.imms.code.uom.UomDetailForm"],        
     columns: [
         {           
             text: '单位代码',
