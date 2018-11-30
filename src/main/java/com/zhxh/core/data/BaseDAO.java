@@ -2,7 +2,6 @@ package com.zhxh.core.data;
 
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.exception.BusinessException;
-import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
@@ -140,7 +139,7 @@ public class BaseDAO {
         String keyAssign = meta.getFieldsAssigns().get(meta.getKeyColumn());
         Map listMap = new HashMap();
         listMap.put("where", keyAssign);
-        String sql = meta.getSelectSql(listMap);
+        String sql = meta.buildSelectSql(listMap);
         Map parameters = new HashMap();
         parameters.put(meta.getKeyProperty(), id);
         Object dbItem = sqlHelper.executeScalar(clazz, sql, parameters);

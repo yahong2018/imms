@@ -1,10 +1,15 @@
 package com.zhxh.sys.config;
 
 import com.github.miemiedev.mybatis.callable.CallableConvertInterceptor;
+import com.zhxh.core.data.EntitySqlMeta;
 import com.zhxh.core.data.EntitySqlMetaFactory;
 import com.zhxh.core.data.ResultTypeInterceptor;
 import com.zhxh.core.data.meta.MySqlMetaCreator;
 import com.zhxh.core.utils.Logger;
+import com.zhxh.imms.material.entity.Material;
+import com.zhxh.imms.material.vo.MaterialVO;
+import org.apache.ibatis.mapping.MappedStatement;
+import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -32,7 +37,17 @@ public class DataConfig {
     private CallableConvertInterceptor callableConvertInterceptor;
 
     @Bean
-    CallableConvertInterceptor createCallableConvertInterceptor() {
+    public DataSource createDataSource(){
+        return new DataSource();
+    }
+
+    @Bean
+    public ResultTypeInterceptor createResultTypeInterceptor(){
+        return new ResultTypeInterceptor();
+    }
+
+    @Bean
+    public CallableConvertInterceptor createCallableConvertInterceptor() {
         return new CallableConvertInterceptor();
     }
 
@@ -87,11 +102,19 @@ public class DataConfig {
         MySqlMetaCreator mySqlMetaCreator = new MySqlMetaCreator();
         result.setSqlMetaCreator(mySqlMetaCreator);
         result.setSqlSession(sqlSession);
-//        String mapperLocation = dataSource.getDataTablePropertyFile();
-//        Map<String, String> propertyMap = PropertyLoader.getPropertyMap(mapperLocation);
-//        result.setInitEntry(propertyMap);
         result.init();
 
+        //自定义materialVO的初始化
+        this.initMaterialVO(sqlSession);
+
         return result;
+    }
+
+    private void initMaterialVO(SqlSessionTemplate sqlSession) {
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(MaterialVO.class);
+        MappedStatement statement = sqlSession.getConfiguration().getMappedStatement("com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
+        String sql = statement.getSqlSource().getBoundSql(null).getSql();
+        meta.setSqlSelect(sql);
+        meta.setResultMap(statement.getResultMaps().get(0));
     }
 }

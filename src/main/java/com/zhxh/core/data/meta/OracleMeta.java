@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class OracleMeta extends EntitySqlMeta {
     @Override
-    public String getSelectByPageSql(Map listMap, boolean isCount) {
+    public String buildSelectByPageSql(Map listMap, boolean isCount) {
         if(isCount){
             return this.getSelectBytePageCountString(listMap);
         }

@@ -23,8 +23,22 @@ public class EntitySqlMetaFactory {
     }
 
     public static EntitySqlMeta getEntitySqlMeta(Class<?> clazz) {
+        if(clazz==null){
+            return null;
+        }
+
         String key = clazz.getCanonicalName();
         if (!metaMap.containsKey(key)) {
+            Class supperClass = clazz.getSuperclass();
+            EntitySqlMeta parentMeta = getEntitySqlMeta(supperClass);
+            if (parentMeta != null) {
+                EntitySqlMeta selfMeta = EntitySqlMetaFactory.sqlMetaCreator.createSqlMeta(clazz);
+                selfMeta.copyFrom(parentMeta);
+                metaMap.put(key,selfMeta);
+
+                return selfMeta;
+            }
+
             DataTable dataTable = clazz.getAnnotation(DataTable.class);
             if (dataTable == null) {
                 return null;
@@ -42,11 +56,16 @@ public class EntitySqlMetaFactory {
         meta.setTableName(tableName);
         ResultMap resultMap = EntitySqlMetaFactory.sqlSession.getConfiguration().getResultMap(key);
         meta.setResultMap(resultMap);
-        meta.buildSql();
+        meta.initSql();
 
         metaMap.put(key, meta);
 
         return meta;
+    }
+
+    public void registerSqlMeta(Class<?> clazz,EntitySqlMeta meta){
+        String key = clazz.getCanonicalName();
+        metaMap.put(key,meta);
     }
 
     private static SqlSessionTemplate sqlSession;
@@ -55,7 +74,6 @@ public class EntitySqlMetaFactory {
     public void setSqlSession(SqlSessionTemplate sqlSession) {
         EntitySqlMetaFactory.sqlSession = sqlSession;
     }
-
 
     private static SqlMetaCreator sqlMetaCreator;
 

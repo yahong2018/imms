@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Controller
 @RequestMapping("/imms/material/material")
@@ -18,5 +19,13 @@ public class MaterialController extends SimpleCRUDController<Material> {
     @Override
     protected BaseDAOWithEntity<Material> getCrudDao() {
         return this.materialDAO;
+    }
+
+
+    @Override
+    protected List<Material> internalGetAll() {
+        //转为MaterialVO
+
+        return super.internalGetAll();
     }
 }

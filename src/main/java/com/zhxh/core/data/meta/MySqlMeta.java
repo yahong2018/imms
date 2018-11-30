@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class MySqlMeta extends EntitySqlMeta {
     @Override
-    public String getSelectByPageSql(Map listMap, boolean isCount) {
+    public String buildSelectByPageSql(Map listMap, boolean isCount) {
         /*
         select count(*) from (
             select 1 as temp_field
@@ -25,15 +25,12 @@ public class MySqlMeta extends EntitySqlMeta {
 
        */
 
-        String fields;
+        StringBuffer buffer = new StringBuffer();
         if (isCount) {
-            fields = "1 as temp_field";
+            buffer.append("1 as temp_field");
         } else {
-            fields = StringUtils.join(this.getColumns().toArray(), ",");
+            buffer.append(this.getSqlSelect());
         }
-        StringBuffer buffer = new StringBuffer("select ").append(fields).append("\n")
-                .append(" from ").append(this.getTableName());
-
         map2StringBuffer(listMap, buffer);
         buffer.append("\n limit #{start},#{limit} \n");
 

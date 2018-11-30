@@ -12,8 +12,8 @@ public class Material implements EntityObject {
     private String materialTypeId;
     private String bomOrderId;
     private String operationRoutingOrderId;
-    private String name;
-    private String unit;
+    private String materialName;
+    private String unitId;
     private double  width;
     private double weight;
     private String sizeId;
@@ -41,16 +41,16 @@ public class Material implements EntityObject {
         return operationRoutingOrderId;
     }
 
-    public String getName() {
-        return name;
+    public String getMaterialName() {
+        return materialName;
     }
 
     public double getWidth() {
         return width;
     }
 
-    public String getUnit() {
-        return unit;
+    public String getUnitId() {
+        return unitId;
     }
 
     public double getWeight() {
@@ -77,8 +77,8 @@ public class Material implements EntityObject {
         this.description = description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
     public void setRowId(String rowId) {
@@ -113,8 +113,8 @@ public class Material implements EntityObject {
         this.sizeId = sizeId;
     }
 
-    public void setUnit(String unit) {
-        this.unit = unit;
+    public void setUnitId(String unitId) {
+        this.unitId = unitId;
     }
 
     public void setWeight(double weight) {

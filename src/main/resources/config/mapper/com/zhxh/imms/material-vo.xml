@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.imms.material.vo">
+    <resultMap id="MaterialVO" type="com.zhxh.imms.material.vo.MaterialVO" extends="com.zhxh.imms.material.entity.Material">
+        <result property="bomOrderCode" column="bom_order_code"/>
+        <result property="materialTypeCode" column="material_type_code"/>
+        <result property="materialTypeName" column="material_type_name"/>
+        <result property="operationRoutingOrderCode" column="operation_routing_order_code"/>
+        <result property="sizeCode" column="size_code"/>
+        <result property="sizeName" column="size_name"/>
+        <result property="unitCode" column="unit_code"/>
+        <result property="unitName" column="unit_name"/>
+    </resultMap>
+</mapper>

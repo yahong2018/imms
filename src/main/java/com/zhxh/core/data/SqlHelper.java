@@ -39,7 +39,7 @@ public class SqlHelper {
 
     public int getPageListCount(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String sql = meta.getSelectByPageSql(listMap,true);
+        String sql = meta.buildSelectByPageSql(listMap,true);
         Map<String, Object> map = new HashMap<>();
 
         map.put("start", listMap.get("start"));
@@ -55,7 +55,7 @@ public class SqlHelper {
 
     public List getPageList(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String sql = meta.getSelectByPageSql(listMap,false);
+        String sql = meta.buildSelectByPageSql(listMap,false);
         Map<String, Object> map = new HashMap<>();
         map.put("start", listMap.get("start"));
         map.put("limit", listMap.get("limit"));
@@ -69,7 +69,7 @@ public class SqlHelper {
 
     public List getList(Class<?> clazz,Map listMap, Map parameters) {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String sql = meta.getSelectSql(listMap);
+        String sql = meta.buildSelectSql(listMap);
         return this.executeList(clazz, sql, parameters);
     }
 

@@ -19,7 +19,7 @@ import static com.zhxh.core.exception.ExceptionHelper.*;
 public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
     public int revokeUserAllRoles(String userId){
         EntitySqlMeta sqlMeta = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz);        	
-        String sql = sqlMeta.getDeleteByWhereSql("  where user_id = #{userId}");
+        String sql = sqlMeta.buildDeleteByWhereSql("  where user_id = #{userId}");
         Map parameters = new HashMap();
         parameters.put("userId",userId);
 

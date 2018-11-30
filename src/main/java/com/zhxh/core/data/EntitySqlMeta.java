@@ -13,18 +13,18 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 public abstract class EntitySqlMeta {
-    public void buildSql() {
-        this.buildInsertSql();
-        this.buildDeleteSql();
-        this.buildUpdateSql();
-        this.buildSelectSql();
-        this.buildCheckUniqueSql();
+    public void initSql() {
+        this.initDefaultInsertSql();
+        this.initDefaultDeleteSql();
+        this.initDefaultUpdateSql();
+        this.initDefaultSelectSql();
+        this.initCheckUniqueSql();
 
         this.initIsTreeTable();
-        this.buildGetTreeRootSql();
+        this.initGetTreeRootSql();
     }
 
-    private void buildInsertSql() {
+    private void initDefaultInsertSql() {
         StringBuffer buffer = new StringBuffer("insert into ").append(tableName)
                 .append(" (")
                 .append(StringUtils.join(columns.toArray(), ","))
@@ -35,7 +35,7 @@ public abstract class EntitySqlMeta {
         this.sqlInsert = buffer.toString();
     }
 
-    private void buildDeleteSql() {
+    private void initDefaultDeleteSql() {
         StringBuffer buffer = new StringBuffer("delete from ").append(tableName);
         this.sqlDeleteAll = buffer.toString();
         buffer.append(" where ").append(this.keyColumn).append("=").append(this.propertyExprs.get(this.keyProperty));
@@ -43,7 +43,7 @@ public abstract class EntitySqlMeta {
         this.sqlDeleteById = buffer.toString();
     }
 
-    private void buildUpdateSql() {
+    private void initDefaultUpdateSql() {
         String fieldAssigns = StringUtils.join(fieldsAssigns.values().toArray(), ",");
         StringBuffer buffer = new StringBuffer("update ").append(tableName)
                 .append(" set ").append(fieldAssigns)
@@ -52,7 +52,7 @@ public abstract class EntitySqlMeta {
         this.sqlUpdate = buffer.toString();
     }
 
-    private void buildSelectSql() {
+    private void initDefaultSelectSql() {
         StringBuffer buffer = new StringBuffer("select ")
                 .append(StringUtils.join(columns.toArray(), ","))
                 .append(" from ")
@@ -61,7 +61,7 @@ public abstract class EntitySqlMeta {
         this.sqlSelect = buffer.toString();
     }
 
-    public String getSelectSql(Map listMap) {
+    public String buildSelectSql(Map listMap) {
         StringBuffer buffer = new StringBuffer(this.sqlSelect);
         if (listMap != null) {
             map2StringBuffer(listMap, buffer);
@@ -85,7 +85,7 @@ public abstract class EntitySqlMeta {
         }
     }
 
-    public String getDeleteByWhereSql(String where) {
+    public String buildDeleteByWhereSql(String where) {
         if (StringUtils.isEmpty(where)) {
             return "";
         }
@@ -93,7 +93,7 @@ public abstract class EntitySqlMeta {
         return new StringBuffer(this.sqlDeleteAll).append(" ").append(where).toString();
     }
 
-    private void buildCheckUniqueSql() {
+    private void initCheckUniqueSql() {
         StringBuffer buffer = new StringBuffer("select count(*) from ").append(tableName)
                 .append("  where ")
                 .append(this.keyColumn).append("<>").append(this.propertyExprs.get(this.keyProperty))
@@ -113,16 +113,15 @@ public abstract class EntitySqlMeta {
         this.checkUniqueSql = buffer.toString();
     }
 
-    private void buildGetTreeRootSql(){
-        StringBuffer buffer = new StringBuffer("select * from ").append(tableName)
+    private void initGetTreeRootSql() {
+        StringBuffer buffer = new StringBuffer(this.getSqlSelect())
                 .append("  where ")
                 .append(this.keyColumn).append("=").append(this.propertyColumns.get(this.parentKeyField));
 
         this.getTreeRootSql = buffer.toString();
     }
 
-
-    public abstract String getSelectByPageSql(Map listMap, boolean isCount);
+    public abstract String buildSelectByPageSql(Map listMap, boolean isCount);
 
     private String tableName;
     private String keyProperty;
@@ -146,6 +145,13 @@ public abstract class EntitySqlMeta {
     private Map<String, String> fieldsAssigns = new HashMap<>();
     private Map<String, String> propertyExprs = new HashMap<>();
 
+    public String getSqlDeleteAll() {
+        return sqlDeleteAll;
+    }
+
+    public void setSqlDeleteAll(String sqlDeleteAll) {
+        this.sqlDeleteAll = sqlDeleteAll;
+    }
 
     public String getTableName() {
         return tableName;
@@ -252,21 +258,27 @@ public abstract class EntitySqlMeta {
     }
 
     public void setResultMap(ResultMap resultMap) {
-        this.resultMap = resultMap;
+        this.propertyColumns.clear();
+        this.columns.clear();
+        this.properties.clear();
+        this.propertyExprs.clear();
+        this.fieldsAssigns.clear();
+        this.uniqueFields.clear();
 
+        this.resultMap = resultMap;
         for (ResultMapping mapping : resultMap.getPropertyResultMappings()) {
             String column = mapping.getColumn();
             String property = mapping.getProperty();
-            if (columns.contains(column)) {
+            if (this.columns.contains(column)) {
                 continue;
             }
 
-            propertyColumns.put(property, column);
-            columns.add(column);
-            properties.add(property);
-            propertyExprs.put(property, "#{" + property + "}");
+            this.propertyColumns.put(property, column);
+            this.columns.add(column);
+            this.properties.add(property);
+            this.propertyExprs.put(property, "#{" + property + "}");
 
-            fieldsAssigns.put(column, column + "=#{" + property + "}");
+            this.fieldsAssigns.put(column, column + "=#{" + property + "}");
         }
 
         Class checkUniqueType = CheckUnique.class;
@@ -295,6 +307,43 @@ public abstract class EntitySqlMeta {
             this.parentKeyField = Arrays.stream(ClassUtils.getDeclaredFields(clazz)).filter(x ->
                     x.getAnnotation(TreeTableParentKey.class) != null
             ).findFirst().get().getName();
+        }
+    }
+
+    public void copyFrom(EntitySqlMeta meta) {
+        this.tableName = meta.tableName;
+        this.keyProperty = meta.keyProperty;
+        this.keyColumn = meta.keyColumn;
+        this.sqlInsert = meta.sqlInsert;
+        this.sqlDeleteAll = meta.sqlDeleteAll;
+        this.sqlUpdate = meta.sqlUpdate;
+        this.sqlSelect = meta.sqlSelect;
+        this.sqlDeleteById = meta.sqlDeleteById;
+        this.checkUniqueSql = meta.checkUniqueSql;
+        this.getTreeRootSql = meta.getTreeRootSql;
+        this.resultMap = meta.resultMap;
+        this.treeTable = meta.treeTable;
+        this.parentKeyField = meta.parentKeyField;
+        this.columns.addAll(meta.columns);
+        this.properties.addAll(meta.properties);
+        this.uniqueFields.addAll(meta.uniqueFields);
+
+        Iterator<Map.Entry<String, String>> iterator = meta.propertyColumns.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> item = iterator.next();
+            this.propertyColumns.put(item.getKey(), item.getValue());
+        }
+
+        iterator = meta.fieldsAssigns.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> item = iterator.next();
+            this.fieldsAssigns.put(item.getKey(), item.getValue());
+        }
+
+        iterator = meta.propertyExprs.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> item = iterator.next();
+            this.propertyExprs.put(item.getKey(), item.getValue());
         }
     }
 }

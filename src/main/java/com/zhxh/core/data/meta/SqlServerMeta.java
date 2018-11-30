@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class SqlServerMeta extends EntitySqlMeta {
     @Override
-    public String getSelectByPageSql(Map listMap, boolean isCount) {
+    public String buildSelectByPageSql(Map listMap, boolean isCount) {
         String fields;
         if(isCount){
             fields="1 as temp_field";
@@ -19,12 +19,14 @@ public class SqlServerMeta extends EntitySqlMeta {
                 .append("      select row_number()over(order by tempcolumn)temprownumber, ").append(fields).append("\n")
                 .append("         from (\n")
                 .append("             select top (#{start} + #{limit}) tempcolumn=0, ").append(fields).append("\n")
-                .append("               from ").append(this.getTableName()).append("\n");
+                .append("               from (").append(this.getTableName()).append("\n")
+                .append(this.getSqlSelect()).append("\n")
+                .append("                   )t");
 
         map2StringBuffer(listMap, buffer);
 
-        buffer.append("\n        )t\n")
-                .append("     )tt\n")
+        buffer.append("\n        )tt\n")
+                .append("     )ttt\n")
                 .append(" where temprownumber>#{start}");
 
         if(isCount) {

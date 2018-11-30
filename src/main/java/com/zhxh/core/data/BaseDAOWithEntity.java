@@ -60,7 +60,7 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
         Map listMap = new HashMap();
         listMap.put("where",where);
-        String sql = meta.getSelectSql(listMap);
+        String sql = meta.buildSelectSql(listMap);
         T dbItem = sqlHelper.executeScalar(clazz, sql, parameters);
         return dbItem;
     }
@@ -80,7 +80,7 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
     
     public int deleteByWhere(String where,Map parameters) {
     	EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz);
-    	String deleteSql = meta.getDeleteByWhereSql(where);
+    	String deleteSql = meta.buildDeleteByWhereSql(where);
     	
     	return super.executeNoneQuery(deleteSql, parameters);
     }
