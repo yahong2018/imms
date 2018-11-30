@@ -57,7 +57,6 @@ Ext.define('app.ux.Utils', {
         }
     },
     applyPrivileges: function (config) {
-        debugger;
         var privilegeList = app.ux.GlobalVars.currentLogin.privilegeList;
         var programId = config.programId;
         var model = config.model;
@@ -66,9 +65,7 @@ Ext.define('app.ux.Utils', {
         for (var i = 0; i < privilegeList.length; i++) {
             if (privilegeList[i].programId != programId) {
                 continue;
-            }
-            debugger;
-
+            }          
             var privilege = privilegeList[i];
             var actionButton = comp.down('[privilege="' + privilege.privilegeId + '"]');
             if (actionButton) {

@@ -2,7 +2,7 @@ Ext.define("app.ux.dbgrid.DataOperation", {
     xtype: 'dataoperation',
 
     requires: ['app.ux.dbgrid.DbGridToolbar'],
-    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow','app.ux.Utils'],
+    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow', 'app.ux.Utils'],
 
     getInitConfig: function () {
         var me = this;
@@ -54,13 +54,13 @@ Ext.define("app.ux.dbgrid.DataOperation", {
                     displayInfo: true,
                 })
             );
-        }      
+        }
 
         if (!hasDefaultToolbar && !me.hideDefaultToolbar) {
             var config = {
-                xtype: 'dbgridtoolbar',                
+                xtype: 'dbgridtoolbar',
                 dbGrid: this
-            };  
+            };
 
             var defaultToolbar = Ext.create(config);
             me.dockedItems.push(defaultToolbar);
@@ -97,18 +97,27 @@ Ext.define("app.ux.dbgrid.DataOperation", {
                 return;
             }
         }
-
-        var deailWindow = Ext.create(this.insertDetailWindowClass, {
-            isNew: true,
-            title:'新增 — [' + this.detailWindowTitle +']', 
-            store: this.store,
-            listGrid: grid,
-            items: [{
-                xtype: this.detailFormClass,
-            }]
-        });
-        var form = deailWindow.down(this.detailFormClass);
         var record = this.store.createModel({});
+        var detailWindow;
+        if (this.createDetailWindowFun) {
+            detailWindow = this.createDetailWindowFun({ isNew: true, record: record });
+        } else {
+            detailWindow = Ext.create(this.insertDetailWindowClass, {
+                isNew: true,
+                title: '新增 — [' + this.detailWindowTitle + ']',
+                store: this.store,
+                listGrid: grid,
+                items: [{
+                    xtype: this.detailFormClass,
+                }]
+            });
+        }
+        var form;
+        if (detailWindow.xtype == this.detailFormClass) {
+            form = detailWindow;
+        } else {
+            form = detailWindow.down(this.detailFormClass);
+        }
 
         if (form.beforeLoadRecord) {
             form.beforeLoadRecord({ isNew: true, record: record });
@@ -122,13 +131,13 @@ Ext.define("app.ux.dbgrid.DataOperation", {
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
-        var canInsert = app.ux.Utils.hasPrivilege({programId:programId,privilegeId:"INSERT"});
-        if(!canInsert){
-            deailWindow.down('[buttonName="save"]').setDisabled(true);
-            deailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
+        var canInsert = app.ux.Utils.hasPrivilege({ programId: programId, privilegeId: "INSERT" });
+        if (!canInsert) {
+            detailWindow.down('[buttonName="save"]').setDisabled(true);
+            detailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
         }
 
-        deailWindow.show();
+        detailWindow.show();
     },
     doEdit: function () {
         var grid = this;
@@ -145,25 +154,37 @@ Ext.define("app.ux.dbgrid.DataOperation", {
             }
         }
 
-        var deailWindow = Ext.create(this.editDetailWindowClass, {
-            isNew: false,
-            title: '修改 — [' + this.detailWindowTitle+']',
-            store: this.store,
-            listGrid: grid,
-            items: [{
-                xtype: this.detailFormClass,
-            }]
-        });
-        var form = deailWindow.down(this.detailFormClass);
+        var detailWindow;
+        if (this.createDetailWindowFun) {
+            detailWindow = this.createDetailWindowFun({ isNew: false, record: record });
+        } else {
+            detailWindow = Ext.create(this.editDetailWindowClass, {
+                isNew: false,
+                title: '修改 — [' + this.detailWindowTitle + ']',
+                store: this.store,
+                listGrid: grid,
+                items: [{
+                    xtype: this.detailFormClass,
+                }]
+            });
+        }
+
+        var form;
+        if (detailWindow.xtype == this.detailFormClass) {
+            form = detailWindow;
+        } else {
+            form = detailWindow.down(this.detailFormClass);
+        }
+
         if (form.beforeLoadRecord) {
             form.beforeLoadRecord({ isNew: false, record: record });
         }
         form.loadRecord(record);
-        
+
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
-        }  
+        }
 
         if (form.afterLoadRecord) {
             form.afterLoadRecord({ isNew: false, record: record });
@@ -171,13 +192,13 @@ Ext.define("app.ux.dbgrid.DataOperation", {
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
-        var canUpdate = app.ux.Utils.hasPrivilege({programId:programId,privilegeId:"UPDATE"});
-        if(!canUpdate){
-            deailWindow.down('[buttonName="save"]').setDisabled(true);
-            deailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
+        var canUpdate = app.ux.Utils.hasPrivilege({ programId: programId, privilegeId: "UPDATE" });
+        if (!canUpdate) {
+            detailWindow.down('[buttonName="save"]').setDisabled(true);
+            detailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
         }
 
-        deailWindow.show();
+        detailWindow.show();
     },
 
     showDetailWindow: function (grid, rowindex, e) {
@@ -188,25 +209,36 @@ Ext.define("app.ux.dbgrid.DataOperation", {
         }
 
         record = record[0];
-        var deailWindow = Ext.create(this.editDetailWindowClass, {
-            isNew: false,
-            title: this.detailWindowTitle,
-            store: this.store,
-            listGrid: grid,
-            items: [{
-                xtype: this.detailFormClass,
-            }]
-        });
-        var form = deailWindow.down(this.detailFormClass);
+        var detailWindow;
+        if (this.createDetailWindowFun) {
+            detailWindow = this.createDetailWindowFun({ isNew: false, record: record });
+        } else {
+            detailWindow = Ext.create(this.editDetailWindowClass, {
+                isNew: false,
+                title: this.detailWindowTitle,
+                store: this.store,
+                listGrid: grid,
+                items: [{
+                    xtype: this.detailFormClass,
+                }]
+            });
+        }
+        var form;
+        if (detailWindow.xtype == this.detailFormClass) {
+            form = detailWindow;
+        } else {
+            form = detailWindow.down(this.detailFormClass);
+        }
+
         if (form.beforeLoadRecord) {
             form.beforeLoadRecord({ isNew: false, record: record });
         }
         form.loadRecord(record);
-       
+
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
-        }    
+        }
 
         if (form.afterLoadRecord) {
             form.afterLoadRecord({ isNew: false, record: record });
@@ -214,14 +246,14 @@ Ext.define("app.ux.dbgrid.DataOperation", {
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
-       
-        var canUpdate = app.ux.Utils.hasPrivilege({programId:programId,privilegeId:"UPDATE"});
-        if(!canUpdate){
-            deailWindow.down('[buttonName="save"]').setDisabled(true);
-            deailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
+
+        var canUpdate = app.ux.Utils.hasPrivilege({ programId: programId, privilegeId: "UPDATE" });
+        if (!canUpdate) {
+            detailWindow.down('[buttonName="save"]').setDisabled(true);
+            detailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
         }
 
-        deailWindow.show();
+        detailWindow.show();
     },
 
     doSearch: function (column, operator, value) {

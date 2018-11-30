@@ -3,8 +3,6 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
     , alias: 'widget.dbgridtoolbar'
     , requires: ['app.ux.dbgrid.DbGridInsertButton', 'app.ux.dbgrid.DbGridEditButton', 'app.ux.dbgrid.DbGridDeleteButton', 'app.ux.dbgrid.DbGridSearchPanel']
     , constructor: function (config) {
-        debugger;
-
         var configBase = {
             dock: 'top',
             insertPrivilege: config.dbGrid.insertPrivilege || "INSERT",
