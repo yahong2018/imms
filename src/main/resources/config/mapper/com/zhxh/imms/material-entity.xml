@@ -17,5 +17,11 @@
         <result property="materialDescription" column="material_description"/>
     </resultMap>
 
+    <resultMap id="MaterialMedia" type="com.zhxh.imms.material.entity.MaterialMedia">
+        <id property="materialMediaId" column="material_media_id"/>
+
+        <result property="materialMediaMediaId" column="material_media_media_id"/>
+        <result property="materialMediaMaterialId" column="material_media_material_id"/>
+    </resultMap>
 
 </mapper>

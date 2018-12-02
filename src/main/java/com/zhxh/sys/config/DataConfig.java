@@ -7,6 +7,7 @@ import com.zhxh.core.data.ResultTypeInterceptor;
 import com.zhxh.core.data.meta.MySqlMetaCreator;
 import com.zhxh.core.utils.Logger;
 import com.zhxh.imms.material.entity.Material;
+import com.zhxh.imms.material.vo.MaterialMediaVO;
 import com.zhxh.imms.material.vo.MaterialVO;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ResultMap;
@@ -104,15 +105,23 @@ public class DataConfig {
         result.setSqlSession(sqlSession);
         result.init();
 
-        //自定义materialVO的初始化
-        this.initMaterialVO(sqlSession);
+        this.setCustomSelectSql(MaterialVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
+        this.setCustomSelectSql(MaterialMediaVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_MEDIA_VO");
 
         return result;
     }
 
-    private void initMaterialVO(SqlSessionTemplate sqlSession) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(MaterialVO.class);
-        MappedStatement statement = sqlSession.getConfiguration().getMappedStatement("com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
+//    private void initMaterialVO(SqlSessionTemplate sqlSession) {
+//        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(MaterialVO.class);
+//        MappedStatement statement = sqlSession.getConfiguration().getMappedStatement("com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
+//        String sql = statement.getSqlSource().getBoundSql(null).getSql();
+//        meta.setSqlSelect(sql);
+//        meta.setResultMap(statement.getResultMaps().get(0));
+//    }
+
+    private void setCustomSelectSql(Class clazz, SqlSessionTemplate sqlSession,String sqlId){
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        MappedStatement statement = sqlSession.getConfiguration().getMappedStatement(sqlId);
         String sql = statement.getSqlSource().getBoundSql(null).getSql();
         meta.setSqlSelect(sql);
         meta.setResultMap(statement.getResultMaps().get(0));

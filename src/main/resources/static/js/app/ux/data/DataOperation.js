@@ -2,7 +2,7 @@ Ext.define("app.ux.data.DataOperation", {
     xtype: 'app_ux_data_DataOperation',
 
     requires: ['app.ux.dbgrid.DbGridToolbar'],
-    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow', 'app.ux.Utils','app.ux.data.DataMode'],
+    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow', 'app.ux.Utils', 'app.ux.data.DataMode'],
 
     getInitConfig: function () {
         var me = this;
@@ -59,7 +59,8 @@ Ext.define("app.ux.data.DataOperation", {
         if (!hasDefaultToolbar && !me.hideDefaultToolbar) {
             var config = {
                 xtype: 'dbgridtoolbar',
-                dbGrid: this
+                dbGrid: me,
+                hideSearchBar: me.hideSearchBar
             };
 
             var defaultToolbar = Ext.create(config);
@@ -67,13 +68,13 @@ Ext.define("app.ux.data.DataOperation", {
         }
     },
 
-    createDetailWindow:function(dataMode){
+    createDetailWindow: function (dataMode) {
         var detailWindow;
         if (this.createDetailWindowFun) {
             detailWindow = this.createDetailWindowFun();
         } else {
             detailWindow = Ext.create(this.insertDetailWindowClass, {
-                dataMode: dataMode,                
+                dataMode: dataMode,
                 store: this.store,
                 listGrid: this,
                 items: [{
@@ -85,7 +86,7 @@ Ext.define("app.ux.data.DataOperation", {
         return detailWindow;
     },
 
-    doInsert: function () {        
+    doInsert: function () {
         var grid = this;
         if (this.beforeInsert) {
             if (this.beforeInsert() === false) {
@@ -94,15 +95,15 @@ Ext.define("app.ux.data.DataOperation", {
         }
         var record = this.store.createModel({});
         var detailWindow = this.createDetailWindow(app.ux.data.DataMode.INSERT);
-        detailWindow.title='新增 — [' + this.detailWindowTitle + ']';
-        
+        detailWindow.title = '新增 — [' + this.detailWindowTitle + ']';
+
         var form = detailWindow.getFormCmp();
         form.loadRecord(record);
         if (form.onRecordLoad) {
             form.onRecordLoad({
-                dataMode:app.ux.data.DataMode.INSERT,
-                seq:app.ux.data.DataOperationSeq.BEFORE,
-                record:record
+                dataMode: app.ux.data.DataMode.INSERT,
+                seq: app.ux.data.DataOperationSeq.BEFORE,
+                record: record
             });
         }
 
@@ -133,18 +134,18 @@ Ext.define("app.ux.data.DataOperation", {
 
         var detailWindow = this.createDetailWindow(app.ux.data.DataMode.EDIT);
         detailWindow.title = '修改 — [' + this.detailWindowTitle + ']';
-        var form  = detailWindow.getFormCmp(); 
+        var form = detailWindow.getFormCmp();
         form.loadRecord(record);
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
         }
-        
+
         if (form.onRecordLoad) {
             form.onRecordLoad({
-                dataMode:app.ux.data.DataMode.EDIT,
-                seq:app.ux.data.DataOperationSeq.BEFORE,
-                record:record
+                dataMode: app.ux.data.DataMode.EDIT,
+                seq: app.ux.data.DataOperationSeq.BEFORE,
+                record: record
             });
         }
 
@@ -164,23 +165,23 @@ Ext.define("app.ux.data.DataOperation", {
         var record = this.getSelectionModel().getSelection();
         if (!record || record.length == 0) {
             return;
-        }        
+        }
 
         record = record[0];
         var detailWindow = this.createDetailWindow(app.ux.data.DataMode.BROWSE);
         detailWindow.title = this.detailWindowTitle;
-        var form  = detailWindow.getFormCmp();
+        var form = detailWindow.getFormCmp();
         form.loadRecord(record);
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
         }
-        
+
         if (form.onRecordLoad) {
             form.onRecordLoad({
-                dataMode:app.ux.data.DataMode.BROWSE,
-                seq:app.ux.data.DataOperationSeq.BEFORE,
-                record:record
+                dataMode: app.ux.data.DataMode.BROWSE,
+                seq: app.ux.data.DataOperationSeq.BEFORE,
+                record: record
             });
         }
 

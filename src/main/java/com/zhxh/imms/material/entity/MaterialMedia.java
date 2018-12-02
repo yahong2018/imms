@@ -18,7 +18,6 @@ public class MaterialMedia implements EntityObject {
         return materialMediaMaterialId;
     }
 
-
     public String getMaterialMediaMediaId() {
         return materialMediaMediaId;
     }

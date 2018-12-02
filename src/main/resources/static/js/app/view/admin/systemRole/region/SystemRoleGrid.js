@@ -8,12 +8,9 @@ Ext.define('app.view.admin.systemRole.region.SystemRoleGrid', {
         { dataIndex: 'roleName', text: '角色名称', flex: 1 }
     ],
     hideDefeaultPagebar: true,
+    hideSearchBar:true,
+    
     detailFormClass:'admin_systemRole_SystemRoleDetailForm',
-    /*
-    addtionToolbarItems: [
-        { text: '管理用户', handler: 'mangeRoleUser' },
-    ],
-    */
     constructor: function (config) {
         var configBase = {
             store: Ext.create({ xtype: 'app_store_admin_SystemRoleStore' ,grid:this, listeners: {
@@ -23,24 +20,13 @@ Ext.define('app.view.admin.systemRole.region.SystemRoleGrid', {
                         this.grid.getSelectionModel().select(0);
                     }
                 }
-            }}),
-            dockedItems: [
-                {
-                    xtype: 'dbgridtoolbar',
-                    hideSearch: true,
-                    dbGrid: this,
-                }
-            ]
+            }})
         };
 
         Ext.applyIf(config, configBase);
         this.callParent(arguments);
     },
     listeners: {
-        afterrender: function () {
-
-        },
-
         beforeselect: 'gridSelectionChanged',
     }
 });

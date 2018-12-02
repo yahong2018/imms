@@ -28,13 +28,5 @@ Ext.define('app.view.admin.systemRole.SystemRole', {
                 }
             ]
         }
-    ],listeners:{
-        destroy:function ( me , eOpts ) {
-           // debugger;
-        }
-    },
-    applyPrivileges:function(config){
-        debugger;
-      //  this.down('SystemRoleGrid').applyPrivileges(config);
-    }
+    ]
 });

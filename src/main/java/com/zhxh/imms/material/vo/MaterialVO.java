@@ -3,7 +3,6 @@ package com.zhxh.imms.material.vo;
 import com.zhxh.imms.material.entity.Material;
 
 public class MaterialVO extends Material {
-
     private String materialTypeNo;
     private String materialTypeName;
     private String sizeNo;

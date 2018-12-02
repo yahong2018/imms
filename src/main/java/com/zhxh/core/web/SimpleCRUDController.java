@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public abstract class SimpleCRUDController<T> {
-    private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
+    private ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
 
     @RequestMapping("getAll.handler")
     @ResponseBody
@@ -21,8 +21,8 @@ public abstract class SimpleCRUDController<T> {
 
     @RequestMapping("getAllByPage.handler")
     @ResponseBody
-    public final ExtJsResult getAllByPage(HttpServletRequest request, HttpServletResponse response) {
-        return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
+    public ExtJsResult getAllByPage(HttpServletRequest request, HttpServletResponse response) {
+        return this.listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {
                 return internalGetByRequest(listRequest);

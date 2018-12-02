@@ -1,19 +1,14 @@
-package com.zhxh.imms.media.entity;
+package com.zhxh.imms.material.vo;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.imms.material.entity.MaterialMedia;
 
-public class Media implements EntityObject {
-    private String mediaId;
+public class MaterialMediaVO extends MaterialMedia {
     private String mediaType;
     private String mediaUrl;
     private String mediaName;
     private int mediaSize;
     private String mediaDescription;
     private String mediaDataSource;
-
-    public String getMediaId() {
-        return mediaId;
-    }
 
     public String getMediaName() {
         return mediaName;
@@ -37,10 +32,6 @@ public class Media implements EntityObject {
 
     public String getMediaDataSource() {
         return mediaDataSource;
-    }
-
-    public void setMediaId(String mediaId) {
-        this.mediaId = mediaId;
     }
 
     public void setMediaName(String mediaName) {

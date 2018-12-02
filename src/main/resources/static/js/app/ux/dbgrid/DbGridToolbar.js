@@ -14,21 +14,21 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
         config.items = config.items || [];
         var oldLength = config.items.length;
 
-        if (!config.hideInsert) {
+        if (!config.dbGrid.hideInsert) {
             config.items.push({
                 xtype: 'dbgridinsertbutton',
                 privilege:config.insertPrivilege,
                 disabled:true
             });            
         }
-        if (!config.hideEdit) {
+        if (!config.dbGrid.hideEdit) {
             config.items.push({
                 xtype: 'dbgrideditbutton',
                 privilege:config.updatePrivilege,
                 disabled:true
             });
         }
-        if (!config.hideDelete) {
+        if (!config.dbGrid.hideDelete) {
             config.items.push(
                 {
                     xtype: 'dbgriddeletebutton',
@@ -46,7 +46,7 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
             }
         }
 
-        if (!config.hideSearch) {
+        if (!config.dbGrid.hideSearchBar) {
             config.items.push("->");
             config.items.push({
                 xtype: 'dbgrid_DbGridSearchPanel',           

@@ -26,7 +26,8 @@ public class MaterialController extends SimpleCRUDController<Material> {
     @Override
     protected List internalGetByRequest(ListRequest listRequest) {
         Class clazz = MaterialVO.class;
-        return this.materialDAO.getPageList(clazz,listRequest.toMap(),null);
+        List result = this.materialDAO.getPageList(clazz,listRequest.toMap(),null);
+        return result;
     }
 
     @Override

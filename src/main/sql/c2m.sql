@@ -92,7 +92,6 @@ CREATE TABLE `material_type`  (
 ) COMMENT = '物料类型';
 
 
-
 CREATE TABLE `uom`  (
   `uom_id`                 char(36)              NOT NULL,
   `uom_no`                 varchar(10)           NOT NULL ,

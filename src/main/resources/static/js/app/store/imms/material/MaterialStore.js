@@ -7,6 +7,6 @@ Ext.define("app.store.imms.material.MaterialStore",{
         deleteUrl: '/imms/material/material/delete.handler',
         insertUrl: '/imms/material/material/create.handler',
         updateUrl: '/imms/material/material/update.handler',
-        selectUrl: '/imms/material/material/getAll.handler',
+        selectUrl: '/imms/material/material/getAllByPage.handler',
     }
 });
