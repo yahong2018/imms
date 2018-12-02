@@ -1,7 +1,7 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTable;
 import com.zhxh.core.data.validate.FixedLength;
 import org.hibernate.validator.constraints.Length;
 import javax.validation.constraints.Email;

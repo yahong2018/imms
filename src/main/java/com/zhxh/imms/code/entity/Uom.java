@@ -1,23 +1,29 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.annotation.CheckUnique;
+
+import java.util.UUID;
 
 public class Uom implements EntityObject {
-    private String rowId;
+    private String uomId;
 
     @CheckUnique
     private String uomNo;
 
     private String uomName;
-    private String description;
+    private String uomDescription;
 
-    public String getRowId() {
-        return rowId;
+    public Uom(){
+        this.uomId = UUID.randomUUID().toString();
     }
 
-    public void setRowId(String rowId) {
-        this.rowId = rowId;
+    public String getUomId() {
+        return uomId;
+    }
+
+    public void setUomId(String uomId) {
+        this.uomId = uomId;
     }
 
     public String getUomNo() {
@@ -28,10 +34,6 @@ public class Uom implements EntityObject {
         return uomName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public void setUomNo(String uomNo) {
         this.uomNo = uomNo;
     }
@@ -40,7 +42,11 @@ public class Uom implements EntityObject {
         this.uomName = uomName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public String getUomDescription() {
+        return uomDescription;
+    }
+
+    public void setUomDescription(String uomDescription) {
+        this.uomDescription = uomDescription;
     }
 }

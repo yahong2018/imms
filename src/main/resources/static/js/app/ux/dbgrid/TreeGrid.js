@@ -2,8 +2,8 @@ Ext.define("app.ux.dbgrid.TreeGrid",{
     extend:"Ext.tree.Panel",
     xtype: 'treeGrid',
     alias: 'widget.treeGrid',
-    requires:["app.ux.dbgrid.DataOperation","app.ux.dbgrid.DbGridToolbar"],
-    mixins:["app.ux.dbgrid.DataOperation"],   
+    requires:["app.ux.data.DataOperation","app.ux.dbgrid.DbGridToolbar"],
+    mixins:["app.ux.data.DataOperation"],   
 
     hideDefeaultPagebar:true,    
     dockedItems:[

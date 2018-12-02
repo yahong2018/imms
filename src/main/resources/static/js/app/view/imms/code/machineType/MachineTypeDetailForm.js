@@ -49,7 +49,7 @@ Ext.define('app.view.imms.code.machineType.MachineTypeDetailForm', {
             enforceMaxLength: true,
         }
     ],
-    beforeLoadRecord: function (config) {
+    onRecordLoad: function (config) {
         debugger;
         var grid = this.up("detailwindow").listGrid; //获取到Grid
         if(grid.getSelectedRecord() != null){      

@@ -3,36 +3,53 @@ package com.zhxh.imms.material.entity;
 import com.zhxh.core.data.EntityObject;
 
 public class Bom implements EntityObject {
-    private String rowId;
+    private String bomId;
     private String bomOrderId;
     private String componentMaterialId;
     private String componentAbstractMaterialId;
-    private double qty;
-    private String componentMaterialUom;
-    private String type;
-    private String parentId;
+    private double componentQty;
+    private String componentMaterialUomId;
+    private String parentBomId;
     private String materialMatchRuleId;
     private boolean ifMainFabric;
-    private String source;
+    private String bomSource;
 
-    public String getType() {
-        return type;
+    public String getBomId() {
+        return bomId;
     }
 
-    public String getRowId() {
-        return rowId;
+    public void setBomId(String bomId) {
+        this.bomId = bomId;
+    }
+
+    public double getComponentQty() {
+        return componentQty;
+    }
+
+    public void setComponentQty(double componentQty) {
+        this.componentQty = componentQty;
+    }
+
+
+
+    public String getParentBomId() {
+        return parentBomId;
+    }
+
+    public void setParentBomId(String parentBomId) {
+        this.parentBomId = parentBomId;
+    }
+
+    public String getBomSource() {
+        return bomSource;
+    }
+
+    public void setBomSource(String bomSource) {
+        this.bomSource = bomSource;
     }
 
     public String getBomOrderId() {
         return bomOrderId;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public double getQty() {
-        return qty;
     }
 
     public String getComponentAbstractMaterialId() {
@@ -43,32 +60,16 @@ public class Bom implements EntityObject {
         return componentMaterialId;
     }
 
-    public String getComponentMaterialUom() {
-        return componentMaterialUom;
+    public String getComponentMaterialUomId() {
+        return componentMaterialUomId;
     }
 
     public String getMaterialMatchRuleId() {
         return materialMatchRuleId;
     }
 
-    public String getParentId() {
-        return parentId;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setRowId(String rowId) {
-        this.rowId = rowId;
-    }
-
     public void setBomOrderId(String bomOrderId) {
         this.bomOrderId = bomOrderId;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
     }
 
     public void setComponentAbstractMaterialId(String componentAbstractMaterialId) {
@@ -79,8 +80,8 @@ public class Bom implements EntityObject {
         this.componentMaterialId = componentMaterialId;
     }
 
-    public void setComponentMaterialUom(String componentMaterialUom) {
-        this.componentMaterialUom = componentMaterialUom;
+    public void setComponentMaterialUomId(String componentMaterialUomId) {
+        this.componentMaterialUomId = componentMaterialUomId;
     }
 
     public void setIfMainFabric(boolean ifMainFabric) {
@@ -89,14 +90,6 @@ public class Bom implements EntityObject {
 
     public void setMaterialMatchRuleId(String materialMatchRuleId) {
         this.materialMatchRuleId = materialMatchRuleId;
-    }
-
-    public void setParentId(String parentId) {
-        this.parentId = parentId;
-    }
-
-    public void setQty(double qty) {
-        this.qty = qty;
     }
 
     public boolean getIfMainFabric() {

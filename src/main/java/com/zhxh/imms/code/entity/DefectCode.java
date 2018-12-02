@@ -1,8 +1,10 @@
 package com.zhxh.imms.code.entity;
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.CheckUnique;
-import com.zhxh.core.data.meta.TreeTableParentKey;
-import com.zhxh.core.data.meta.TreeTable;
+import com.zhxh.core.data.meta.annotation.CheckUnique;
+import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
+import com.zhxh.core.data.meta.annotation.TreeTable;
+
+import java.util.UUID;
 
 @TreeTable
 public class DefectCode implements EntityObject {
@@ -10,18 +12,23 @@ public class DefectCode implements EntityObject {
     private String defectCodeNo;
 
     private String defectCodeName;
-    private String description;
+    private String defectCodeDescription;
 
     @TreeTableParentKey
-    private String parentDefectId;
+    private String parentDefectCodeId;
 
-    private String rowId;
+    private String defectCodeId;
 
-    public String getRowId() {
-        return rowId;
+    public DefectCode(){
+        this.defectCodeId = UUID.randomUUID().toString();
     }
-    public void setRowId(String rowId) {
-        this.rowId = rowId;
+
+    public String getDefectCodeId() {
+        return defectCodeId;
+    }
+
+    public void setDefectCodeId(String defectCodeId) {
+        this.defectCodeId = defectCodeId;
     }
 
     public String getDefectCodeNo() {
@@ -32,14 +39,6 @@ public class DefectCode implements EntityObject {
         return defectCodeName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public String getParentDefectId() {
-        return parentDefectId;
-    }
-
     public void setDefectCodeNo(String defectCodeNo) {
         this.defectCodeNo = defectCodeNo;
     }
@@ -48,11 +47,20 @@ public class DefectCode implements EntityObject {
         this.defectCodeName = defectCodeName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+
+    public String getParentDefectCodeId() {
+        return parentDefectCodeId;
     }
 
-    public void setParentDefectId(String parentDefectId) {
-        this.parentDefectId = parentDefectId;
+    public String getDefectCodeDescription() {
+        return defectCodeDescription;
+    }
+
+    public void setDefectCodeDescription(String defectCodeDescription) {
+        this.defectCodeDescription = defectCodeDescription;
+    }
+
+    public void setParentDefectCodeId(String parentDefectCodeId) {
+        this.parentDefectCodeId = parentDefectCodeId;
     }
 }

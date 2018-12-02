@@ -1,29 +1,36 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.CheckUnique;
-import com.zhxh.core.data.meta.TreeTable;
-import com.zhxh.core.data.meta.TreeTableParentKey;
+import com.zhxh.core.data.meta.annotation.CheckUnique;
+import com.zhxh.core.data.meta.annotation.TreeTable;
+import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
+
+import java.util.UUID;
 
 @TreeTable
 public class MachineType implements EntityObject {
-    private String rowId;
+    private String machineTypeId;
 
     @CheckUnique
     private String machineTypeNo;
 
     private String machineTypeName;
-    private String description;
+    private String machineTypeDescription;
 
     @TreeTableParentKey
     private String parentMachineTypeId;
 
-    public String getRowId() {
-        return rowId;
+
+    public MachineType(){
+        this.machineTypeId = UUID.randomUUID().toString();
     }
 
-    public void setRowId(String rowId) {
-        this.rowId = rowId;
+    public String getMachineTypeId() {
+        return machineTypeId;
+    }
+
+    public void setMachineTypeId(String machineTypeId) {
+        this.machineTypeId = machineTypeId;
     }
 
     public String getMachineTypeNo() {
@@ -32,10 +39,6 @@ public class MachineType implements EntityObject {
 
     public String getMachineTypeName() {
         return machineTypeName;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public String getParentMachineTypeId() {
@@ -50,11 +53,15 @@ public class MachineType implements EntityObject {
         this.machineTypeName = machineTypeName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public void setParentMachineTypeId(String parentMachineTypeId) {
         this.parentMachineTypeId = parentMachineTypeId;
+    }
+
+    public String getMachineTypeDescription() {
+        return machineTypeDescription;
+    }
+
+    public void setMachineTypeDescription(String machineTypeDescription) {
+        this.machineTypeDescription = machineTypeDescription;
     }
 }

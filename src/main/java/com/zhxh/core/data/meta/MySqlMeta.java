@@ -25,12 +25,7 @@ public class MySqlMeta extends EntitySqlMeta {
 
        */
 
-        StringBuffer buffer = new StringBuffer();
-        if (isCount) {
-            buffer.append("1 as temp_field");
-        } else {
-            buffer.append(this.getSqlSelect());
-        }
+        StringBuffer buffer = new StringBuffer(this.getSqlSelect());
         map2StringBuffer(listMap, buffer);
         buffer.append("\n limit #{start},#{limit} \n");
 

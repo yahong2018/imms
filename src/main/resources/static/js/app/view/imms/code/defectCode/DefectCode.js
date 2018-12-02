@@ -18,7 +18,7 @@ Ext.define("app.view.imms.code.defectCode.DefectCode", {
         },
         {
             text: '缺陷描述',
-            dataIndex: 'description',
+            dataIndex: 'defectCodeDescription',
             flex:1
         }
     ],

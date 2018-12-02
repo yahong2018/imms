@@ -3,21 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.material.entity">
     <resultMap id="Material" type="com.zhxh.imms.material.entity.Material">
-        <id property="rowId" column="row_id"/>
-        <result property="rowId" column="row_id"/>
-        <result property="materialNo" column="material_no"/>
-        <result property="materialTypeId" column="material_type_id"/>
-        <result property="bomOrderId" column="bom_order_id"/>
-        <result property="operationRoutingOrderId" column="operation_routing_order_id"/>
-        <result property="materialName" column="material_name"/>
-        <result property="unitId" column="unit_id"/>
-        <result property="width" column="width"/>
+        <id property="materialId" column="material_id"/>
 
-        <result property="weight" column="weight"/>
-        <result property="sizeId" column="size_id"/>
-        <result property="price" column="price"/>
-        <result property="color" column="color"/>
-        <result property="description" column="description"/>
+        <result property="materialNo" column="material_no"/>
+        <result property="materialTypeId" column="material_material_type_id"/>
+        <result property="materialName" column="material_name"/>
+        <result property="materialUomId" column="material_uom_id"/>
+        <result property="materialWidth" column="material_width"/>
+        <result property="materialWeight" column="material_weight"/>
+        <result property="materialSizeId" column="material_size_id"/>
+        <result property="materialPrice" column="material_price"/>
+        <result property="materialColor" column="material_color"/>
+        <result property="materialDescription" column="material_description"/>
     </resultMap>
 
 

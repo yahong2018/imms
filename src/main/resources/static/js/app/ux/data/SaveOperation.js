@@ -1,11 +1,11 @@
-Ext.define("app.ux.dbgrid.SaveOperation", {
-    xtype: 'app_ux_dbgrid_SaveOperation',
-    uses: ['app.ux.Utils','Ext.window.Toast'],
+Ext.define("app.ux.data.SaveOperation", {
+    xtype: 'app_ux_data_SaveOperation',
+    uses: ['app.ux.Utils', 'Ext.window.Toast'],
 
     doSave: function (saveAndNew) {
         var me = this;
         var store = me.store;
-        var formCmp = me.down('form');
+        var formCmp = me.getFormCmp();
         var form = formCmp.getForm();
         var grid = me.listGrid;
 
@@ -39,16 +39,18 @@ Ext.define("app.ux.dbgrid.SaveOperation", {
                                 form.owner.afterPost({ isNew: me.isNew, record: record })
                             }
 
-                            if (form.owner.beforeLoadRecord) {
-                                form.owner.beforeLoadRecord({ isNew: me.isNew, record: record });
-                            }
                             form.loadRecord(record);
-                            if (form.owner.afterLoadRecord) {
-                                form.owner.afterLoadRecord({ isNew: me.isNew, record: record });
+
+                            if (form.onRecordLoad) {
+                                form.onRecordLoad({
+                                    dataMode: app.ux.data.DataMode.POST,
+                                    seq: app.ux.data.DataOperationSeq.AFTER,
+                                    record: record
+                                });
                             }
 
                             if (saveAndNew != true && form.owner.afterSaveAction == 'keep') {
-                               // Ext.Msg.alert('系统提示', '已成功保存！');
+                                // Ext.Msg.alert('系统提示', '已成功保存！');
                             } else if (saveAndNew != true) {
                                 me.close();
                             }
@@ -71,7 +73,7 @@ Ext.define("app.ux.dbgrid.SaveOperation", {
                         icon: Ext.MessageBox.ERROR,
                     });
                 }
-            });           
+            });
         }
     }
 });

@@ -61,25 +61,31 @@ public class BaseDAO {
         return this.getPropertyLabel(this.getPropertyFullName(clazz, EntitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
     }
 
-    private final static UUID EMPTY_UUID = new UUID(0, 0);
+//    private final static UUID EMPTY_UUID = new UUID(0, 0);
 
     public int insert(Object item) throws Exception {
         if (item instanceof TrackableEntity) {
             TrackableEntity.fillCreateInfo((TrackableEntity) item);
         }
-        Class clazz = item.getClass();
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String rowId = "rowId";
-        if (meta.getProperties().contains(rowId)) {
-            Object rowIdValue = BeanUtils.getValue(item, rowId);
-            if (rowIdValue == null || StringUtils.isEmpty(rowIdValue.toString()) || EMPTY_UUID.toString().equals(rowId)) {
-                BeanUtils.setValue(item, rowId, UUID.randomUUID().toString());
-            }
-        }
+//        Class clazz = item.getClass();
+//        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+//        String rowId = "rowId";
+//        if (meta.getProperties().contains(rowId)) {
+//            Object rowIdValue = BeanUtils.getValue(item, rowId);
+//            if (rowIdValue == null || StringUtils.isEmpty(rowIdValue.toString()) || EMPTY_UUID.toString().equals(rowId)) {
+//                BeanUtils.setValue(item, rowId, UUID.randomUUID().toString());
+//            }
+//        }
+
         this.verify(item, DATA_OPERATION_INSERT);
 
 
         return this.doInternalInsert(item);
+    }
+
+    private void assignAutoGenerateField(Object item,String fieldName){
+        Class clazz = item.getClass();
+
     }
 
 

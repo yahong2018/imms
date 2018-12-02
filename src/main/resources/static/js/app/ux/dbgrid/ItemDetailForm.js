@@ -15,7 +15,7 @@ Ext.define("app.ux.dbgrid.ItemDetailForm", {
      *   }
      */
 
-    beforeLoadRecord: function (config) {      
+    onRecordLoad: function (config) {      
         if (!config.isNew) {
             return;
         }

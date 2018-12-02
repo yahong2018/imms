@@ -41,12 +41,12 @@ INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES 
 -- ----------------------------------------------------------------------------------------------------------------------
 
 INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
-VALUES ('SYS02', '工厂建模', '', 1, '', 0, 'SYS02', '0xf1ad');
+VALUES ('SYS02', '工厂', '', 1, '', 0, 'SYS02', '0xf1ad');
 INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02', 'PROGRAM_RUN', '系统运行');
 
 
 INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
-VALUES ('SYS02_01', '编码管理', '', 0, '', 0, 'SYS02', '0xf029');
+VALUES ('SYS02_01', '编码', '', 0, '', 0, 'SYS02', '0xf029');
 
 INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
 VALUES ('SYS02_01_01', '尺码', 'app.view.imms.code.size.Size', 3, '', 1, 'SYS02_01', '0xf0c9');
@@ -91,18 +91,17 @@ INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES 
 INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02_01_05', 'DELETE', '删除');
 
 
+INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
+VALUES ('SYS02_02', '物料', '', 0, '', 0, 'SYS02', '0xf187');
 
 INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
-VALUES ('SYS02_02', '物料', '', 0, '', 0, 'SYS02', '0xf029');
+VALUES ('SYS02_02_01', '物料', 'app.view.imms.material.material.Material', 1, '', 1, 'SYS02_02', '0xf187');
 
 INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
-VALUES ('SYS02_02_01', '物料', 'app.view.imms.material.material.Material', 1, '', 1, 'SYS02_02', '0xf0c9');
+VALUES ('SYS02_02_02', 'BOM 单', 'app.view.imms.material.bomOrder.BomOrder', 2, '', 1, 'SYS02_02', '0xf0e8');
 
 INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
-VALUES ('SYS02_02_02', 'BOM 单', 'app.view.imms.material.bomOrder.BomOrder', 2, '', 1, 'SYS02_02', '0xf0c9');
-
-INSERT INTO system_program (program_id, program_name, url, show_order, parameters, progress, parent, glyph)
-VALUES ('SYS02_02_03', 'BOM 项', 'app.view.imms.material.bom.Bom', 3, '', 1, 'SYS02_02', '0xf0c9');
+VALUES ('SYS02_02_03', 'BOM 项', 'app.view.imms.material.bom.Bom', 3, '', 1, 'SYS02_02', '0xf2a1');
 
 INSERT INTO program_privilege (program_id, privilege_id, privilege_name) VALUES ('SYS02_02', 'PROGRAM_RUN', '系统运行');
 

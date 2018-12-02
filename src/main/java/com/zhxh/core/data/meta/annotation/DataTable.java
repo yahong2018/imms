@@ -1,4 +1,4 @@
-package com.zhxh.core.data.meta;
+package com.zhxh.core.data.meta.annotation;
 
 import java.lang.annotation.*;
 

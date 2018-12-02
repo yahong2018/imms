@@ -1,6 +1,6 @@
 package com.zhxh.core.data;
 
-import com.zhxh.core.data.meta.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTable;
 import com.zhxh.core.env.SysEnv;
 import org.apache.ibatis.mapping.ResultMap;
 import org.mybatis.spring.SqlSessionTemplate;

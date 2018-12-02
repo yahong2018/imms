@@ -16,7 +16,6 @@ public class BomVO extends Bom {
     private String materialMatchRuleNo;
     private String materialMatchRuleName;
 
-
     public String getBomOrderNo() {
         return bomOrderNo;
     }

@@ -41,20 +41,5 @@ Ext.define('app.view.admin.systemUser.SystemUserDetailForm', {
     }, {
         name: 'online',
         xtype: "hidden",
-    }],
-    
-    beforeLoadRecord:function(config){
-       
-    },
-    afterLoadRecord: function (config) {      
-    },   
-    beforePost:function(config){
-        debugger;
-
-        return true;
-    },
-    afterPost:function(config){
-        debugger;
-
-    }
+    }]
 });

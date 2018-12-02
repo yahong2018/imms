@@ -60,16 +60,5 @@ Ext.define('app.view.admin.systemUser.SystemUser', {
             this.getController().loadAllRoles();
         },
         beforeselect: 'gridSelectionChanged',
-    },
-    beforeInsret: function () {
-
-    },
-    beforeEdit: function () {
-
-    },
-    applyPrivileges: function (config) {
-        debugger;
-
-      //  this.callParent(arguments);
-    },
+    }
 });

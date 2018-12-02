@@ -1,29 +1,35 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.CheckUnique;
-import com.zhxh.core.data.meta.TreeTable;
-import com.zhxh.core.data.meta.TreeTableParentKey;
+import com.zhxh.core.data.meta.annotation.CheckUnique;
+import com.zhxh.core.data.meta.annotation.TreeTable;
+import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
+
+import java.util.UUID;
 
 @TreeTable
 public class Size implements EntityObject {
-    private String rowId;
+    private String sizeId;
 
     @CheckUnique
     private String sizeNo;
 
     private String sizeName;
-    private String description;
+    private String sizeDescription;
 
     @TreeTableParentKey
     private String parentSizeId;
 
-    public String getRowId() {
-        return rowId;
+    public Size(){
+        this.sizeId = UUID.randomUUID().toString();
     }
 
-    public void setRowId(String rowId) {
-        this.rowId = rowId;
+    public String getSizeId() {
+        return sizeId;
+    }
+
+    public void setSizeId(String sizeId) {
+        this.sizeId = sizeId;
     }
 
     public String getSizeNo() {
@@ -32,10 +38,6 @@ public class Size implements EntityObject {
 
     public String getSizeName() {
         return sizeName;
-    }
-
-    public String getDescription() {
-        return description;
     }
 
     public String getParentSizeId() {
@@ -50,11 +52,15 @@ public class Size implements EntityObject {
         this.sizeName = sizeName;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public void setParentSizeId(String parentSizeId) {
         this.parentSizeId = parentSizeId;
+    }
+
+    public String getSizeDescription() {
+        return sizeDescription;
+    }
+
+    public void setSizeDescription(String sizeDescription) {
+        this.sizeDescription = sizeDescription;
     }
 }

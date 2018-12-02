@@ -3,47 +3,41 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.code.entity">
     <resultMap id="DefectCode" type="com.zhxh.imms.code.entity.DefectCode">
-        <id property="rowId" column="row_id"/>
-        <result property="rowId" column="row_id"/>
+        <id property="defectCodeId" column="defect_code_id"/>
         <result property="defectCodeNo" column="defect_code_no"/>
         <result property="defectCodeName" column="defect_code_name"/>
-        <result property="description" column="description"/>
-        <result property="parentDefectId" column="parent_defect_id"/>
+        <result property="defectCodeDescription" column="parent_defect_code_description"/>
     </resultMap>
 
     <resultMap id="MachineType" type="com.zhxh.imms.code.entity.MachineType">
-        <id property="rowId" column="row_id"/>
-        <result property="rowId" column="row_id"/>
+        <id property="machineTypeId" column="machine_type_id"/>
         <result property="machineTypeNo" column="machine_type_no"/>
         <result property="machineTypeName" column="machine_type_name"/>
-        <result property="description" column="description"/>
+        <result property="machineTypeDescription" column="machine_type_description"/>
         <result property="parentMachineTypeId" column="parent_machine_type_id"/>
     </resultMap>
 
     <resultMap id="Size" type="com.zhxh.imms.code.entity.Size">
-        <id property="rowId" column="row_id"/>
-        <result property="rowId" column="row_id"/>
+        <id property="sizeId" column="size_id"/>
         <result property="sizeNo" column="size_no"/>
         <result property="sizeName" column="size_name"/>
-        <result property="description" column="description"/>
+        <result property="sizeDescription" column="size_description"/>
         <result property="parentSizeId" column="parent_size_id"/>
     </resultMap>
 
     <resultMap id="MaterialType" type="com.zhxh.imms.code.entity.MaterialType">
-        <id property="rowId" column="row_id"/>
-        <result property="rowId" column="row_id"/>
+        <id property="materialTypeId" column="material_type_id"/>
         <result property="materialTypeNo" column="material_type_no"/>
         <result property="materialTypeName" column="material_type_name"/>
-        <result property="description" column="description"/>
+        <result property="materialTypeDescription" column="material_type_description"/>
         <result property="parentMaterialTypeId" column="parent_material_type_id"/>
     </resultMap>
 
     <resultMap id="Uom" type="com.zhxh.imms.code.entity.Uom">
-        <id property="rowId" column="row_id"/>
-        <result property="rowId" column="row_id"/>
+        <id property="uomId" column="uom_id"/>
         <result property="uomNo" column="uom_no"/>
         <result property="uomName" column="uom_name"/>
-        <result property="description" column="description"/>
+        <result property="uomDescription" column="uom_description"/>
     </resultMap>
 
 

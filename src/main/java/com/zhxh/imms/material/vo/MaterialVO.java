@@ -3,53 +3,21 @@ package com.zhxh.imms.material.vo;
 import com.zhxh.imms.material.entity.Material;
 
 public class MaterialVO extends Material {
-    private String bomOrderCode;
-    private String materialTypeCode;
+
+    private String materialTypeNo;
     private String materialTypeName;
-    private String operationRoutingOrderCode;
-    private String sizeCode;
+    private String sizeNo;
     private String sizeName;
-    private String unitCode;
-    private String unitName;
+    private String uomNo;
+    private String uomName;
 
-    public String getMaterialTypeCode() {
-        return materialTypeCode;
-    }
-
-    public String getBomOrderCode() {
-        return bomOrderCode;
-    }
-
-    public String getOperationRoutingOrderCode() {
-        return operationRoutingOrderCode;
-    }
-
-    public String getSizeCode() {
-        return sizeCode;
-    }
 
     public String getSizeName() {
         return sizeName;
     }
 
-    public void setBomOrderCode(String bomOrderCode) {
-        this.bomOrderCode = bomOrderCode;
-    }
-
-    public void setOperationRoutingOrderCode(String operationRoutingOrderCode) {
-        this.operationRoutingOrderCode = operationRoutingOrderCode;
-    }
-
-    public void setSizeCode(String sizeCode) {
-        this.sizeCode = sizeCode;
-    }
-
     public void setSizeName(String sizeName) {
         this.sizeName = sizeName;
-    }
-
-    public void setMaterialTypeCode(String materialTypeCode) {
-        this.materialTypeCode = materialTypeCode;
     }
 
     public String getMaterialTypeName() {
@@ -60,19 +28,35 @@ public class MaterialVO extends Material {
         this.materialTypeName = materialTypeName;
     }
 
-    public String getUnitCode() {
-        return unitCode;
+    public String getMaterialTypeNo() {
+        return materialTypeNo;
     }
 
-    public String getUnitName() {
-        return unitName;
+    public String getSizeNo() {
+        return sizeNo;
     }
 
-    public void setUnitCode(String unitCode) {
-        this.unitCode = unitCode;
+    public String getUomNo() {
+        return uomNo;
     }
 
-    public void setUnitName(String unitName) {
-        this.unitName = unitName;
+    public String getUomName() {
+        return uomName;
+    }
+
+    public void setMaterialTypeNo(String materialTypeNo) {
+        this.materialTypeNo = materialTypeNo;
+    }
+
+    public void setSizeNo(String sizeNo) {
+        this.sizeNo = sizeNo;
+    }
+
+    public void setUomName(String uomName) {
+        this.uomName = uomName;
+    }
+
+    public void setUomNo(String uomNo) {
+        this.uomNo = uomNo;
     }
 }

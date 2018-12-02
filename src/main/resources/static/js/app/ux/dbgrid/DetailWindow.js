@@ -1,8 +1,8 @@
 Ext.define('app.ux.dbgrid.DetailWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.detailwindow',
-    requires:["app.ux.dbgrid.SaveOperation"],
-    mixins:["app.ux.dbgrid.SaveOperation"],    
+    requires:["app.ux.data.SaveOperation"],
+    mixins:["app.ux.data.SaveOperation"],    
 
     modal: true,
     maximizable: true,
@@ -33,5 +33,9 @@ Ext.define('app.ux.dbgrid.DetailWindow', {
                 me = null;
             }
         }
-    ],    
+    ],  
+    
+    getFormCmp:function(){
+        return this.items.getAt(0);
+    }
 });

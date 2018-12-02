@@ -1,9 +1,11 @@
 package com.zhxh.imms.material.controller;
 
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.SimpleCRUDController;
 import com.zhxh.imms.material.dao.MaterialDAO;
 import com.zhxh.imms.material.entity.Material;
+import com.zhxh.imms.material.vo.MaterialVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -21,11 +23,15 @@ public class MaterialController extends SimpleCRUDController<Material> {
         return this.materialDAO;
     }
 
+    @Override
+    protected List internalGetByRequest(ListRequest listRequest) {
+        Class clazz = MaterialVO.class;
+        return this.materialDAO.getPageList(clazz,listRequest.toMap(),null);
+    }
 
     @Override
-    protected List<Material> internalGetAll() {
-        //转为MaterialVO
-
-        return super.internalGetAll();
+    protected int internalGetRequestListCount(ListRequest listRequest) {
+        Class clazz = MaterialVO.class;
+        return this.materialDAO.getPageListCount(clazz,listRequest.toMap(),null);
     }
 }

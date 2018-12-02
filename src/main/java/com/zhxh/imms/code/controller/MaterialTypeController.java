@@ -33,7 +33,7 @@ public class MaterialTypeController extends SimpleCRUDController<MaterialType> {
         List<MaterialType> result = new ArrayList<>();
 
         try {
-            List<MaterialTypeWithChildren> children = ParentChildConverter.getAllWithChildren(source, MaterialTypeWithChildren.class,"rowId","parentMaterialTypeId");
+            List<MaterialTypeWithChildren> children = ParentChildConverter.getAllWithChildren(source, MaterialTypeWithChildren.class,"materialTypeId","parentMaterialTypeId");
             result.addAll(children);
         } catch (Exception e) {
             Logger.error(e);

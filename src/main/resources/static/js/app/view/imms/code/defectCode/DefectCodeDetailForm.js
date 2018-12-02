@@ -23,7 +23,7 @@ Ext.define('app.view.imms.code.defectCode.DefectCodeDetailForm', {
             name: "rowId",
             xtype: "hidden",
         },{
-            name: "parentDefectId",
+            name: "parentDefectCodeId",
             xtype: "hidden",
         },
         {
@@ -42,15 +42,14 @@ Ext.define('app.view.imms.code.defectCode.DefectCodeDetailForm', {
             enforceMaxLength: true,
         },
         {
-            name: 'description',
+            name: 'defectCodeDescription',
             fieldLabel: '描述',
             xtype: "textarea",
             maxLength: 250,
             enforceMaxLength: true,
         }
     ],
-    beforeLoadRecord: function (config) {
-        debugger;
+    onRecordLoad: function (config) {        
         var grid = this.up("detailwindow").listGrid; //获取到Grid
         if(grid.getSelectedRecord() != null){      
         	var currentRecord = grid.getSelectedRecord();//获取到当前的记录
@@ -58,12 +57,12 @@ Ext.define('app.view.imms.code.defectCode.DefectCodeDetailForm', {
             var txtParentCode = this.down('[vid="parentDefectCode"]');
 	
             if (config.isNew === true) { //如果是新建
-                var rowId = currentRecord.get("rowId");
-                config.record.set("parentDefectId", rowId); //parentDefectId                
+                var rowId = currentRecord.get("defectCodeId");
+                config.record.set("parentDefecCodetId", rowId); //parentDefectId                
                 txtParentName.setValue (currentRecord.get("defectCodeName"));
                 txtParentCode.setValue (currentRecord.get("defectCodeNo"));
 	        }else{
-	            var index = grid.store.find("rowId",currentRecord.get("parentDefectId"));
+	            var index = grid.store.find("rowId",currentRecord.get("parentDefectCodeId"));
 	            var parent = grid.store.getAt(index);
                 txtParentName.setValue (parent.get("defectCodeName"));
                 txtParentCode.setValue (parent.get("defectCodeNo"));

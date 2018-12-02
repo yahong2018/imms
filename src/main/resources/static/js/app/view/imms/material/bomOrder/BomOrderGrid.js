@@ -26,7 +26,7 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
         this.callParent(arguments);
     },
 
-    createDetailWindowFun: function (config) {
+    createDetailWindowFun: function () {
         debugger;
         var form = this.up('app_view_imms_material_bomOrder_BomOrder').down('app_view_imms_material_bomOrder_BomOrderDetailForm');
         return form;

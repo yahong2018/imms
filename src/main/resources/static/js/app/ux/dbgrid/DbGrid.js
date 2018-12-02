@@ -3,8 +3,8 @@ Ext.define('app.ux.dbgrid.DbGrid', {
     xtype: 'dbgrid',
     alias: 'widget.dbgrid',
 
-    requires:["app.ux.dbgrid.DataOperation"],
-    mixins:["app.ux.dbgrid.DataOperation"],    
+    requires:["app.ux.data.DataOperation"],
+    mixins:["app.ux.data.DataOperation"],    
 
     constructor: function (config) {
         var configBase = this.getInitConfig();

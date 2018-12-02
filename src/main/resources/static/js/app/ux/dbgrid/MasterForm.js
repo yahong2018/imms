@@ -20,7 +20,7 @@ Ext.define("app.ux.dbgrid.MasterForm", {
      *            }]
      */
 
-    beforeLoadRecord: function (config) {        
+    onRecordLoad: function (config) {        
         var isNew = config.isNew;
         var record = config.record;
         if (isNew && this.getDetailPanel) {

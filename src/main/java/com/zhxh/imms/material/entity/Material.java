@@ -1,127 +1,110 @@
 package com.zhxh.imms.material.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.CheckUnique;
+import com.zhxh.core.data.meta.annotation.CheckUnique;
 
 
 public class Material implements EntityObject {
-    private String rowId;
+    private String materialId;
 
     @CheckUnique
     private String materialNo;
-    private String materialTypeId;
-    private String bomOrderId;
-    private String operationRoutingOrderId;
-    private String materialName;
-    private String unitId;
-    private double  width;
-    private double weight;
-    private String sizeId;
-    private double price;
-    private String color;
-    private String description;
 
-    public String getRowId() {
-        return rowId;
+    private String materialMaterialTypeId;
+    private String materialName;
+    private String materialUomId;
+    private double materialWidth;
+    private double materialWeight;
+    private String materialSizeId;
+    private double materialPrice;
+    private String materialColor;
+    private String materialDescription;
+
+    public String getMaterialId() {
+        return materialId;
     }
 
     public String getMaterialNo() {
         return materialNo;
     }
 
-    public String getMaterialTypeId() {
-        return materialTypeId;
-    }
-
-    public String getBomOrderId() {
-        return bomOrderId;
-    }
-
-    public String getOperationRoutingOrderId() {
-        return operationRoutingOrderId;
+    public String getMaterialMaterialTypeId() {
+        return materialMaterialTypeId;
     }
 
     public String getMaterialName() {
         return materialName;
     }
 
-    public double getWidth() {
-        return width;
+    public String getMaterialUomId() {
+        return materialUomId;
     }
 
-    public String getUnitId() {
-        return unitId;
+    public double getMaterialWidth() {
+        return materialWidth;
     }
 
-    public double getWeight() {
-        return weight;
+    public double getMaterialWeight() {
+        return materialWeight;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMaterialSizeId() {
+        return materialSizeId;
     }
 
-    public double getPrice() {
-        return price;
+    public double getMaterialPrice() {
+        return materialPrice;
     }
 
-    public String getColor() {
-        return color;
+    public String getMaterialColor() {
+        return materialColor;
     }
 
-    public String getSizeId() {
-        return sizeId;
+    public String getMaterialDescription() {
+        return materialDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setMaterialName(String materialName) {
-        this.materialName = materialName;
-    }
-
-    public void setRowId(String rowId) {
-        this.rowId = rowId;
-    }
-
-    public void setBomOrderId(String bomOrderId) {
-        this.bomOrderId = bomOrderId;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
+    public void setMaterialId(String materialId) {
+        this.materialId = materialId;
     }
 
     public void setMaterialNo(String materialNo) {
         this.materialNo = materialNo;
     }
 
-    public void setMaterialTypeId(String materialTypeId) {
-        this.materialTypeId = materialTypeId;
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
-    public void setOperationRoutingOrderId(String operationRoutingOrderId) {
-        this.operationRoutingOrderId = operationRoutingOrderId;
+    public void setMaterialUomId(String materialUomId) {
+        this.materialUomId = materialUomId;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public void setMaterialSizeId(String materialSizeId) {
+        this.materialSizeId = materialSizeId;
     }
 
-    public void setSizeId(String sizeId) {
-        this.sizeId = sizeId;
+    public void setMaterialMaterialTypeId(String materialMaterialTypeId) {
+        this.materialMaterialTypeId = materialMaterialTypeId;
     }
 
-    public void setUnitId(String unitId) {
-        this.unitId = unitId;
+    public void setMaterialColor(String materialColor) {
+        this.materialColor = materialColor;
     }
 
-    public void setWeight(double weight) {
-        this.weight = weight;
+    public void setMaterialDescription(String materialDescription) {
+        this.materialDescription = materialDescription;
     }
 
-    public void setWidth(double width) {
-        this.width = width;
+    public void setMaterialPrice(double materialPrice) {
+        this.materialPrice = materialPrice;
+    }
+
+    public void setMaterialWeight(double materialWeight) {
+        this.materialWeight = materialWeight;
+    }
+
+    public void setMaterialWidth(double materialWidth) {
+        this.materialWidth = materialWidth;
     }
 }

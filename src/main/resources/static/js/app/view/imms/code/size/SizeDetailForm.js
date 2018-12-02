@@ -49,8 +49,7 @@ Ext.define('app.view.imms.code.size.SizeDetailForm', {
             enforceMaxLength: true,
         }
     ],
-    beforeLoadRecord: function (config) {
-        debugger;
+    onRecordLoad: function (config) {        
         var grid = this.up("detailwindow").listGrid; //获取到Grid
         if(grid.getSelectedRecord() != null){      
         	var currentRecord = grid.getSelectedRecord();//获取到当前的记录

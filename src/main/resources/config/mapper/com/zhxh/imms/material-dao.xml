@@ -3,22 +3,18 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.material.dao">
     <sql id="MATERIAL_FIELDS">
-        row_id,material_no,material_name,material_type_id,bom_order_id,operation_routing_order_id,
-        unit_id,width,weight,size_id,price,color,description
+        material_id,material_no,material_name,material_material_type_id,
+        uom_id,material_width,material_weight,material_size_id,material_price,material_color,material_description
     </sql>
 
     <sql id="MATERIAL_VO_FIELDS">
-       <include refid="MATERIAL_FIELDS"/>
-       ,mt.material_type_code,mt.material_type_name,bo.bom_order_code,op.operation_routing_order_code,
-       uom.unit_code,uom.unit_name,sz.size_code,sz.size_name
+        material_type_no,material_type_name,uom_no,uom_name,size_no,size_name
     </sql>
 
     <select id="SQL_GET_MATERIAL_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.material.vo.MaterialVO">
         select <include refid="MATERIAL_VO_FIELDS"/>
-          from material m join material_type mt on m.material_type_id = mt.row_id
-                          join bom_order bo on m.bom_order_id = bo.row_id
-                          join operation_routing_order op on m.operation_routing_order_id = op.row_id
-                          join uom uom on m.unit_id = uom.row_id
-                          join `size` sz on m.size_id = sz.row_id
+          from material   join material_type on material_material_type_id = material_type_id
+                          join uom  on uom_id = material_uom_id
+                          join size on size_id = material_size_id
     </select>
 </mapper>

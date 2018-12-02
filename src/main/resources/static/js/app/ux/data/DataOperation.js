@@ -1,8 +1,8 @@
-Ext.define("app.ux.dbgrid.DataOperation", {
-    xtype: 'dataoperation',
+Ext.define("app.ux.data.DataOperation", {
+    xtype: 'app_ux_data_DataOperation',
 
     requires: ['app.ux.dbgrid.DbGridToolbar'],
-    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow', 'app.ux.Utils'],
+    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow', 'app.ux.Utils','app.ux.data.DataMode'],
 
     getInitConfig: function () {
         var me = this;
@@ -67,30 +67,25 @@ Ext.define("app.ux.dbgrid.DataOperation", {
         }
     },
 
-    /*
-    applyPrivileges: function (config) {
-        debugger;
-        var privilegeList = app.ux.GlobalVars.currentLogin.privilegeList;
-        var programId = config.programId;
-        var model = config.model;
-        var grid = this;
-
-        for (var i = 0; i < privilegeList.length; i++) {
-            if (privilegeList[i].programId != programId) {
-                continue;
-            }
-            debugger;
-
-            var privilege = privilegeList[i];
-            var actionButton = grid.down('[privilege="' + privilege.privilegeId + '"]');
-            if (actionButton) {
-                actionButton.setDisabled(false);
-            }
+    createDetailWindow:function(dataMode){
+        var detailWindow;
+        if (this.createDetailWindowFun) {
+            detailWindow = this.createDetailWindowFun();
+        } else {
+            detailWindow = Ext.create(this.insertDetailWindowClass, {
+                dataMode: dataMode,                
+                store: this.store,
+                listGrid: this,
+                items: [{
+                    xtype: this.detailFormClass,
+                }]
+            });
         }
-    },
-    */
 
-    doInsert: function () {
+        return detailWindow;
+    },
+
+    doInsert: function () {        
         var grid = this;
         if (this.beforeInsert) {
             if (this.beforeInsert() === false) {
@@ -98,35 +93,17 @@ Ext.define("app.ux.dbgrid.DataOperation", {
             }
         }
         var record = this.store.createModel({});
-        var detailWindow;
-        if (this.createDetailWindowFun) {
-            detailWindow = this.createDetailWindowFun({ isNew: true, record: record });
-        } else {
-            detailWindow = Ext.create(this.insertDetailWindowClass, {
-                isNew: true,
-                title: '新增 — [' + this.detailWindowTitle + ']',
-                store: this.store,
-                listGrid: grid,
-                items: [{
-                    xtype: this.detailFormClass,
-                }]
-            });
-        }
-        var form;
-        if (detailWindow.xtype == this.detailFormClass) {
-            form = detailWindow;
-        } else {
-            form = detailWindow.down(this.detailFormClass);
-        }
-
-        if (form.beforeLoadRecord) {
-            form.beforeLoadRecord({ isNew: true, record: record });
-        }
-
+        var detailWindow = this.createDetailWindow(app.ux.data.DataMode.INSERT);
+        detailWindow.title='新增 — [' + this.detailWindowTitle + ']';
+        
+        var form = detailWindow.getFormCmp();
         form.loadRecord(record);
-
-        if (form.afterLoadRecord) {
-            form.afterLoadRecord({ isNew: true, record: record });
+        if (form.onRecordLoad) {
+            form.onRecordLoad({
+                dataMode:app.ux.data.DataMode.INSERT,
+                seq:app.ux.data.DataOperationSeq.BEFORE,
+                record:record
+            });
         }
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
@@ -154,40 +131,21 @@ Ext.define("app.ux.dbgrid.DataOperation", {
             }
         }
 
-        var detailWindow;
-        if (this.createDetailWindowFun) {
-            detailWindow = this.createDetailWindowFun({ isNew: false, record: record });
-        } else {
-            detailWindow = Ext.create(this.editDetailWindowClass, {
-                isNew: false,
-                title: '修改 — [' + this.detailWindowTitle + ']',
-                store: this.store,
-                listGrid: grid,
-                items: [{
-                    xtype: this.detailFormClass,
-                }]
-            });
-        }
-
-        var form;
-        if (detailWindow.xtype == this.detailFormClass) {
-            form = detailWindow;
-        } else {
-            form = detailWindow.down(this.detailFormClass);
-        }
-
-        if (form.beforeLoadRecord) {
-            form.beforeLoadRecord({ isNew: false, record: record });
-        }
+        var detailWindow = this.createDetailWindow(app.ux.data.DataMode.EDIT);
+        detailWindow.title = '修改 — [' + this.detailWindowTitle + ']';
+        var form  = detailWindow.getFormCmp(); 
         form.loadRecord(record);
-
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
         }
-
-        if (form.afterLoadRecord) {
-            form.afterLoadRecord({ isNew: false, record: record });
+        
+        if (form.onRecordLoad) {
+            form.onRecordLoad({
+                dataMode:app.ux.data.DataMode.EDIT,
+                seq:app.ux.data.DataOperationSeq.BEFORE,
+                record:record
+            });
         }
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
@@ -206,42 +164,24 @@ Ext.define("app.ux.dbgrid.DataOperation", {
         var record = this.getSelectionModel().getSelection();
         if (!record || record.length == 0) {
             return;
-        }
+        }        
 
         record = record[0];
-        var detailWindow;
-        if (this.createDetailWindowFun) {
-            detailWindow = this.createDetailWindowFun({ isNew: false, record: record });
-        } else {
-            detailWindow = Ext.create(this.editDetailWindowClass, {
-                isNew: false,
-                title: this.detailWindowTitle,
-                store: this.store,
-                listGrid: grid,
-                items: [{
-                    xtype: this.detailFormClass,
-                }]
-            });
-        }
-        var form;
-        if (detailWindow.xtype == this.detailFormClass) {
-            form = detailWindow;
-        } else {
-            form = detailWindow.down(this.detailFormClass);
-        }
-
-        if (form.beforeLoadRecord) {
-            form.beforeLoadRecord({ isNew: false, record: record });
-        }
+        var detailWindow = this.createDetailWindow(app.ux.data.DataMode.BROWSE);
+        detailWindow.title = this.detailWindowTitle;
+        var form  = detailWindow.getFormCmp();
         form.loadRecord(record);
-
         var idField = form.down('[name="' + record.getIdProperty() + '"]');
         if (idField) {
             idField.readOnly = true;
         }
-
-        if (form.afterLoadRecord) {
-            form.afterLoadRecord({ isNew: false, record: record });
+        
+        if (form.onRecordLoad) {
+            form.onRecordLoad({
+                dataMode:app.ux.data.DataMode.BROWSE,
+                seq:app.ux.data.DataOperationSeq.BEFORE,
+                record:record
+            });
         }
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();

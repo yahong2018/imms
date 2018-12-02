@@ -31,7 +31,7 @@ public class MachineTypeController extends SimpleCRUDController<MachineType> {
         List<MachineType> result = new ArrayList<>();
 
         try {
-            List<MachineTypeWithChildren> children = ParentChildConverter.getAllWithChildren(source, MachineTypeWithChildren.class,"rowId","parentMachineTypeId");
+            List<MachineTypeWithChildren> children = ParentChildConverter.getAllWithChildren(source, MachineTypeWithChildren.class,"machineTypeId","parentMachineTypeId");
             result.addAll(children);
         } catch (Exception e) {
             Logger.error(e);

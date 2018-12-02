@@ -34,7 +34,7 @@ public class SizeController extends SimpleCRUDController<Size> {
         List<Size> result = new ArrayList<>();
 
         try {
-            List<SizeWithChildren> children = ParentChildConverter.getAllWithChildren(source, SizeWithChildren.class,"rowId","parentSizeId");
+            List<SizeWithChildren> children = ParentChildConverter.getAllWithChildren(source, SizeWithChildren.class,"sizeId","parentSizeId");
             result.addAll(children);
         } catch (Exception e) {
             Logger.error(e);

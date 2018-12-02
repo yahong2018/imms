@@ -58,7 +58,11 @@ Ext.define('app.view.imms.material.bomOrder.BomOrderDetailForm', {
         }
     ], 
 
-    afterLoadRecord:function(config){
+    getFormCmp:function(){
+        return this;
+    },
+
+    onRecordLoad:function(config){
         var txtBomOrderNo = this.down('[name= "bomOrderNo"]');
         txtBomOrderNo.focus();
     }
