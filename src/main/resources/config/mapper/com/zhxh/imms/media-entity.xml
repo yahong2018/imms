@@ -5,9 +5,9 @@
     <resultMap id="Media" type="com.zhxh.imms.media.entity.Media">
         <id property="mediaId" column="media_id"/>
 
+        <result property="mediaName" column="media_name"/>
         <result property="mediaType" column="media_type"/>
         <result property="mediaUrl" column="media_url"/>
-        <result property="mediaName" column="media_name"/>
         <result property="mediaSize" column="media_size"/>
         <result property="mediaDescription" column="media_description"/>
         <result property="mediaDataSource" column="media_data_source"/>

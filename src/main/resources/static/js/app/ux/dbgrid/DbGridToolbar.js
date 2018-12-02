@@ -5,9 +5,9 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
     , constructor: function (config) {
         var configBase = {
             dock: 'top',
-            insertPrivilege: config.dbGrid.insertPrivilege || "INSERT",
-            updatePrivilege: config.dbGrid.updatePrivilege || "UPDATE",
-            deletePrivilege: config.dbGrid.deletePrivilege || "DELETE"
+            insertPrivilege: "INSERT",
+            updatePrivilege: "UPDATE",
+            deletePrivilege: "DELETE"
         };       
        
         Ext.applyIf(config, configBase);

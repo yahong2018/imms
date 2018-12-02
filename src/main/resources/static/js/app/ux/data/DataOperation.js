@@ -37,7 +37,7 @@ Ext.define("app.ux.data.DataOperation", {
 
                 if (item.xtype == "dbgridtoolbar") {
                     hasDefaultToolbar = true;
-                    item.dbGrid = this;
+                    item.dbGrid = me;
                     continue;
                 }
             }
