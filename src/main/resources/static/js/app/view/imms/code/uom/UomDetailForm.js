@@ -10,7 +10,7 @@ Ext.define('app.view.imms.code.uom.UomDetailForm', {
     width: 400,
     items: [
        {
-            name: "rowId",
+            name: "uomId",
             xtype: "hidden",
         },
         {
@@ -29,7 +29,7 @@ Ext.define('app.view.imms.code.uom.UomDetailForm', {
             enforceMaxLength: true,
         },
         {
-            name: 'description',
+            name: 'uomDescription',
             fieldLabel: '单位描述',
             xtype: "textarea",
             maxLength: 250,

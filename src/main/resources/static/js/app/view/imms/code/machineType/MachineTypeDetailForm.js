@@ -20,7 +20,7 @@ Ext.define('app.view.imms.code.machineType.MachineTypeDetailForm', {
             readOnly:true,            
             fieldLabel:"上级名称"
         },{
-            name: "rowId",
+            name: "machineTypeId",
             xtype: "hidden",
         },{
             name: "parentMachineTypeId",
@@ -42,28 +42,29 @@ Ext.define('app.view.imms.code.machineType.MachineTypeDetailForm', {
             enforceMaxLength: true,
         },
         {
-            name: 'description',
+            name: 'machineTypeDescription',
             fieldLabel: '描述',
             xtype: "textarea",
             maxLength: 250,
             enforceMaxLength: true,
         }
     ],
-    onRecordLoad: function (config) {
-        debugger;
+    onRecordLoad: function (config) {        
         var grid = this.up("detailwindow").listGrid; //获取到Grid
         if(grid.getSelectedRecord() != null){      
         	var currentRecord = grid.getSelectedRecord();//获取到当前的记录
             var txtParentName = this.down('[vid="parentName"]');
             var txtParentCode = this.down('[vid="parentCode"]');
 	
-            if (config.isNew === true) { //如果是新建
-                var rowId = currentRecord.get("rowId");
-                config.record.set("parentMachineTypeId", rowId);            
+            if (config.dataMode == app.ux.data.DataMode.INSERT) { //如果是新建
+                var parentId = currentRecord.get("machineTypeId");
+                config.record.set("parentMachineTypeId", parentId);
+                this.down('[name="parentMachineTypeId"]').setValue(parentId);            
+
                 txtParentName.setValue (currentRecord.get("machineTypeName"));
                 txtParentCode.setValue (currentRecord.get("machineTypeNo"));
 	        }else{
-	            var index = grid.store.find("rowId",currentRecord.get("parentMachineTypeId"));
+	            var index = grid.store.find("machineTypeId",currentRecord.get("parentMachineTypeId"));
 	            var parent = grid.store.getAt(index);
                 txtParentName.setValue (parent.get("machineTypeName"));
                 txtParentCode.setValue (parent.get("machineTypeNo"));

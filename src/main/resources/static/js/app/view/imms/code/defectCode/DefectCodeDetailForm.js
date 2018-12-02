@@ -20,7 +20,7 @@ Ext.define('app.view.imms.code.defectCode.DefectCodeDetailForm', {
             readOnly:true,            
             fieldLabel:"上级名称"
         },{
-            name: "rowId",
+            name: "defectCodeId",
             xtype: "hidden",
         },{
             name: "parentDefectCodeId",
@@ -49,24 +49,31 @@ Ext.define('app.view.imms.code.defectCode.DefectCodeDetailForm', {
             enforceMaxLength: true,
         }
     ],
-    onRecordLoad: function (config) {        
+    onRecordLoad: function (config) {                
         var grid = this.up("detailwindow").listGrid; //获取到Grid
         if(grid.getSelectedRecord() != null){      
         	var currentRecord = grid.getSelectedRecord();//获取到当前的记录
             var txtParentName = this.down('[vid="parentName"]');
             var txtParentCode = this.down('[vid="parentDefectCode"]');
+            var parentName,parentCode,parentDefectCodeId;
 	
-            if (config.isNew === true) { //如果是新建
-                var rowId = currentRecord.get("defectCodeId");
-                config.record.set("parentDefecCodetId", rowId); //parentDefectId                
-                txtParentName.setValue (currentRecord.get("defectCodeName"));
-                txtParentCode.setValue (currentRecord.get("defectCodeNo"));
+            if (config.dataMode == app.ux.data.DataMode.INSERT) {
+                parentDefectCodeId = currentRecord.get("defectCodeId");                
+                config.record.set("parentDefecCodetId", parentDefectCodeId); 
+                this.down('[name="parentDefectCodeId"]').setValue(parentDefectCodeId);
+
+                parentName = currentRecord.get("defectCodeName");
+                parentCode = currentRecord.get("defectCodeNo");
 	        }else{
-	            var index = grid.store.find("rowId",currentRecord.get("parentDefectCodeId"));
-	            var parent = grid.store.getAt(index);
-                txtParentName.setValue (parent.get("defectCodeName"));
-                txtParentCode.setValue (parent.get("defectCodeNo"));
-	        }
+	            var index = grid.store.find("defectCodeId",currentRecord.get("parentDefectCodeId"));
+                var parent = grid.store.getAt(index);                
+                
+                parentName = parent.get("defectCodeName");
+                parentCode = parent.get("defectCodeNo");
+            }
+            
+            txtParentName.setValue (parentName);
+            txtParentCode.setValue (parentCode);
         }
     }
 });

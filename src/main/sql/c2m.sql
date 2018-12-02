@@ -68,7 +68,7 @@ CREATE TABLE `machine_type`  (
   `machine_type_id`          char(36)     NOT NULL,
   `machine_type_no`          varchar(10)  NOT NULL,
   `machine_type_name`        varchar(30)  NOT NULL ,
-  `machine_typedescription`  varchar(250) NULL,
+  `machine_type_description`  varchar(250) NULL,
   `parent_machine_type_id`   char(36)     NOT NULL,
 
   PRIMARY KEY (`machine_type_id`) ,
@@ -192,7 +192,7 @@ drop table bom;
 set @id = UUID();
 INSERT INTO `size` VALUES (@id, 'SZ', '尺码', NULL, @id);
 set @id = UUID();
-INSERT INTO `defect_code` VALUES (@top_id, 'FT', '缺陷类别', NULL, @id);
+INSERT INTO `defect_code` VALUES (@id, 'FT', '缺陷类别', NULL, @id);
 set @id = UUID
 INSERT INTO `machine_type` VALUES (@id, 'DT', '设备类别', NULL, @id);
 set @id = UUID();

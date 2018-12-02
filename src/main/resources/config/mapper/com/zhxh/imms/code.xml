@@ -6,7 +6,8 @@
         <id property="defectCodeId" column="defect_code_id"/>
         <result property="defectCodeNo" column="defect_code_no"/>
         <result property="defectCodeName" column="defect_code_name"/>
-        <result property="defectCodeDescription" column="parent_defect_code_description"/>
+        <result property="defectCodeDescription" column="defect_code_description"/>
+        <result property="parentDefectCodeId" column="parent_defect_code_id"/>
     </resultMap>
 
     <resultMap id="MachineType" type="com.zhxh.imms.code.entity.MachineType">

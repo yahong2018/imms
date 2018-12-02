@@ -1,6 +1,7 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 import com.zhxh.core.data.meta.annotation.TreeTable;
 import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 @TreeTable
 public class MachineType implements EntityObject {
+    @AutoGeneration
     private String machineTypeId;
 
     @CheckUnique

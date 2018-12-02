@@ -36,7 +36,7 @@ Ext.define("app.view.imms.material.material.MaterialBasicForm", {
 
             items: [
                 {
-                    name: "materialTypeId",
+                    name: "materialMaterialTypeId",
                     fieldLabel: "物料类型Id",
                     xtype: "hidden",
                 },
@@ -62,7 +62,7 @@ Ext.define("app.view.imms.material.material.MaterialBasicForm", {
             margin: '0 0 5',
             items: [
                 {
-                    name: "uomId",
+                    name: "materialUomId",
                     fieldLabel: "计量单位Id",
                     xtype: "hidden",
                 },
@@ -88,7 +88,7 @@ Ext.define("app.view.imms.material.material.MaterialBasicForm", {
             margin: '0 0 5',
             items: [
                 {
-                    name: "sizeId",
+                    name: "materialSizeId",
                     fieldLabel: "尺码组Id",
                     xtype: "hidden",
                 },
@@ -115,12 +115,12 @@ Ext.define("app.view.imms.material.material.MaterialBasicForm", {
             items: [
 
                 {
-                    name: "width",
+                    name: "materialWidth",
                     fieldLabel: "宽幅",
                     xtype: "textfield",
                 },
                 {
-                    name: "weight",
+                    name: "materialWeight",
                     fieldLabel: "纺织克重",
                     xtype: "textfield",
                     margin: '0 0 0 20',
@@ -133,34 +133,24 @@ Ext.define("app.view.imms.material.material.MaterialBasicForm", {
             margin: '0 0 5',
             items: [
                 {
-                    name: "price",
+                    name: "materialPrice",
                     fieldLabel: "价格",
                     xtype: "textfield",
                 },
                 {
-                    name: "color",
+                    name: "materialColor",
                     fieldLabel: "颜色",
                     xtype: "textfield",
                     margin: '0 0 0 20',
                 }
             ]
         }, {
-            name: "description",
+            name: "materialDescription",
             xtype: "textfield",
             labelWidth: 100,
             fieldLabel: "物料描述",
             flex: 1,
             margin: '0 18 0 0',
-        }
-        //--------------------------------------------------------------------------------
-        ,{
-            xtype:"hidden",
-            name:"bomOrderId"
-        },
-        ,{
-            xtype:"hidden",
-            name:"operationRoutingOrderId"
-        }
-        //--------------------------------------------------------------------------------
+        }       
     ]
 });

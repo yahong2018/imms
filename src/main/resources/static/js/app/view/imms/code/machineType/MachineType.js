@@ -18,7 +18,7 @@ Ext.define("app.view.imms.code.machineType.MachineType", {
         },
         {
             text: '类型描述',
-            dataIndex: 'description',
+            dataIndex: 'machineTypeDescription',
             flex:1
         }
     ],

@@ -18,7 +18,7 @@ Ext.define("app.view.imms.code.materialType.MaterialType", {
         },
         {
             text: '类型描述',
-            dataIndex: 'description',
+            dataIndex: 'materialTypeDescription',
             flex:1
         }
     ],

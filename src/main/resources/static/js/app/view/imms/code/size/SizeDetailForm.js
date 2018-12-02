@@ -20,7 +20,7 @@ Ext.define('app.view.imms.code.size.SizeDetailForm', {
             readOnly:true,            
             fieldLabel:"上级名称"
         },{
-            name: "rowId",
+            name: "sizeId",
             xtype: "hidden",
         },{
             name: "parentSizeId",
@@ -42,7 +42,7 @@ Ext.define('app.view.imms.code.size.SizeDetailForm', {
             enforceMaxLength: true,
         },
         {
-            name: 'description',
+            name: 'sizeDescription',
             fieldLabel: '描述',
             xtype: "textarea",
             maxLength: 250,
@@ -55,14 +55,16 @@ Ext.define('app.view.imms.code.size.SizeDetailForm', {
         	var currentRecord = grid.getSelectedRecord();//获取到当前的记录
             var txtParentName = this.down('[vid="parentName"]');
             var txtParentCode = this.down('[vid="parentCode"]');
-	
-            if (config.isNew === true) { //如果是新建
-                var rowId = currentRecord.get("rowId");
-                config.record.set("parentSizeId", rowId);            
+            	
+            if (config.dataMode === app.ux.data.DataMode.INSERT) { //如果是新建
+                var parentId = currentRecord.get("sizeId");
+                config.record.set("parentSizeId", parentId);    
+                this.down('[name="parentSizeId"]').setValue(parentId);
+
                 txtParentName.setValue (currentRecord.get("sizeName"));
                 txtParentCode.setValue (currentRecord.get("sizeNo"));
 	        }else{
-	            var index = grid.store.find("rowId",currentRecord.get("parentSizeId"));
+	            var index = grid.store.find("sizeId",currentRecord.get("parentSizeId"));
 	            var parent = grid.store.getAt(index);
                 txtParentName.setValue (parent.get("sizeName"));
                 txtParentCode.setValue (parent.get("sizeNo"));

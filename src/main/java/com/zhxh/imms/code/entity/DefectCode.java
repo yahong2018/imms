@@ -1,5 +1,6 @@
 package com.zhxh.imms.code.entity;
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
 import com.zhxh.core.data.meta.annotation.TreeTable;
@@ -8,6 +9,9 @@ import java.util.UUID;
 
 @TreeTable
 public class DefectCode implements EntityObject {
+    @AutoGeneration
+    private String defectCodeId;
+
     @CheckUnique
     private String defectCodeNo;
 
@@ -17,7 +21,6 @@ public class DefectCode implements EntityObject {
     @TreeTableParentKey
     private String parentDefectCodeId;
 
-    private String defectCodeId;
 
     public DefectCode(){
         this.defectCodeId = UUID.randomUUID().toString();

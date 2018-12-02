@@ -10,7 +10,7 @@ Ext.define('app.view.imms.material.bomOrder.BomOrderDetailForm', {
     width: 400,
     items: [
        {
-            name: "rowId",
+            name: "bomOrderId",
             xtype: "hidden",
         },
         {

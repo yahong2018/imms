@@ -20,7 +20,7 @@ Ext.define('app.view.imms.code.materialType.MaterialTypeDetailForm', {
             readOnly:true,            
             fieldLabel:"上级名称"
         },{
-            name: "rowId",
+            name: "materialTypeId",
             xtype: "hidden",
         },{
             name: "parentMaterialTypeId",
@@ -42,7 +42,7 @@ Ext.define('app.view.imms.code.materialType.MaterialTypeDetailForm', {
             enforceMaxLength: true,
         },
         {
-            name: 'description',
+            name: 'materialTypeDescription',
             fieldLabel: '描述',
             xtype: "textarea",
             maxLength: 250,
@@ -56,13 +56,15 @@ Ext.define('app.view.imms.code.materialType.MaterialTypeDetailForm', {
             var txtParentName = this.down('[vid="parentName"]');
             var txtParentCode = this.down('[vid="parentCode"]');
 	
-            if (config.isNew === true) { //如果是新建
-                var rowId = currentRecord.get("rowId");
-                config.record.set("parentMaterialTypeId", rowId);            
+            if (config.dataMode == app.ux.data.DataMode.INSERT) { //如果是新建
+                var parentId = currentRecord.get("materialTypeId");
+                config.record.set("parentMaterialTypeId", parentId);        
+                this.down('[name="parentMaterialTypeId"]').setValue(parentId);
+                
                 txtParentName.setValue (currentRecord.get("materialTypeName"));
                 txtParentCode.setValue (currentRecord.get("materialTypeNo"));
 	        }else{
-	            var index = grid.store.find("rowId",currentRecord.get("parentMaterialTypeId"));
+	            var index = grid.store.find("materialTypeId",currentRecord.get("parentMaterialTypeId"));
 	            var parent = grid.store.getAt(index);
                 txtParentName.setValue (parent.get("materialTypeName"));
                 txtParentCode.setValue (parent.get("materialTypeNo"));

@@ -14,20 +14,20 @@ Ext.define("app.view.imms.material.material.Material", {
             }
         },
         {
-            name: "uomNo", text: '计量单位', width: 150, renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
-                return record.get("uomeName") + "(" + value + ")";
+            dataIndex: "uomNo", text: '计量单位', width: 150, renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+                return record.get("uomName") + "(" + value + ")";
             }
         },
-        { name: "width", text: '宽幅', width: 100 },
-        { name: "weight", text: '纺织克重', width: 100 },
+        { dataIndex: "materialWidth", text: '宽幅', width: 100 },
+        { dataIndex: "materialWeight", text: '纺织克重', width: 100 },
         {
-            name: "sizeNo", text: '尺码组', width: 150, renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
+            dataIndex: "sizeNo", text: '尺码组', width: 150, renderer: function (value, metaData, record, rowIndex, colIndex, store, view) {
                 return record.get("sizeName") + "(" + value + ")";
             }
         },
-        { name: "price", text: '价格'},
-        { name: "color", text: '颜色'},
-        { name: "description", text: '物料描述', width:300}        
+        { dataIndex: "materialPrice", text: '价格'},
+        { dataIndex: "materialColor", text: '颜色'},
+        { dataIndex: "materialDescription", text: '物料描述', width:300}        
     ],
 
     constructor:function(config){

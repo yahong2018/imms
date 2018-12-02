@@ -1,11 +1,13 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 
 import java.util.UUID;
 
 public class Uom implements EntityObject {
+    @AutoGeneration
     private String uomId;
 
     @CheckUnique

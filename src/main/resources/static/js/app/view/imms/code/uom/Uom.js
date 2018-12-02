@@ -16,7 +16,7 @@ Ext.define("app.view.imms.code.uom.Uom", {
         },
         {
             text: '单位描述',
-            dataIndex: 'description',
+            dataIndex: 'uomDescription',
             flex:1
         }
     ],

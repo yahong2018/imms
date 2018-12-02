@@ -18,7 +18,7 @@ Ext.define("app.view.imms.code.size.Size", {
         },
         {
             text: '尺码描述',
-            dataIndex: 'description',
+            dataIndex: 'sizeDescription',
             flex:1
         }
     ],

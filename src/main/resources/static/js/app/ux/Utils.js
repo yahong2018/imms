@@ -24,6 +24,7 @@ Ext.define('app.ux.Utils', {
 
         var configBase = {
             success: function (response, opts) {
+                debugger;
                 try {
                     var result = Ext.decode(response.responseText);
                     if (typeof result == "string") {

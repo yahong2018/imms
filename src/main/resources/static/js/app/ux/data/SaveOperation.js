@@ -3,6 +3,8 @@ Ext.define("app.ux.data.SaveOperation", {
     uses: ['app.ux.Utils', 'Ext.window.Toast'],
 
     doSave: function (saveAndNew) {
+        debugger;
+
         var me = this;
         var store = me.store;
         var formCmp = me.getFormCmp();
@@ -11,11 +13,11 @@ Ext.define("app.ux.data.SaveOperation", {
 
         if (form.isValid()) {
             var theUrl = store.getUpdateUrl();
-            if (me.isNew) {
+            if (me.dataMode == app.ux.data.DataMode.INSERT) {
                 theUrl = store.getInsertUrl();
             }
-            if (form.owner.beforePost) {
-                if (form.owner.beforePost({ isNew: me.isNew, record: form.getRecord() }) === false) {
+            if (formCmp.beforePost) {
+                if (formCmp.beforePost({ dataMode: me.dataMode, seq: app.ux.data.DataOperationSeq.BEFORE, record: form.getRecord() }) === false) {
                     return;
                 }
             }
@@ -24,29 +26,27 @@ Ext.define("app.ux.data.SaveOperation", {
                 url: theUrl,
                 success: function (form, action) {
                     store.load({
-                        callback: function (records, operation, success) {
-                            me.isNew = saveAndNew;
-                            var record = store.createModel({});
-                            var idProperty = record.getIdProperty();
+                        callback: function (records, operation, success) {                            
+                            var theNewRecord = store.createModel({});
+                            var idProperty = theNewRecord.getIdProperty();
                             var idField = me.down('[name="' + idProperty + '"]');
                             idField.setReadOnly(!saveAndNew);
+                            var oldIndex = store.find(idProperty, action.result.data[idProperty]);
+                            var oldRecord = store.getAt(oldIndex);
 
-                            if (saveAndNew != true) {
-                                var index = store.find(idProperty, action.result.data[idProperty]);
-                                record = store.getAt(index);
+                            var callConfig = {
+                                dataMode: saveAndNew == true ? app.ux.data.DataMode.INSERT : app.ux.data.DataMode.POST,
+                                seq: saveAndNew == true ? app.ux.data.DataOperationSeq.BEFORE : app.ux.data.DataOperationSeq.AFTER,
+                                record: saveAndNew == true ? theNewRecord : oldRecord
+                            };
+
+                            if (formCmp.afterPost) {
+                                formCmp.afterPost(callConfig)
                             }
-                            if (form.owner.afterPost) {
-                                form.owner.afterPost({ isNew: me.isNew, record: record })
-                            }
+                            formCmp.loadRecord(callConfig.record);
 
-                            form.loadRecord(record);
-
-                            if (form.onRecordLoad) {
-                                form.onRecordLoad({
-                                    dataMode: app.ux.data.DataMode.POST,
-                                    seq: app.ux.data.DataOperationSeq.AFTER,
-                                    record: record
-                                });
+                            if (formCmp.onRecordLoad) {
+                                formCmp.onRecordLoad(callConfig);
                             }
 
                             if (saveAndNew != true && form.owner.afterSaveAction == 'keep') {
