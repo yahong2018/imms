@@ -11,8 +11,8 @@ Ext.define('app.view.main.region.ChangePasswordWindow', {
     items: [{
         xtype: 'form',
         defaults: {
-            labelAlign: 'right',
-            labelWidth: 70,
+           // labelAlign: 'right',
+            labelWidth: 90,
         },
         items: [{
                 xtype: 'textfield',
@@ -51,7 +51,7 @@ Ext.define('app.view.main.region.ChangePasswordWindow', {
                     return;
                 }
                 var record = form.getValues();                
-                var url = webRoot +'api/admin/changeCurrentUserPassword';
+                var url = webRoot +'/admin/changeCurrentUserPassword';
                 Ext.Ajax.request({
                     url: url,
                     jsonData: record,

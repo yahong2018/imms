@@ -3,6 +3,7 @@ package com.zhxh.imms.code.controller;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.data.ParentChildConverter;
 import com.zhxh.core.utils.Logger;
+import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.SimpleCRUDController;
 import com.zhxh.imms.code.dao.SizeDAO;
 import com.zhxh.imms.code.entity.MachineType;
@@ -29,8 +30,8 @@ public class SizeController extends SimpleCRUDController<Size> {
 
 
     @Override
-    protected List<Size> internalGetAll() {
-        List<Size> source = super.internalGetAll();
+    protected List<Size> internalGetAll(ListRequest listRequest) {
+        List<Size> source = super.internalGetAll(listRequest);
         List<Size> result = new ArrayList<>();
 
         try {

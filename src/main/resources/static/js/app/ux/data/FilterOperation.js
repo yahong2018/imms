@@ -1,6 +1,6 @@
-Ext.define("app.ux.data.FilterOperation",{
-    xtype:"app_ux_data_FilterOperation",
-    uses: ["Ext.window.Window", "app.ux.dbgrid.DbGrid", "app.ux.dbgrid.DbGridToolbar"],
+Ext.define("app.ux.data.FilterOperation", {
+    xtype: "app_ux_data_FilterOperation",
+    uses: ["Ext.window.Window", "app.ux.dbgrid.DbGrid", "app.ux.dbgrid.DbGridToolbar","app.ux.dbgrid.TreeGrid"],
 
     /**
      * 配置项：columns
@@ -30,48 +30,51 @@ Ext.define("app.ux.data.FilterOperation",{
      *   用途：选择框关闭以后，会调用本函数。
      */
 
-    constructor: function (config) {
-        var configBase = {
-            winHeight: 400,
-            winWidth: 500,
-            callback: function () { }
-        };
+    constructor: function (config) {   
+        var configBase = this.getInitConfig();
 
         Ext.applyIf(config, configBase);
+        Ext.applyIf(this,config);
 
-        this.callParent(arguments);
+        this.callParent(arguments);        
     },
 
-    showFilterWindow:function(){
-        var me = this;
+    getInitConfig:function(){
+        return {
+            winHeight: 400,
+            winWidth: 600,
+            baseClass: "dbgrid",
+            callback: function () { }
+        };        
+    },    
+
+    showFilterWindow: function () {
+        var me = this;              
         var win = Ext.create("Ext.window.Window", {
             modal: true,
-            width: this.winWidth,
-            height: this.winHeight,
+            width: me.winWidth,
+            height: me.winHeight,
             title: "数据查找",
-            layout:"fit",
-            items: [
-                {
-                    xtype: "dbgrid",
-                    columns: me.columns,
-                    store: me.store,
-                    dockedItems: [{
-                        xtype: "dbgridtoolbar",
-                        hideInsert: true,
-                        hideEdit: true,
-                        hideDelete: true
-                    }],
-                    hideDefeaultPagebar: false
-                }
-            ],
+            layout: "fit",
+            items: [{
+                xtype: me.baseClass,
+                columns: me.columns,
+                store: me.store,
+                hideInsert: true,
+                hideEdit: true,
+                hideDelete: true,     
+                rootVisible: false,           
+            }],
             bbar: [
                 '->',
                 {
                     text: "确定",
                     handler: function () {
-                        var grid = win.down('dbgrid');
+                        var grid = win.down(me.baseClass);
                         var selectedRecords = grid.getSelectionModel().getSelection();
-                        me.callback(grid, selectedRecords);
+                        if(selectedRecords!=null && selectedRecords.length>0){
+                            me.callback(grid, selectedRecords);
+                        }                      
 
                         win.close();
                         win.destroy();

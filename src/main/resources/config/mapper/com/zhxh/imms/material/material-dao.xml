@@ -4,7 +4,7 @@
 <mapper namespace="com.zhxh.imms.material.dao">
     <sql id="MATERIAL_FIELDS">
         material_id,material_no,material_name,material_material_type_id,
-        uom_id,material_width,material_weight,material_size_id,material_price,material_color,material_description
+        material_uom_id,material_width,material_weight,material_size_id,material_price,material_color,material_description
     </sql>
 
     <sql id="MATERIAL_VO_FIELDS">
@@ -26,7 +26,7 @@
                           join size on size_id = material_size_id
     </select>
 
-    <select id="SQL_GET_MATERIAL_MEDIA_VO" parameterMap="java.util.Map" resultMap="com.zhxh.imms.material.vo.MaterialMediaVO">
+    <select id="SQL_GET_MATERIAL_MEDIA_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.material.vo.MaterialMediaVO">
         select <include refid="MATERIAL_MEDIA_FIELDS"/>,
                <include refid="MATERIAL_MEDIA_VO_FIELDS"/>
           from material_media join media on material_media_media_id = media_id

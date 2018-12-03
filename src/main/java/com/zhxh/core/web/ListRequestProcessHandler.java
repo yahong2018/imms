@@ -8,13 +8,7 @@ import java.util.List;
 
 public class ListRequestProcessHandler {
     public ExtJsResult getListFromHttpRequest(HttpServletRequest request, ListRequestBaseHandler listHandler) {
-        ListRequest listRequest;
-        if(StringUtils.isNotEmpty(request.getParameter("start"))){
-            listRequest = new PageListRequest();
-        }else{
-            listRequest = new ListRequest();
-        }
-        listRequest.fromServletRequest(request);
+        ListRequest listRequest = getListRequest(request);
 
         ExtJsResult result = new ExtJsResult();
         result.setTotal(0);
@@ -31,6 +25,17 @@ public class ListRequestProcessHandler {
             Logger.error(e);
         }
         return result;
+    }
+
+    public ListRequest getListRequest(HttpServletRequest request) {
+        ListRequest listRequest;
+        if(StringUtils.isNotEmpty(request.getParameter("start"))){
+            listRequest = new PageListRequest();
+        }else{
+            listRequest = new ListRequest();
+        }
+        listRequest.fromServletRequest(request);
+        return listRequest;
     }
 
     /*

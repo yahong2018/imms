@@ -51,21 +51,24 @@ Ext.define("app.ux.advancedSearch.SearchWindow", {
                 }
 
                 var expr = me.getSearchCondition();
-                expr = Ext.util.Base64.encode(expr);
-                if (expr != "") {
-                    expr = 'filterExpr=' + expr;
-                }
+                // expr = Ext.util.Base64.encode(expr);
+                // if (expr != "") {
+                //     expr = 'filterExpr=' + expr;
+                // }
                 var grid = me.dbGrid;
 
-                if (grid.getStore().getProxy().DefaultUrl == null) {
-                    grid.getStore().getProxy().DefaultUrl = grid.getStore().getProxy().url;
-                }
-                var url = grid.getStore().getProxy().DefaultUrl;
-                if (url.indexOf("?") == -1) {
-                    url += "?";
-                }
-                url += expr;
-                grid.getStore().getProxy().url = url;
+                // if (grid.getStore().getProxy().DefaultUrl == null) {
+                //     grid.getStore().getProxy().DefaultUrl = grid.getStore().getProxy().url;
+                // }
+                // var url = grid.getStore().getProxy().DefaultUrl;
+                // if (url.indexOf("?") == -1) {
+                //     url += "?";
+                // }
+                // url += expr;
+                // grid.getStore().getProxy().url = url;
+                grid.getStore().clearCustomerFilter();
+                grid.getStore().addCustomFilter(expr);
+                grid.getStore().buildFilterUrl();
                 grid.getStore().load();
             }
         }, {

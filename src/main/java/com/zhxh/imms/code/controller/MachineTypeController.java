@@ -3,6 +3,7 @@ package com.zhxh.imms.code.controller;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.data.ParentChildConverter;
 import com.zhxh.core.utils.Logger;
+import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.SimpleCRUDController;
 import com.zhxh.imms.code.dao.MachineTypeDAO;
 import com.zhxh.imms.code.entity.MachineType;
@@ -26,8 +27,8 @@ public class MachineTypeController extends SimpleCRUDController<MachineType> {
     }
 
     @Override
-    protected List<MachineType> internalGetAll() {
-        List<MachineType> source = super.internalGetAll();
+    protected List<MachineType> internalGetAll(ListRequest listRequest) {
+        List<MachineType> source = super.internalGetAll(listRequest);
         List<MachineType> result = new ArrayList<>();
 
         try {

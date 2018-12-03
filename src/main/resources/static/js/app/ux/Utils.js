@@ -23,8 +23,7 @@ Ext.define('app.ux.Utils', {
         };
 
         var configBase = {
-            success: function (response, opts) {
-                debugger;
+            success: function (response, opts) {                
                 try {
                     var result = Ext.decode(response.responseText);
                     if (typeof result == "string") {

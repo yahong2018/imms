@@ -3,6 +3,7 @@ package com.zhxh.imms.code.controller;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.data.ParentChildConverter;
 import com.zhxh.core.utils.Logger;
+import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.SimpleCRUDController;
 import com.zhxh.imms.code.dao.MaterialTypeDAO;
 import com.zhxh.imms.code.entity.MaterialType;
@@ -28,8 +29,8 @@ public class MaterialTypeController extends SimpleCRUDController<MaterialType> {
     }
 
     @Override
-    protected List<MaterialType> internalGetAll() {
-        List<MaterialType> source = super.internalGetAll();
+    protected List<MaterialType> internalGetAll(ListRequest listRequest) {
+        List<MaterialType> source = super.internalGetAll(listRequest);
         List<MaterialType> result = new ArrayList<>();
 
         try {

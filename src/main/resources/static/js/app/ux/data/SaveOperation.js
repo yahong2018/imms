@@ -3,8 +3,6 @@ Ext.define("app.ux.data.SaveOperation", {
     uses: ['app.ux.Utils', 'Ext.window.Toast'],
 
     doSave: function (saveAndNew) {
-        debugger;
-
         var me = this;
         var store = me.store;
         var formCmp = me.getFormCmp();

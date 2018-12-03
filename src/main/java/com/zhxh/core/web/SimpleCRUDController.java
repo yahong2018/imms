@@ -9,20 +9,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 public abstract class SimpleCRUDController<T> {
-    private ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
-
     @RequestMapping("getAll.handler")
     @ResponseBody
-    public final List<T> getAll() {
-        return this.internalGetAll();
+    public final List<T> getAll(HttpServletRequest request, HttpServletResponse response) {
+        ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
+        ListRequest listRequest = listRequestProcessHandler.getListRequest(request);
+        return this.internalGetAll(listRequest);
     }
 
     @RequestMapping("getAllByPage.handler")
     @ResponseBody
     public ExtJsResult getAllByPage(HttpServletRequest request, HttpServletResponse response) {
-        return this.listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
+        ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
+        return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {
                 return internalGetByRequest(listRequest);
@@ -56,8 +58,10 @@ public abstract class SimpleCRUDController<T> {
         return this.internalDelete(ids);
     }
 
-    protected List<T> internalGetAll() {
-        return this.getCrudDao().getAll();
+    protected List<T> internalGetAll(ListRequest listRequest) {
+        Map<String,Object> listMap = listRequest.toMap();
+
+        return this.getCrudDao().getList(listMap);
     }
 
     protected int internalDelete(Object[] ids) throws Exception {

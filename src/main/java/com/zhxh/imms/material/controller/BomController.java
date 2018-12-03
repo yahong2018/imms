@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Controller
 @RequestMapping("/imms/material/bom")
@@ -21,10 +20,4 @@ public class BomController extends SimpleCRUDController<Bom> {
         return this.bomDAO;
     }
 
-    @Override
-    protected List<Bom> internalGetAll() {
-        //要返回的是BomVO，而不是Bom。要在mapper文件里面定义查询
-
-        return super.internalGetAll();
-    }
 }

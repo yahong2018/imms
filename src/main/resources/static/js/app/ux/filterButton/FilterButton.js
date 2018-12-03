@@ -7,6 +7,13 @@ Ext.define("app.ux.filterButton.FilterButton", {
     
     glyph: 0xf002,
     tooltip: '查找',
+
+    constructor:function(config){
+        var configBase = this.getInitConfig();
+        Ext.applyIf(config, configBase);  
+
+        this.callParent(arguments);
+    },
     
     handler: function () {
         this.showFilterWindow();

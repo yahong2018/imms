@@ -192,7 +192,7 @@ set @id = UUID();
 INSERT INTO `size` VALUES (@id, 'SZ', '尺码', NULL, @id);
 set @id = UUID();
 INSERT INTO `defect_code` VALUES (@id, 'FT', '缺陷类别', NULL, @id);
-set @id = UUID
+set @id = UUID();
 INSERT INTO `machine_type` VALUES (@id, 'DT', '设备类别', NULL, @id);
 set @id = UUID();
 INSERT INTO `material_type` VALUES (@id, 'MT', '物料类型', NULL, @id);

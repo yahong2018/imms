@@ -6,12 +6,7 @@ Ext.define("app.ux.dbgrid.TreeGrid",{
     mixins:["app.ux.data.DataOperation"],   
 
     hideDefeaultPagebar:true,    
-    dockedItems:[
-        {
-            xtype:"dbgridtoolbar",
-            hideSearch:true,
-        }
-    ],
+    hideSearchBar:true,
 
     constructor: function (config) {
         var configBase = this.getInitConfig();

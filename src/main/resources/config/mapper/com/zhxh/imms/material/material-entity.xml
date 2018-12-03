@@ -6,7 +6,7 @@
         <id property="materialId" column="material_id"/>
 
         <result property="materialNo" column="material_no"/>
-        <result property="materialTypeId" column="material_material_type_id"/>
+        <result property="materialMaterialTypeId" column="material_material_type_id"/>
         <result property="materialName" column="material_name"/>
         <result property="materialUomId" column="material_uom_id"/>
         <result property="materialWidth" column="material_width"/>

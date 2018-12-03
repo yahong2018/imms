@@ -225,9 +225,13 @@ Ext.define("app.ux.data.DataOperation", {
             } else {
                 expr = expr + value;
             }
-            expr = Ext.util.Base64.encode(expr);
-            expr = 'filterExpr=' + expr;
+            grid.getStore().clearCustomerFilter();
+            grid.getStore().addCustomFilter(expr);
+
+            // expr = Ext.util.Base64.encode(expr);
+            // expr = 'filterExpr=' + expr;
         }
+        /*
         if (grid.getStore().getProxy().DefaultUrl == null) {
             grid.getStore().getProxy().DefaultUrl = grid.getStore().getProxy().url;
         }
@@ -237,6 +241,9 @@ Ext.define("app.ux.data.DataOperation", {
         }
         url += expr;
         grid.getStore().getProxy().url = url;
+        */
+
+        grid.getStore().buildFilterUrl();
         grid.getStore().load();
     },
     advancedSearch: function () {

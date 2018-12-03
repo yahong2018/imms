@@ -3,6 +3,7 @@ package com.zhxh.imms.code.controller;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.data.ParentChildConverter;
 import com.zhxh.core.utils.Logger;
+import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.SimpleCRUDController;
 import com.zhxh.imms.code.dao.DefectCodeDAO;
 import com.zhxh.imms.code.entity.DefectCode;
@@ -26,8 +27,8 @@ public class DefectCodeController extends SimpleCRUDController<DefectCode> {
     }
 
     @Override
-    protected List<DefectCode> internalGetAll() {
-        List<DefectCode> source = super.internalGetAll();
+    protected List<DefectCode> internalGetAll(ListRequest listRequest) {
+        List<DefectCode> source = super.internalGetAll(listRequest);
         List<DefectCode> result = new ArrayList<>();
 
         try {
