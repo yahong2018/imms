@@ -48,11 +48,11 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         return this.getPageList(listMap, null);
     }
 
-    public T getById(Object id) {
+    public final T getById(Object id) {
         return (T) this.getById(this.clazz, id);
     }
 
-    public T getOne(String where) {
+    public final T getOne(String where) {
         return this.getOne(where, null);
     }
 
@@ -65,11 +65,11 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         return dbItem;
     }
 
-    public String getIdLabel() {
+    public final String getIdLabel() {
         return super.getIdLabel(this.clazz);
     }
 
-    public T verifyExistsById(Object id) throws Exception {
+    public final T verifyExistsById(Object id) throws Exception {
         T dbItem = this.getById(id);
         if (dbItem == null) {
             String idLabel = this.getIdLabel();
@@ -78,21 +78,21 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         return dbItem;
     }
     
-    public int deleteByWhere(String where,Map parameters) {
+    public final int deleteByWhere(String where,Map parameters) {
     	EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz);
     	String deleteSql = meta.buildDeleteByWhereSql(where);
     	
     	return super.executeNoneQuery(deleteSql, parameters);
     }
     
-    public int deleteById(Object id) throws Exception {
+    public final int deleteById(Object id) throws Exception {
    	    T dbItem = this.verifyExistsById(id);
    	    return this.delete(dbItem);
     }
 
-    public T verifyIsExists(T item) throws Exception {
-        String idPropery = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz).getKeyProperty();
-        Object idValue = BeanUtils.getValue(item, idPropery);
+    public final T verifyIsExists(T item) throws Exception {
+        String idProperty = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz).getKeyProperty();
+        Object idValue = BeanUtils.getValue(item, idProperty);
         return this.verifyExistsById(idValue);
     }
 
@@ -110,17 +110,17 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
     }
 
     @Override
-    protected int doInternalInsert(Object item) {
+    protected final int doInternalInsert(Object item) {
         return this.doInsert((T) item);
     }
 
     @Override
-    protected int doInternalUpdate(Object item) {
+    protected final int doInternalUpdate(Object item) {
         return this.doUpdate((T) item);
     }
 
     @Override
-    protected int doInternalDelete(Object item) {
+    protected final int doInternalDelete(Object item) {
         return this.doDelete((T) item);
     }
 

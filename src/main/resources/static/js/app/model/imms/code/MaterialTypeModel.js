@@ -8,6 +8,8 @@ Ext.define('app.model.imms.code.MaterialTypeModel', {
         { name: "materialTypeName", dbFieldName: 'material_type_name', type: "string" },
         { name: "materialDescription", dbFieldName: 'material_type_description', type: "string" },
         { name: "parentMaterialTypeId", dbFieldName: 'parent_material_type_id', type: "string" },
+        { name: "codePath", dbFieldName: 'code_path', type: "string" },
+        { name: "namePath", dbFieldName: 'name_path', type: "string" },
     ],
     idProperty: 'materialTypeId'
 });

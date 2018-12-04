@@ -8,6 +8,8 @@
         <result property="defectCodeName" column="defect_code_name"/>
         <result property="defectCodeDescription" column="defect_code_description"/>
         <result property="parentDefectCodeId" column="parent_defect_code_id"/>
+        <result property="defectCodeNoPath" column="defect_code_no_path"/>
+        <result property="defectCodeNamePath" column="defect_code_name_path"/>
     </resultMap>
 
     <resultMap id="MachineType" type="com.zhxh.imms.code.entity.MachineType">
@@ -16,6 +18,8 @@
         <result property="machineTypeName" column="machine_type_name"/>
         <result property="machineTypeDescription" column="machine_type_description"/>
         <result property="parentMachineTypeId" column="parent_machine_type_id"/>
+        <result property="machineTypeNoPath" column="machine_type_no_path"/>
+        <result property="machineTypeNamePath" column="machine_type_name_path"/>
     </resultMap>
 
     <resultMap id="Size" type="com.zhxh.imms.code.entity.Size">
@@ -24,6 +28,8 @@
         <result property="sizeName" column="size_name"/>
         <result property="sizeDescription" column="size_description"/>
         <result property="parentSizeId" column="parent_size_id"/>
+        <result property="sizeNoPath" column="size_no_path"/>
+        <result property="sizeNamePath" column="size_name_path"/>
     </resultMap>
 
     <resultMap id="MaterialType" type="com.zhxh.imms.code.entity.MaterialType">
@@ -32,6 +38,8 @@
         <result property="materialTypeName" column="material_type_name"/>
         <result property="materialTypeDescription" column="material_type_description"/>
         <result property="parentMaterialTypeId" column="parent_material_type_id"/>
+        <result property="materialTypeNoPath" column="material_type_no_path"/>
+        <result property="materialTypeNamePath" column="material_type_name_path"/>
     </resultMap>
 
     <resultMap id="Uom" type="com.zhxh.imms.code.entity.Uom">
@@ -40,6 +48,4 @@
         <result property="uomName" column="uom_name"/>
         <result property="uomDescription" column="uom_description"/>
     </resultMap>
-
-
 </mapper>

@@ -4,17 +4,40 @@ import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.data.meta.annotation.AutoGeneration;
 
 public class Bom implements EntityObject {
+    public final static String COMPONENT_TYPE_CUSTOM="C";
+    public final static String COMPONENT_TYPE_DEFAULT="D";
+
     @AutoGeneration
     private String bomId;
-    private String bomOrderId;
+    private String bomBomOrderId;
     private String componentMaterialId;
     private String componentAbstractMaterialId;
     private double componentQty;
     private String componentMaterialUomId;
-    private String parentBomId;
-    private String materialMatchRuleId;
+    private String componentTypeNo;
+    private String componentMaterialNoPath;
+    private String componentMaterialNamePath;
+    private String componentMaterialMatchRuleId;
     private boolean ifMainFabric;
-    private String bomSource;
+    private String bomDataSource;
+
+    private String parentBomId;
+
+    public String getComponentMaterialNoPath() {
+        return componentMaterialNoPath;
+    }
+
+    public String getComponentMaterialNamePath() {
+        return componentMaterialNamePath;
+    }
+
+    public void setComponentMaterialNoPath(String componentMaterialNoPath) {
+        this.componentMaterialNoPath = componentMaterialNoPath;
+    }
+
+    public void setComponentMaterialNamePath(String componentMaterialNamePath) {
+        this.componentMaterialNamePath = componentMaterialNamePath;
+    }
 
     public String getBomId() {
         return bomId;
@@ -32,26 +55,12 @@ public class Bom implements EntityObject {
         this.componentQty = componentQty;
     }
 
-
-
     public String getParentBomId() {
         return parentBomId;
     }
 
     public void setParentBomId(String parentBomId) {
         this.parentBomId = parentBomId;
-    }
-
-    public String getBomSource() {
-        return bomSource;
-    }
-
-    public void setBomSource(String bomSource) {
-        this.bomSource = bomSource;
-    }
-
-    public String getBomOrderId() {
-        return bomOrderId;
     }
 
     public String getComponentAbstractMaterialId() {
@@ -64,14 +73,6 @@ public class Bom implements EntityObject {
 
     public String getComponentMaterialUomId() {
         return componentMaterialUomId;
-    }
-
-    public String getMaterialMatchRuleId() {
-        return materialMatchRuleId;
-    }
-
-    public void setBomOrderId(String bomOrderId) {
-        this.bomOrderId = bomOrderId;
     }
 
     public void setComponentAbstractMaterialId(String componentAbstractMaterialId) {
@@ -90,11 +91,39 @@ public class Bom implements EntityObject {
         this.ifMainFabric = ifMainFabric;
     }
 
-    public void setMaterialMatchRuleId(String materialMatchRuleId) {
-        this.materialMatchRuleId = materialMatchRuleId;
-    }
-
     public boolean getIfMainFabric() {
         return ifMainFabric;
+    }
+
+    public String getBomDataSource() {
+        return bomDataSource;
+    }
+
+    public void setBomDataSource(String bomDataSource) {
+        this.bomDataSource = bomDataSource;
+    }
+
+    public String getComponentTypeNo() {
+        return componentTypeNo;
+    }
+
+    public void setComponentTypeNo(String componentTypeNo) {
+        this.componentTypeNo = componentTypeNo;
+    }
+
+    public String getComponentMaterialMatchRuleId() {
+        return componentMaterialMatchRuleId;
+    }
+
+    public void setComponentMaterialMatchRuleId(String componentMaterialMatchRuleId) {
+        this.componentMaterialMatchRuleId = componentMaterialMatchRuleId;
+    }
+
+    public String getBomBomOrderId() {
+        return bomBomOrderId;
+    }
+
+    public void setBomBomOrderId(String bomBomOrderId) {
+        this.bomBomOrderId = bomBomOrderId;
     }
 }

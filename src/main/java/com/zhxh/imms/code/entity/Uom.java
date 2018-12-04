@@ -16,10 +16,6 @@ public class Uom implements EntityObject {
     private String uomName;
     private String uomDescription;
 
-    public Uom(){
-        this.uomId = UUID.randomUUID().toString();
-    }
-
     public String getUomId() {
         return uomId;
     }

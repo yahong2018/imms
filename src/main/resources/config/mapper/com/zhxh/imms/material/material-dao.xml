@@ -31,4 +31,21 @@
                <include refid="MATERIAL_MEDIA_VO_FIELDS"/>
           from material_media join media on material_media_media_id = media_id
     </select>
+
+    <select id="SQL_GET_BOM_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.material.vo.BomVO">
+        select bom_id,bom_bom_order_id,component_material_id,component_abstract_material_id,component_qty,component_material_uom_id,
+               component_type_no,parent_bom_id,component_material_no_path,component_material_name_path,
+               component_material_match_rule_id,if_main_fabric,bom_data_source,
+               bom_order_no,
+               mc.material_no as component_material_no,mc.material_name as component_material_name,
+               ma.material_no as component_abstract_material_no, ma.material_name as component_abstract_material_name,
+               uom_no as component_material_uom_no,uom_name as component_material_uom_name,
+               '' as component_material_match_rule_no,'' as component_material_match_rule_name
+        from bom b join bom_order on b.bom_bom_order_id = bom_order_id
+                 join material mc on b.component_material_id=mc.material_id
+                 join uom on b.component_material_uom_id = uom_id
+                 left join material ma on b.component_abstract_material_id = ma.material_id
+    </select>
+
+
 </mapper>

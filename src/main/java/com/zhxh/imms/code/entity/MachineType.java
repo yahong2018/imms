@@ -22,9 +22,23 @@ public class MachineType implements EntityObject {
     @TreeTableParentKey
     private String parentMachineTypeId;
 
+    private String machineTypeNoPath;
+    private String machineTypeNamePath;
 
-    public MachineType(){
-        this.machineTypeId = UUID.randomUUID().toString();
+    public String getMachineTypeNoPath() {
+        return machineTypeNoPath;
+    }
+
+    public String getMachineTypeNamePath() {
+        return machineTypeNamePath;
+    }
+
+    public void setMachineTypeNoPath(String machineTypeNoPath) {
+        this.machineTypeNoPath = machineTypeNoPath;
+    }
+
+    public void setMachineTypeNamePath(String machineTypeNamePath) {
+        this.machineTypeNamePath = machineTypeNamePath;
     }
 
     public String getMachineTypeId() {

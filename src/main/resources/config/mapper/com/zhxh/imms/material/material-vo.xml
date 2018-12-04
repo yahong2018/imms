@@ -20,4 +20,18 @@
         <result property="mediaDescription" column="media_description"/>
         <result property="mediaDataSource" column="media_data_source"/>
     </resultMap>
+
+    <resultMap id="BomVO" type="com.zhxh.imms.material.vo.BomVO" extends="com.zhxh.imms.material.entity.Bom">
+        <result property="bomOrderNo" column="bom_order_no"/>
+        <result property="componentMaterialNo" column="component_material_no"/>
+        <result property="componentMaterialName" column="component_material_name"/>
+        <result property="componentAbstractMaterialNo" column="component_abstract_material_no"/>
+        <result property="componentAbstractMaterialName" column="component_abstract_material_name"/>
+        <result property="componentMaterialUomNo" column="component_material_uom_no"/>
+        <result property="componentMaterialUomName" column="component_material_uom_name"/>
+        <result property="componentMaterialMatchRuleNo" column="component_material_match_rule_no"/>
+        <result property="componentMaterialMatchRuleName" column="component_material_match_rule_name"/>
+        <result property="bomParentMaterialNo" column="bom_parent_material_no"/>
+        <result property="bomParentMaterialName" column="bom_parent_material_name"/>
+    </resultMap>
 </mapper>

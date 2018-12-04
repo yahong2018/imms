@@ -133,7 +133,7 @@ public class BaseDAO {
         return meta.getKeyProperty();
     }
 
-    public Object getById(Class clazz, Object id) {
+    public final Object getById(Class clazz, Object id) {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
         String keyAssign = meta.getFieldsAssigns().get(meta.getKeyColumn());
         Map listMap = new HashMap();
@@ -168,7 +168,7 @@ public class BaseDAO {
         return clazz.getCanonicalName() + "." + shortPropertyName;
     }
 
-    protected String getPropertyLabel(String property) {
+    public final String getPropertyLabel(String property) {
         String fieldLabel = SysEnv.getFieldLabel(property);
         return fieldLabel;
     }

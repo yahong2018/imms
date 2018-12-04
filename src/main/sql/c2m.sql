@@ -40,8 +40,10 @@ CREATE TABLE `size`  (
   `size_id`                char(36)             NOT NULL,
   `size_no`                varchar(10)          NULL          COMMENT '尺码编码',
   `size_name`              varchar(30)          NULL          COMMENT '尺码名称',
-  `size_description`       varchar(250) NULL,
+  `size_description`       varchar(250)         NULL,
   `parent_size_id`         char(36)             NOT NULL,
+  `size_no_path`           varchar(110)         NOT NULL,     -- 最大层级为10级，中间以'\'隔开
+  `size_name_path`         varchar(330)         NOT NULL,
 
   PRIMARY KEY (`size_id`) ,
   INDEX `IDX_SIZE_01`(`size_no`) ,
@@ -56,6 +58,8 @@ CREATE TABLE `defect_code`  (
   `defect_code_name`          varchar(30)           NOT NULL,
   `defect_code_description`   varchar(250)          NULL ,
   `parent_defect_code_id`     char(36)              NOT NULL,
+  `defect_code_no_path`       varchar(110)          NOT NULL,     -- 最大层级为10级，中间以'\'隔开
+  `defect_code_name_path`     varchar(330)          NOT NULL,
 
   PRIMARY KEY (`defect_code_id`) ,
   INDEX `IDX_DEFECT_CODE_01`(`defect_code_no`) ,
@@ -65,11 +69,13 @@ CREATE TABLE `defect_code`  (
 
 
 CREATE TABLE `machine_type`  (
-  `machine_type_id`          char(36)     NOT NULL,
-  `machine_type_no`          varchar(10)  NOT NULL,
-  `machine_type_name`        varchar(30)  NOT NULL ,
-  `machine_type_description`  varchar(250) NULL,
-  `parent_machine_type_id`   char(36)     NOT NULL,
+  `machine_type_id`           char(36)             NOT NULL,
+  `machine_type_no`           varchar(10)          NOT NULL,
+  `machine_type_name`         varchar(30)          NOT NULL ,
+  `machine_type_description`  varchar(250)         NULL,
+  `parent_machine_type_id`    char(36)             NOT NULL,
+  `machine_type_no_path`      varchar(110)         NOT NULL,     -- 最大层级为10级，中间以'\'隔开
+  `machie_type_name_path`     varchar(330)         NOT NULL,
 
   PRIMARY KEY (`machine_type_id`) ,
   INDEX `IDX_MACHINE_TYPE_01`(`machine_type_no`) ,
@@ -84,6 +90,8 @@ CREATE TABLE `material_type`  (
   `material_type_name`        varchar(30)        NOT NULL               COMMENT '物料类型名称',
   `material_type_description` varchar(250)       NULL                   COMMENT '物料类型描述',
   `parent_material_type_id`   char(36)           NOT NULL,
+  `material_type_no_path`     varchar(110)       NOT NULL,     -- 最大层级为10级，中间以'\'隔开
+  `material_type_name_path`   varchar(330)       NOT NULL,
 
   PRIMARY KEY (`material_type_id`) ,
   INDEX `IDX_MT_01`(`material_type_no`) ,
@@ -138,37 +146,37 @@ CREATE TABLE `bom_order`  (
   `bom_order_id`                  char(36)                      NOT NULL,
   `bom_order_no`                  varchar(25)                   NOT NULL
                                                 COMMENT 'Bom 单号: 物料号（12位）+ 日期(8位) + 序列号(2位),中间以点号隔开',
-  `bom_material_id`               char(36)                      NOT NULL,
-  `bom_order_type`                enum('P','S','O','D','M','W') NOT NULL DEFAULT 'P'
+  `bom_order_type_no`             enum('P','S','O','D','M','W') NOT NULL DEFAULT 'P'
                          COMMENT 'P: "部件BOM", S: "基准BOM", O: "订单BOM", D: "设计BOM",  M: "生产BOM",  W: "作业BOM"',
 
   PRIMARY KEY (`bom_order_id`),
   INDEX `IDX_BOM_ORDER_01`(`bom_order_no`),
-  INDEX `IDX_BOM_ORDER_02`(`bom_material_id`),
-  INDEX `IDX_BOM_ORDER_03`(`bom_order_type`)
+  INDEX `IDX_BOM_ORDER_02`(`bom_order_type_no`)
 ) COMMENT = '物料单' ;
 
 
 
 CREATE TABLE `bom`  (
-  `bom_id`                         char(36)        NOT NULL,
-  `bom_order_id`                   char(36)        NOT NULL,
-  `component_material_id`          char(36)        NOT NULL               COMMENT '子件物料Id',
-  `component_abstract_material_id` char(36)        NULL                   COMMENT '子件抽象物料Id',
-  `component_qty`                  double          NOT NULL               COMMENT '子件件用量',
-  `component_material_uom_id`      char(36)        NOT NULL               COMMENT '子件单位',
-  `component_type`                 enum('C','D')   DEFAULT 'C'            COMMENT '子件类型 C: "定制", D: "默认"',
-  `parent_material_id`             char(36)        NULL                   COMMENT '父件物料id',
-  `material_match_rule_id`         char(36)        NULL                   COMMENT '匹配规则主键',
-  `if_main_fabric`                 tinyint(1)      NULL                   COMMENT '是否主面料',
-  `bom_data_source`                enum('I','O')   NOT NULL DEFAULT 'I'   COMMENT 'Bom数据来源(I:内部维护,O.外部导入)',
-  
+  `bom_id`                             char(36)        NOT NULL,
+  `bom_bom_order_id`                   char(36)        NOT NULL,
+  `component_material_id`              char(36)        NOT NULL               COMMENT '子件物料Id',
+  `component_abstract_material_id`     char(36)        NULL                   COMMENT '子件抽象物料Id',
+  `component_qty`                      double          NOT NULL               COMMENT '子件用量',
+  `component_material_uom_id`          char(36)        NOT NULL               COMMENT '子件单位',
+  `component_type_no`                  enum('C','D')   DEFAULT 'C'            COMMENT '子件类型 C: "定制", D: "默认"',
+  `component_material_no_path`         varchar(130)    NOT NULL,
+  `component_material_name_path`       varchar(330)    NOT Null,
+  `component_material_match_rule_id`   char(36)        NULL                   COMMENT '子件匹配规则',
+  `if_main_fabric`                     tinyint(1)      NULL                   COMMENT '是否主面料',
+  `bom_data_source`                    enum('I','O')   NOT NULL DEFAULT 'I'   COMMENT 'Bom数据来源(I:内建,O.导入)',
+  `parent_bom_id`                      char(36)        NULL                   COMMENT '上级BOM id',
+
   PRIMARY KEY (`bom_id`),
   INDEX `IDX_BOM_01`(`component_material_id`),
   INDEX `IDX_BOM_02`(`component_abstract_material_id`),
-  INDEX `IDX_BOM_03`(`parent_material_id`),
-  INDEX `IDX_BOM_04`(`material_match_rule_id`),
-  INDEX `IDX_BOM_05`(`bom_order_id`)
+  INDEX `IDX_BOM_03`(`parent_bom_id`),
+  INDEX `IDX_BOM_04`(`component_material_match_rule_id`),
+  INDEX `IDX_BOM_05`(`bom_bom_order_id`)
 ) COMMENT = '物料清单' ;
 
 
@@ -189,13 +197,13 @@ drop table bom;
 
 /*
 set @id = UUID();
-INSERT INTO `size` VALUES (@id, 'SZ', '尺码', NULL, @id);
+INSERT INTO `size` VALUES (@id, 'SZ', '尺码', NULL, @id,'SZ','尺码');
 set @id = UUID();
-INSERT INTO `defect_code` VALUES (@id, 'FT', '缺陷类别', NULL, @id);
+INSERT INTO `defect_code` VALUES (@id, 'FT', '缺陷类型', NULL, @id,'FT','缺陷类型');
 set @id = UUID();
-INSERT INTO `machine_type` VALUES (@id, 'DT', '设备类别', NULL, @id);
+INSERT INTO `machine_type` VALUES (@id, 'DT', '设备类型', NULL, @id,'DT','设备类型');
 set @id = UUID();
-INSERT INTO `material_type` VALUES (@id, 'MT', '物料类型', NULL, @id);
+INSERT INTO `material_type` VALUES (@id, 'MT', '物料类型', NULL, @id,'MT','物料类型');
 */
 
 

@@ -22,8 +22,23 @@ public class Size implements EntityObject {
     @TreeTableParentKey
     private String parentSizeId;
 
-    public Size(){
-        this.sizeId = UUID.randomUUID().toString();
+    private String sizeNoPath;
+    private String sizeNamePath;
+
+    public String getSizeNoPath() {
+        return sizeNoPath;
+    }
+
+    public String getSizeNamePath() {
+        return sizeNamePath;
+    }
+
+    public void setSizeNoPath(String sizeNoPath) {
+        this.sizeNoPath = sizeNoPath;
+    }
+
+    public void setSizeNamePath(String sizeNamePath) {
+        this.sizeNamePath = sizeNamePath;
     }
 
     public String getSizeId() {

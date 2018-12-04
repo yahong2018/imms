@@ -21,9 +21,23 @@ public class DefectCode implements EntityObject {
     @TreeTableParentKey
     private String parentDefectCodeId;
 
+    private String defectCodeNoPath;
+    private String defectCodeNamePath;
 
-    public DefectCode(){
-        this.defectCodeId = UUID.randomUUID().toString();
+    public String getDefectCodeNoPath() {
+        return defectCodeNoPath;
+    }
+
+    public String getDefectCodeNamePath() {
+        return defectCodeNamePath;
+    }
+
+    public void setDefectCodeNoPath(String defectCodeNoPath) {
+        this.defectCodeNoPath = defectCodeNoPath;
+    }
+
+    public void setDefectCodeNamePath(String defectCodeNamePath) {
+        this.defectCodeNamePath = defectCodeNamePath;
     }
 
     public String getDefectCodeId() {

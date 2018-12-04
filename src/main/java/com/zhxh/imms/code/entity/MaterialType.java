@@ -21,10 +21,24 @@ public class MaterialType implements EntityObject {
     @TreeTableParentKey
     private String parentMaterialTypeId;
 
-    public MaterialType(){
-        this.materialTypeId = UUID.randomUUID().toString();
+    private String materialTypeNoPath;
+    private String materialTypeNamePath;
+
+    public String getMaterialTypeNoPath() {
+        return materialTypeNoPath;
     }
 
+    public String getMaterialTypeNamePath() {
+        return materialTypeNamePath;
+    }
+
+    public void setMaterialTypeNoPath(String materialTypeNoPath) {
+        this.materialTypeNoPath = materialTypeNoPath;
+    }
+
+    public void setMaterialTypeNamePath(String materialTypeNamePath) {
+        this.materialTypeNamePath = materialTypeNamePath;
+    }
 
     public String getMaterialTypeId() {
         return materialTypeId;

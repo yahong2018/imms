@@ -23,7 +23,7 @@ Ext.define('app.ux.Utils', {
         };
 
         var configBase = {
-            success: function (response, opts) {                
+            success: function (response, opts) {
                 try {
                     var result = Ext.decode(response.responseText);
                     if (typeof result == "string") {
@@ -65,11 +65,14 @@ Ext.define('app.ux.Utils', {
         for (var i = 0; i < privilegeList.length; i++) {
             if (privilegeList[i].programId != programId) {
                 continue;
-            }          
+            }
             var privilege = privilegeList[i];
-            var actionButton = comp.down('[privilege="' + privilege.privilegeId + '"]');
-            if (actionButton) {
-                actionButton.setDisabled(false);
+            var actionButtonList = comp.query('[privilege="' + privilege.privilegeId + '"]');
+            if (actionButtonList) {
+                for (var j = 0; j < actionButtonList.length; j++) {
+                    var actionButton = actionButtonList[j];
+                    actionButton.setDisabled(false);
+                }
             }
         }
     },
