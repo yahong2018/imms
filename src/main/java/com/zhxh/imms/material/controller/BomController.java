@@ -28,7 +28,8 @@ public class BomController extends SimpleCRUDController<Bom> {
 
     @Override
     protected List<Bom> internalGetAll(ListRequest listRequest) {
-        List<Bom> source = super.internalGetAll(listRequest);
+        Class clazz = BomVO.class;
+        List source = this.bomDAO.getList(clazz,listRequest.toMap(),null);
         List<Bom> result = new ArrayList<>();
         try {
             List<BomVO> children = ParentChildConverter.getAllWithChildren(source, BomVO.class,"bomId","parentBomId");
