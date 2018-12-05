@@ -1,7 +1,7 @@
 Ext.define("app.view.imms.material.material.MaterialBasicForm", {
     extend: "Ext.form.FormPanel",
     xtype: "app_view_imms_material_material_MaterialBasicForm",
-    requires: ["app.ux.filterButton.FilterButton", "app.store.imms.code.MaterialTypeStore"],
+  //  requires: ["app.ux.filterButton.FilterButton", "app.store.imms.code.MaterialTypeStore"],
     uses: ["app.ux.filterButton.FilterButton", "app.store.imms.code.MaterialTypeStore"],
     layout: "anchor",
     defaults: {
