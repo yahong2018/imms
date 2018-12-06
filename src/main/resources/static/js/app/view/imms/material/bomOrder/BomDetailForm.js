@@ -199,5 +199,10 @@ Ext.define("app.view.imms.material.bomOrder.BomDetailForm", {
             labelWidth: 100,
             flex: 0.5
         }
-    ]
+    ],
+    onRecordLoad:function(config)    {
+        if(config.sender.btnName=="btnInsertBrother"){
+            debugger;
+        }
+    }
 });

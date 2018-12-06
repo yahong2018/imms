@@ -6,6 +6,7 @@ Ext.define('app.ux.dbgrid.DbGridDeleteButton', {
         var defaultHandler = this.doClick;
         var configBase = {
              text:'删除'
+             ,btnName:'btnDelete'
              ,glyph: 0xf014
              ,tooltip:'删除选定的数据'
              ,handler:defaultHandler

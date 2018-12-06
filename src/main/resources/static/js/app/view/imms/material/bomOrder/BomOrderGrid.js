@@ -2,7 +2,10 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
     extend: "app.ux.dbgrid.DbGrid",
     xtype: "app_view_imms_material_bomOrder_BomOrderGrid",
 
-    uses: ['app.view.imms.material.bomOrder.BomOrderDetailForm', "app.model.imms.material.BomOrderModel", "app.store.imms.material.BomOrderStore"],
+    uses: ['app.view.imms.material.bomOrder.BomOrderDetailForm',
+        "app.model.imms.material.BomOrderModel",
+        "app.store.imms.material.BomOrderStore",
+        ],
 
     hideDefaultToolbar: true,
     columns: [
@@ -23,15 +26,16 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
 
     constructor: function (config) {
         var me = this;
-        
+
         var configBase = {
-            store: Ext.create({ xtype: "app_store_imms_material_BomOrderStore",
-               listeners:{
-                   load:function(self, records, successful, operation, eOpts){
-                       me.onStoreLoad(self, records, successful, operation, eOpts);
-                   }
-               }
-             }),
+            store: Ext.create({
+                xtype: "app_store_imms_material_BomOrderStore",
+                listeners: {
+                    load: function (self, records, successful, operation, eOpts) {
+                        me.onStoreLoad(self, records, successful, operation, eOpts);
+                    }
+                }
+            }),
             detailFormClass: 'app_view_imms_material_bomOrder_BomOrderDetailForm',
             detailWindowTitle: 'Bom 单'
         }
@@ -40,14 +44,14 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
         this.callParent(arguments);
     },
 
-    onStoreLoad:function(self, records, successful, operation, eOpts){        
-        if(records.length>0){
+    onStoreLoad: function (self, records, successful, operation, eOpts) {
+        if (records.length > 0) {
             this.getSelectionModel().select(0);
         }
     },
 
     listeners: {
-        beforeselect:function (self, record, index, eOpts){                            
+        beforeselect: function (self, record, index, eOpts) {
             var bomOrderId = record.get("bomOrderId");
             var bomGrid = this.up("app_view_imms_material_bomOrder_BomOrder").down("app_view_imms_material_bomOrder_BomGrid");
             var store = bomGrid.store;
@@ -57,5 +61,6 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
             store.buildFilterUrl();
             store.load();
         }
-    }
+    },
+    
 });

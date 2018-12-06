@@ -2,7 +2,8 @@ Ext.define("app.ux.data.DataOperation", {
     xtype: 'app_ux_data_DataOperation',
 
     requires: ['app.ux.dbgrid.DbGridToolbar'],
-    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow', 'app.ux.Utils', 'app.ux.data.DataMode'],
+    uses: ['app.ux.dbgrid.DetailWindow', 'Ext.util.Base64', 'app.ux.advancedSearch.SearchWindow',
+           'app.ux.Utils', 'app.ux.data.DataMode'],
 
     getInitConfig: function () {
         var me = this;
@@ -21,6 +22,11 @@ Ext.define("app.ux.data.DataOperation", {
     },
 
     internalInitComponent: function () {
+        var e = {sender:this};
+        if(this.beforeComponentInit){
+            this.beforeComponentInit(e);
+        }
+
         var haseDefaultPagebar = false;
         var hasDefaultToolbar = false;
         var me = this;
@@ -66,7 +72,13 @@ Ext.define("app.ux.data.DataOperation", {
             var defaultToolbar = Ext.create(config);
             me.dockedItems.push(defaultToolbar);
         }
+
+        if(this.afterComponentInit){
+            this.afterComponentInit(e);
+        }
     },
+
+
 
     createDetailWindow: function (dataMode) {
         var detailWindow;
@@ -86,10 +98,11 @@ Ext.define("app.ux.data.DataOperation", {
         return detailWindow;
     },
 
-    doInsert: function () {
+    doInsert: function (config) {
+        config=config||{};
         var grid = this;
         if (this.beforeInsert) {
-            if (this.beforeInsert() === false) {
+            if (this.beforeInsert(config.sender) === false) {
                 return;
             }
         }
@@ -103,7 +116,8 @@ Ext.define("app.ux.data.DataOperation", {
             form.onRecordLoad({
                 dataMode: app.ux.data.DataMode.INSERT,
                 seq: app.ux.data.DataOperationSeq.BEFORE,
-                record: record
+                record: record,
+                sender:config.sender
             });
         }
 
@@ -117,7 +131,8 @@ Ext.define("app.ux.data.DataOperation", {
 
         detailWindow.show();
     },
-    doEdit: function () {
+    doEdit: function (config) {
+        config = config||{};
         var grid = this;
         var record = this.getSelectionModel().getSelection();
         if (!record || record.length == 0) {
@@ -127,7 +142,7 @@ Ext.define("app.ux.data.DataOperation", {
 
         record = record[0];
         if (this.beforeEdit) {
-            if (this.beforeEdit(record) === false) {
+            if (this.beforeEdit(record,config.sender) === false) {
                 return;
             }
         }
@@ -145,7 +160,8 @@ Ext.define("app.ux.data.DataOperation", {
             form.onRecordLoad({
                 dataMode: app.ux.data.DataMode.EDIT,
                 seq: app.ux.data.DataOperationSeq.BEFORE,
-                record: record
+                record: record,
+                sender:config.sender
             });
         }
 
@@ -181,7 +197,8 @@ Ext.define("app.ux.data.DataOperation", {
             form.onRecordLoad({
                 dataMode: app.ux.data.DataMode.BROWSE,
                 seq: app.ux.data.DataOperationSeq.BEFORE,
-                record: record
+                record: record,
+                sender:grid
             });
         }
 

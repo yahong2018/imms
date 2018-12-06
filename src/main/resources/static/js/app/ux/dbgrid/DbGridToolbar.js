@@ -3,6 +3,12 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
     , alias: 'widget.dbgridtoolbar'
     , requires: ['app.ux.dbgrid.DbGridInsertButton', 'app.ux.dbgrid.DbGridEditButton', 'app.ux.dbgrid.DbGridDeleteButton', 'app.ux.dbgrid.DbGridSearchPanel']
     , constructor: function (config) {
+        config.items = config.items || [];
+        var e = {sender:this,config:config};
+        if(config.dbGrid&&config.dbGrid.beforeComponentInit){
+            config.dbGrid.beforeComponentInit(e);
+        }
+
         var configBase = {
             dock: 'top',
             insertPrivilege: "INSERT",
@@ -11,7 +17,7 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
         };       
        
         Ext.applyIf(config, configBase);
-        config.items = config.items || [];
+        
         var oldLength = config.items.length;
 
         if (!config.dbGrid.hideInsert) {
@@ -52,6 +58,10 @@ Ext.define('app.ux.dbgrid.DbGridToolbar', {
                 xtype: 'dbgrid_DbGridSearchPanel',           
                 dbGrid: config.dbGrid
             });
+        }
+        
+        if(config.dbGrid&&config.dbGrid.afeterComponentInit){
+            config.dbGrid.afeterComponentInit(e);
         }
 
         this.callParent(arguments);
