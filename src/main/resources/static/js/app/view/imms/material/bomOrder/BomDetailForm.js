@@ -1,6 +1,7 @@
 Ext.define("app.view.imms.material.bomOrder.BomDetailForm", {
     extend: "Ext.form.Panel",
     xtype: "app_view_imms_material_bomOrder_BomDetailForm",
+    uses: ["app.ux.data.DataMode"],
 
     bodyPadding: 3,
     layout: "anchor",
@@ -106,7 +107,7 @@ Ext.define("app.view.imms.material.bomOrder.BomDetailForm", {
                     allowBlank: false,
                     allowDecimals: true,
                     hideTrigger: true,
-                    width:275,
+                    width: 275,
                 }, {
                     xtype: "label",
                     flex: 0.5
@@ -132,7 +133,7 @@ Ext.define("app.view.imms.material.bomOrder.BomDetailForm", {
                             name: "componentMaterialUomNo",
                             fieldLabel: "用量单位",
                             readOnly: true,
-                            width:245,
+                            width: 245,
                             allowBlank: false,
                         }, {
                             xtype: "filterButton",
@@ -176,20 +177,20 @@ Ext.define("app.view.imms.material.bomOrder.BomDetailForm", {
             name: "componentMaterialUomName",
             fieldLabel: "单位名称",
             readOnly: true,
-            labelWidth:100,
+            labelWidth: 100,
             flex: 1
         },
         {
             xtype: "textfield",
             name: "componentTypeNo",
             fieldLabel: "组件类型",
-            labelWidth:100,
+            labelWidth: 100,
             flex: 0.5
         }, {
             xtype: "checkbox",
             name: "ifMainFabric",
             fieldLabel: "是否主面料",
-            labelWidth:100,
+            labelWidth: 100,
             flex: 0.5
         }
         , {
@@ -200,9 +201,15 @@ Ext.define("app.view.imms.material.bomOrder.BomDetailForm", {
             flex: 0.5
         }
     ],
-    onRecordLoad:function(config)    {
-        if(config.sender.btnName=="btnInsertBrother"){
-            debugger;
+    onRecordLoad: function (e) {
+        if (e.dataMode != app.ux.data.DataMode.INSERT) {
+            return;
+        }
+
+        if (e.sender.btnName == "btnInsertBrother") {
+
+        } else if (e.sender.btnName == 'btnInsert') {
+
         }
     }
 });
