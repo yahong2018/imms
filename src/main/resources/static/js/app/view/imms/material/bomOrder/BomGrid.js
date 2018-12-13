@@ -83,6 +83,16 @@ Ext.define("app.view.imms.material.bomOrder.BomGrid", {
         })
     },
 
+    setToolbarDisabled:function(disabled){
+        var toolbar = this.down("dbgridtoolbar");
+        var buttons = toolbar.query('dbgridbutton');
+        debugger;
+        
+        for(var i=0;i<buttons.length;i++){
+            buttons[i].setDisabled(disabled);
+        }
+    },
+
     initComponent: function () {
         this.callParent(arguments);
 
@@ -91,7 +101,7 @@ Ext.define("app.view.imms.material.bomOrder.BomGrid", {
         btnInsert.text="新增下级";
 
         var btnInsertBrother =toolbar.down('[btnName="btnInsertBrother"]');
-        btnInsertBrother.text="新增同级";        
+        btnInsertBrother.text="新增同级";       
     },
 
 });

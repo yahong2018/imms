@@ -5,7 +5,7 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
     uses: ['app.view.imms.material.bomOrder.BomOrderDetailForm',
         "app.model.imms.material.BomOrderModel",
         "app.store.imms.material.BomOrderStore",
-        ],
+    ],
 
     hideDefaultToolbar: true,
     columns: [
@@ -31,8 +31,8 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
             store: Ext.create({
                 xtype: "app_store_imms_material_BomOrderStore",
                 listeners: {
-                    load: function (self, records, successful, operation, eOpts) {
-                        me.onStoreLoad(self, records, successful, operation, eOpts);
+                    load: function (s, records, successful, operation, eOpts) {
+                        me.onStoreLoad(s, records, successful, operation, eOpts);
                     }
                 }
             }),
@@ -44,10 +44,13 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
         this.callParent(arguments);
     },
 
-    onStoreLoad: function (self, records, successful, operation, eOpts) {
+    onStoreLoad: function (store, records, successful, operation, eOpts) {
         if (records.length > 0) {
             this.getSelectionModel().select(0);
         }
+
+        var bomGrid = this.up('app_view_imms_material_bomOrder_BomOrder').down('app_view_imms_material_bomOrder_BomGrid');
+        bomGrid.setToolbarDisabled(records.length == 0);
     },
 
     listeners: {
@@ -62,5 +65,5 @@ Ext.define("app.view.imms.material.bomOrder.BomOrderGrid", {
             store.load();
         }
     },
-    
+
 });
