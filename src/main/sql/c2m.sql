@@ -233,7 +233,7 @@ CREATE TABLE `work_center`  (
   PRIMARY KEY (`work_center_id`) ,
   INDEX `IDX_WORK_CENTER_01`(`work_center_no`) ,
   INDEX `IDX_WORK_CENTER_02`(`work_center_name`) ,
-  INDEX `IDX_WORK_CENTER_03`(`work_center_plant_id`) ,
+  INDEX `IDX_WORK_CENTER_03`(`work_center_plant_id`)
 --  INDEX `IDX_WORK_CENTER_04`(`work_center_group_id`)
 ) COMMENT = '工作中心';
 
