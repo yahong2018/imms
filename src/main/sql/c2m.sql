@@ -209,9 +209,126 @@ INSERT INTO `material_type` VALUES (@id, 'MT', '物料类型', NULL, @id,'MT','�
 
 -- ----------------------------------------------------------------------------------------------------------
 
+CREATE TABLE `plant`  (
+  `plant_id`                         char(36)          NOT NULL,
+  `plant_no`                         varchar(10)       NOT NULL,
+  `plant_name`                       varchar(30)      NULL ,
+  `plant_description`                varchar(250)      NULL ,
+  `plant_cost_price_ratio`           decimal(8, 4)     NOT NULL DEFAULT 0.0100  COMMENT '工资提成',
+
+  PRIMARY KEY (`plant_id`) ,
+  INDEX `IDX_PLANT_01`(`plant_no`) ,
+  INDEX `IDX_PLANT_02`(`plant_name`)
+) COMMENT = '工厂';
+
+
+CREATE TABLE `work_center`  (
+  `work_center_id`               char(36)               NOT NULL,
+  `work_center_no`               varchar(10)            NOT NULL,
+  `work_center_name`             varchar(30)           NOT NULL,
+  `work_center_description`      varchar(1000)          NULL ,
+  `work_center_plant_id`         char(36)               NOT NULL,
+ -- `work_center_group_id`         char(36)               NOT NULL,
+
+  PRIMARY KEY (`work_center_id`) ,
+  INDEX `IDX_WORK_CENTER_01`(`work_center_no`) ,
+  INDEX `IDX_WORK_CENTER_02`(`work_center_name`) ,
+  INDEX `IDX_WORK_CENTER_03`(`work_center_plant_id`) ,
+--  INDEX `IDX_WORK_CENTER_04`(`work_center_group_id`)
+) COMMENT = '工作中心';
+
+# CREATE TABLE `work_center_group`  (
+#   `work_center_group_id`            char(36)             NOT NULL,
+#   `work_center_group_no`            varchar(10)          NOT NULL,
+#   `work_center_group_plant_id`      char(36)             NOT NULL,
+#   `work_center_group_name`          varchar(30)         NOT NULL,
+#   `work_center_group_description`   varchar(250)        NULL ,
+#
+#   PRIMARY KEY (`work_center_group_id`) ,
+#   INDEX `IDX_WORK_CENTER_GROUP_01`(`work_center_group_no`) ,
+#   INDEX `IDX_WORK_CENTER_GROUP_02`(`work_center_group_plant_id`) ,
+#   INDEX `IDX_WORK_CENTER_GROUP_03`(`work_center_group_name`)
+# ) COMMENT = '工作中心组';
+
+CREATE TABLE `work_station`  (
+  `work_station_id`                      char(36)           NOT NULL,
+  `work_station_no`                      varchar(10)        NOT NULL,
+  `work_station_plant_id`                char(36)           NOT NULL,
+  `work_station_description`             varchar(250)       NULL ,
+  `work_station_work_type`               char(3)            NOT NULL              COMMENT '工位类型:CUT 裁剪 STI 缝制 HNG 吊挂  QLT 质检  PRT 打印',
+  `work_station_type`                    ENUM('R','F')      NOT NULL DEFAULT 'R'  COMMENT 'R	真实工位     F 虚拟工位',
+  `work_station_status`                  varchar(10)        NOT NULL,
+  `work_station_direction`               enum('R','L')      NOT NULL              COMMENT 'R：右边   L:左边',
+  `work_station_ip_address`              varchar(20)        NULL ,
+  `work_station_max_wip_qty`             int(11)            NOT NULL              COMMENT '最大的WIP数',
+  `work_station_current_wip_qty`         int(11)            NULL                  COMMENT '当前WIP数',
+  `work_station_work_center_id`          char(36)           NULL ,
+  `work_station_remote_file_address`     varchar(255)        NULL ,
+
+  PRIMARY KEY (`work_station_id`) ,
+  INDEX `IDX_WORK_STATION_01`(`work_station_no`) ,
+  INDEX `IDX_WORK_STATION_02`(`work_station_plant_id`) ,
+  INDEX `IDX_WORK_STATION_03`(`work_station_work_center_id`)
+) COMMENT = '工位';
+
+
+CREATE TABLE `machine`  (
+  `machine_id`                        char(36) NOT NULL,
+  `machine_no`                        varchar(12) NULL ,
+  `machine_name`                      varchar(30) NULL ,
+  `machine_type_id`                   char(36) NULL ,
+  `machine_status`                    enum('E','D') NOT NULL DEFAULT 'E'    comment '设备状态：E 可用  D 不可用',
+  `machine_description`               varchar(250) NULL ,
+  `machine_work_station_id`           char(36) NULL ,
+
+  PRIMARY KEY (`machine_id`) ,
+  INDEX `IDX_MACHINE_01`(`machine_no`) ,
+  INDEX `IDX_MACHINE_02`(`machine_name`) ,
+  INDEX `IDX_MACHINE_03`(`machine_type_id`) ,
+  INDEX `IDX_MACHINE_04`(`machine_work_station_id`)
+) COMMENT = '设备';
+
+
+CREATE TABLE `principal_axis`  (
+  `principal_axis_id`                       char(36)           NOT NULL,
+  `principal_axis_no`                       varchar(10)        NOT NULL ,
+  `principal_axis_sequence_number`          int                NULL ,
+  `principal_axis_rotating_direction`       enum('C','A')      not  NULL default 'A' comment '旋转方向：C 顺时钟  A 逆时钟',
+  `principal_axis_length`                   double             NULL ,
+  `principal_axis_width`                    double             NULL ,
+  `principal_axis_speed`                    double             NULL ,
+  `principal_axis_work_center_id`           char(36)           NULL ,
+
+  PRIMARY KEY (`principal_axis_id`) ,
+  INDEX `IDX_PRINCIPAL_AXIS_01`(`principal_axis_no`) ,
+  INDEX `IDX_PRINCIPAL_AXIS_02`(`principal_axis_work_center_id`)
+) COMMENT = '主轨';
+
+CREATE TABLE `line`  (
+  `line_id`                        char(36)                NOT NULL,
+  `line_work_center_id`            char(36)                NULL ,
+  `line_sequence_number`           int                     NULL ,
+  `line_start_main_line_id`        char(36)                NULL ,
+  `line_end_main_line_id`          char(36)                NULL ,
+  `line_length`                    double                  NULL ,
+  `line_width`                     double                  NULL ,
+  `line_rotating_direction`        enum('C','A')           NOT  NULL default 'A' comment '旋转方向：C 顺时钟  A 逆时钟',
+  `line_speed`                     double                  NULL ,
+  `line_pre_linespacing`           double                  NULL ,
+  `line_left_distance`             double                  NULL ,
+  `line_production_line_code`      varchar(50)             NULL ,
+
+  PRIMARY KEY (`line_id`) ,
+  INDEX `IDX_LINE_01`(`line_work_center_id`) ,
+  INDEX `IDX_LINE_02`(`line_production_line_code`) ,
+  INDEX `IDX_LINE_03`(`line_end_main_line_id`) ,
+  INDEX `IDX_LINE_04`(`line_start_main_line_id`)
+)  COMMENT = '产线';
+
+-- -----------------------------------------------------------------------------------------------------------
 
 CREATE TABLE `capability`  (
-  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
+  `capability_id`               char(36)          NOT NULL,
   `operator_id`                 bigint(20)        NULL,
   `operation_id`                bigint(20)        NOT NULL,
   `level`                       varchar(10)       NULL,
@@ -219,45 +336,6 @@ CREATE TABLE `capability`  (
   INDEX `IDX_CAPABILITY_01`(`operator_id`),
   INDEX `IDX_CAPABILITY_02`(`operation_id`)
 ) COMMENT = '能力';
-
--- ----------------------------------------------------------------------------------------------------------
-
-CREATE TABLE `line`  (
-  `id`                        bigint(20)              NOT NULL        AUTO_INCREMENT,
-  `work_center_id`            bigint(20)              NULL ,
-  `sequence_number`           int(11)                 NULL ,
-  `start_main_line_id`        bigint(20)              NULL ,
-  `end_main_line_id`          bigint(20)              NULL ,
-  `length`                    double                  NULL ,
-  `width`                     double                  NULL ,
-  `rotating_direction`        varchar(20)             NULL ,
-  `speed`                     double                  NULL ,
-  `pre_linespacing`           double                  NULL ,
-  `left_distance`             double                  NULL ,
-  `production_line_code`      varchar(50)             NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_LINE_01`(`work_center_id`) ,
-  INDEX `IDX_LINE_02`(`production_line_code`) ,
-  INDEX `IDX_LINE_03`(`start_main_line_id`) ,
-  INDEX `IDX_LINE_04`(`end_main_line_id`)
-)  COMMENT = '产线';
-
-CREATE TABLE `machine`  (
-  `id`                        bigint(20) NOT NULL AUTO_INCREMENT,
-  `machine_no`                varchar(64) NULL ,
-  `name`                      varchar(64) NULL ,
-  `machine_type_id`           bigint(20) NULL ,
-  `status`                    varchar(10) NOT NULL DEFAULT 'normal',
-  `description`               varchar(100) NULL ,
-  `work_station_id`           bigint(20) NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MACHINE_01`(`machine_no`) ,
-  INDEX `IDX_MACHINE_02`(`name`) ,
-  INDEX `IDX_MACHINE_03`(`machine_type_id`) ,
-  INDEX `IDX_MACHINE_04`(`work_station_id`)
-) COMMENT = '设备';
 
 
 CREATE TABLE `size_label_match_rule`  (
@@ -285,74 +363,6 @@ CREATE TABLE `size_match_rule`  (
   INDEX `IDX_SMR_01`(`rule_no`)
 ) COMMENT = '规格匹配规则';
 
-CREATE TABLE `work_center`  (
-  `id`                     bigint(20)             NOT NULL AUTO_INCREMENT,
-  `work_center_no`         varchar(10)            NOT NULL,
-  `name`                   varchar(100)           NOT NULL,
-  `description`            varchar(1000)          NULL ,
-  `plant_id`               bigint(20)             NOT NULL,
-  `work_center_group_id`   bigint(20)             NOT NULL,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_CENTER_01`(`work_center_no`) ,
-  INDEX `IDX_WORK_CENTER_02`(`name`) ,
-  INDEX `IDX_WORK_CENTER_03`(`plant_id`) ,
-  INDEX `IDX_WORK_CENTER_04`(`work_center_group_id`)
-) COMMENT = '工作中心';
-
-CREATE TABLE `work_center_group`  (
-  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
-  `work_center_group_no`    varchar(10)          NOT NULL,
-  `plant_id`                bigint(20)           NOT NULL,
-  `name`                    varchar(100)         NOT NULL,
-  `description`             varchar(1000)        NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_CENTER_GROUP_01`(`work_center_group_no`) ,
-  INDEX `IDX_WORK_CENTER_GROUP_02`(`plant_id`) ,
-  INDEX `IDX_WORK_CENTER_GROUP_03`(`name`)
-) COMMENT = '工作中心组';
-
-CREATE TABLE `work_station`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `work_station_no`           varchar(10)        NOT NULL,
-  `plant_id`                  bigint(20)         NOT NULL,
-  `description`               varchar(100)       NULL ,
-  `type`                      varchar(10)        NOT NULL,
-  `status`                    varchar(10)        NOT NULL,
-  `ip_address`                varchar(20)        NULL ,
-  `max_wip_qty`               int(11)            NOT NULL,
-  `allowed_wip_qty`           int(11)            NULL ,
-  `work_center_id`            int(11)            NULL ,
-  `remote_file_address`       varchar(20)        NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_STATION_01`(`work_station_no`) ,
-  INDEX `IDX_WORK_STATION_02`(`plant_id`) ,
-  INDEX `IDX_WORK_STATION_03`(`work_center_id`)
-) COMMENT = '工位';
-
-CREATE TABLE `work_station_configure`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `work_station_id`           bigint(20)         NULL ,
-  `line_id`                   bigint(20)         NULL ,
-  `type`                      varchar(10)        NULL       COMMENT 'REALITY	真实工位     FICTITIOUS 虚拟工位',
-  `direction`                 varchar(10)        NULL       COMMENT 'right   left',
-  `no`                        int(11)            NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_WORK_STATION_C_01`(`work_station_id`) ,
-  INDEX `IDX_WORK_STATION_C_02`(`line_id`)
-) COMMENT = '工位配置';
-
-CREATE TABLE `work_station_wip`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `work_station_id`           bigint(20)         NOT NULL               COMMENT '工位主键',
-  `wip_qty`                   int(11)            NOT NULL               COMMENT 'wip数量',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_01`(`work_station_id`)
-) COMMENT = '工位wip';
 
 CREATE TABLE `zipper_match_rule`  (
   `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
@@ -370,17 +380,7 @@ CREATE TABLE `zipper_match_rule`  (
 ) COMMENT = '拉链长度匹配规则';
 
 
-CREATE TABLE `plant`  (
-  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
-  `plant_no`                   varchar(10)       NOT NULL,
-  `name`                       varchar(100)      NULL ,
-  `description`                varchar(1000)     NULL ,
-  `cost_price_ratio`           decimal(8, 4)     NOT NULL DEFAULT 0.0100  COMMENT '工资提成',
 
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PLANT_01`(`plant_no`) ,
-  INDEX `IDX_PLANT_02`(`name`)
-) COMMENT = '工厂';
 
 CREATE TABLE `price_scopes`  (
   `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
@@ -406,20 +406,6 @@ CREATE TABLE `price_scopes_match_rule`  (
   INDEX `IDX_PSMR_03`(`assist_material_id`)
 ) COMMENT = '价格带匹配规则';
 
-CREATE TABLE `principal_axis`  (
-  `id`                       bigint(20)         NOT NULL AUTO_INCREMENT,
-  `principal_axis_no`        varchar(10)        NULL ,
-  `sequence_number`          int(11)            NULL ,
-  `rotating_direction`       varchar(20)        NULL ,
-  `length`                   double             NULL ,
-  `width`                    double             NULL ,
-  `speed`                    double             NULL ,
-  `work_center_id`           bigint(20)         NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRICIPAL_AXIS_01`(`principal_axis_no`) ,
-  INDEX `IDX_PRICIPAL_AXIS_02`(`work_center_id`)
-) COMMENT = '主轨';
 
 CREATE TABLE `interface_log_visualization`  (
   `id`                         bigint(20)             NOT NULL        AUTO_INCREMENT,
@@ -469,9 +455,6 @@ CREATE TABLE `material_match_rule_log`  (
 
   PRIMARY KEY (`id`) 
 ) COMMENT = '物料匹配规则日志';
-
-
-
 
 
 CREATE TABLE `operation`  (
