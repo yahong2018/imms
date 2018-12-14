@@ -225,7 +225,7 @@ CREATE TABLE `plant`  (
 CREATE TABLE `work_center`  (
   `work_center_id`               char(36)               NOT NULL,
   `work_center_no`               varchar(10)            NOT NULL,
-  `work_center_name`             varchar(30)           NOT NULL,
+  `work_center_name`             varchar(30)            NOT NULL,
   `work_center_description`      varchar(1000)          NULL ,
   `work_center_plant_id`         char(36)               NOT NULL,
  -- `work_center_group_id`         char(36)               NOT NULL,
@@ -263,7 +263,7 @@ CREATE TABLE `work_station`  (
   `work_station_max_wip_qty`             int(11)            NOT NULL              COMMENT '最大的WIP数',
   `work_station_current_wip_qty`         int(11)            NULL                  COMMENT '当前WIP数',
   `work_station_work_center_id`          char(36)           NULL ,
-  `work_station_remote_file_address`     varchar(255)        NULL ,
+  `work_station_remote_file_address`     varchar(255)       NULL ,
 
   PRIMARY KEY (`work_station_id`) ,
   INDEX `IDX_WORK_STATION_01`(`work_station_no`) ,
@@ -314,7 +314,7 @@ CREATE TABLE `line`  (
   `line_width`                     double                  NULL ,
   `line_rotating_direction`        enum('C','A')           NOT  NULL default 'A' comment '旋转方向：C 顺时钟  A 逆时钟',
   `line_speed`                     double                  NULL ,
-  `line_pre_linespacing`           double                  NULL ,
+  `line_pre_lines_pacing`           double                  NULL ,
   `line_left_distance`             double                  NULL ,
   `line_production_line_code`      varchar(50)             NULL ,
 
@@ -325,18 +325,20 @@ CREATE TABLE `line`  (
   INDEX `IDX_LINE_04`(`line_start_main_line_id`)
 )  COMMENT = '产线';
 
+
+CREATE TABLE `operator`  (
+  `operator_id`                         char(36)          NOT NULL,
+  `operator_user_id`                    varchar(20)       NOT NULL,
+  `operator_plant_id`                   char(36)          NOT NULL,
+  `operator_supervisor_id`              varchar(20)       NOT NULL ,
+
+  PRIMARY KEY (`operator_id`) ,
+  INDEX `IDX_OPERATOR_01`(`operator_user_id`) ,
+  INDEX `IDX_OPERATOR_02`(`operator_plant_id`) ,
+  INDEX `IDX_OPERATOR_03`(`operator_supervisor_id`)
+) COMMENT = '操作员';
+
 -- -----------------------------------------------------------------------------------------------------------
-
-CREATE TABLE `capability`  (
-  `capability_id`               char(36)          NOT NULL,
-  `operator_id`                 bigint(20)        NULL,
-  `operation_id`                bigint(20)        NOT NULL,
-  `level`                       varchar(10)       NULL,
-  PRIMARY KEY (`id`),
-  INDEX `IDX_CAPABILITY_01`(`operator_id`),
-  INDEX `IDX_CAPABILITY_02`(`operation_id`)
-) COMMENT = '能力';
-
 
 CREATE TABLE `size_label_match_rule`  (
   `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
@@ -479,6 +481,17 @@ CREATE TABLE `operation`  (
   INDEX `IDX_OPERATION_01`(`operation_no`) ,
   INDEX `IDX_OPERATION_02`(`machine_type_id`)
 ) COMMENT = '工艺';
+
+CREATE TABLE `operator_capability`  (
+  `operator_capability_id`               char(36)        NOT NULL,
+  `operator_capability_operator_id`      char(20)        NULL,
+  `operator_capability_operation_id`     char(20)        NOT NULL,
+  `operator_capability_level`            varchar(10)     NULL,
+  PRIMARY KEY (`operator_capability_id`),
+  INDEX `IDX_CAPABILITY_01`(`operator_capability_operator_id`),
+  INDEX `IDX_CAPABILITY_02`(`operator_capability_operation_id`)
+) COMMENT = '操作员工序能力';
+
 
 CREATE TABLE `operation_media`  (
   `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
@@ -669,18 +682,6 @@ CREATE TABLE `operator_check_in`  (
   INDEX `IDX_OPERATOR_CHECK_IN_01`(`operator_id`) ,
   INDEX `IDX_OPERATOR_CHECK_IN_02`(`work_station_id`) 
 ) COMMENT = '操作员入岗';
-
-CREATE TABLE `operator`  (
-  `id`                         bigint(20)          NOT NULL AUTO_INCREMENT,
-  `user_id`                    bigint(20)          NOT NULL,
-  `plant_id`                   bigint(20)          NOT NULL,
-  `supervisor_id`              bigint(20)          NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OPERATOR_01`(`user_id`) ,
-  INDEX `IDX_OPERATOR_02`(`plant_id`) ,
-  INDEX `IDX_OPERATOR_03`(`supervisor_id`)
-) COMMENT = '操作员';
 
 CREATE TABLE `production_cutting_plan`  (
   `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
