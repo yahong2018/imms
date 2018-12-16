@@ -23,18 +23,6 @@ CREATE TABLE `media`  (
   PRIMARY KEY (`media_id`)
 ) COMMENT = '多媒体';
 
-CREATE TABLE `customer`  (
-  `customer_id`                          char(36)           NOT NULL ,
-  `customer_production_order_id`         varchar(36)        NOT NULL       COMMENT '生产订单主键',
-  `customer_name`                        varchar(30)        NOT NULL       COMMENT '姓名',
-  `customer_sex`                         enum('M','F')      NULL           COMMENT '性别',
-  `customer_mail_address`                varchar(120)       NULL           COMMENT '邮寄地址',
-  `customer_telephone`                   varchar(24)        NULL           COMMENT '电话',
-  `customer_type`                        varchar(20)        NULL,
-  PRIMARY KEY (`customer_id`),
-  INDEX `IDX_CUSTOMER_01`(`customer_production_order_id`),
-  INDEX `IDX_CUSTOMER_02`(`customer_name`)
-) COMMENT = '客户信息';
 
 CREATE TABLE `size`  (
   `size_id`                char(36)             NOT NULL,
@@ -340,6 +328,197 @@ CREATE TABLE `operator`  (
 
 -- -----------------------------------------------------------------------------------------------------------
 
+CREATE TABLE `operation`  (
+  `operation_id`                               char(36)             NOT NULL,
+  `operation_no`                               varchar(20)          NOT NULL,
+  `operation_name`                             varchar(120)         NOT NULL ,
+  `operation_standard_operation_procedure`     varchar(200)         NULL ,
+  `operation_machine_type_id`                  char(36)             NULL ,
+  `operation_standard_time`                    float(8,4)           NULL ,
+  `operation_standard_price`                   float(8,4)           NULL ,
+  `operation_part_type`                        varchar(12)          NULL ,
+  `operation_section_type`                     varchar(12)          NULL ,
+  `operation_section_name`                     varchar(30)          NULL ,
+  `operation_if_outsource`                     tinyint(1)           NULL ,
+  `operation_qa_procedure`                     varchar(1000)        NULL ,
+  `operation_requirement`                      varchar(1000)        NULL ,
+  `operation_level`                            varchar(10)          NULL ,
+  `operation_design_part_code`                 varchar(12)          NULL ,
+  `operation_part_code`                        varchar(12)          NULL ,
+
+  PRIMARY KEY (`operation_id`) ,
+  INDEX `IDX_OPERATION_01`(`operation_no`) ,
+  INDEX `IDX_OPERATION_02`(`operation_machine_type_id`)
+) COMMENT = '工艺';
+
+
+
+CREATE TABLE `operation_media`  (
+  `operation_media_id`                       char(36)      NOT NULL,
+  `operation_media_operation_id`             char(36)      NOT NULL,
+  `operation_media_media_id`                 char(36)      NOT NULL ,
+
+  PRIMARY KEY (`operation_media_id`) ,
+  INDEX `IDX_OM_01`(`operation_media_operation_id`) ,
+  INDEX `IDX_OM_02`(`operation_media_media_id`)
+) COMMENT = '工艺多媒体';
+
+
+CREATE TABLE `operator_capability`  (
+  `operator_capability_id`               char(36)        NOT NULL,
+  `operator_capability_operator_id`      char(20)        NULL,
+  `operator_capability_operation_id`     char(20)        NOT NULL,
+  `operator_capability_level`            varchar(10)     NULL,
+  PRIMARY KEY (`operator_capability_id`),
+  INDEX `IDX_CAPABILITY_01`(`operator_capability_operator_id`),
+  INDEX `IDX_CAPABILITY_02`(`operator_capability_operation_id`)
+) COMMENT = '操作员工序能力';
+
+
+CREATE TABLE `operation_routing_order`  (
+  `operation_routing_order_id`    char(36)            NOT NULL,
+  `operation_routing_order_no`    varchar(10)         NOT NULL ,
+  `operation_routing_type`        enum('M','P','W')   NOT NULL  COMMENT 'M:物料工艺路线,P:生产订单工艺路线,W:作业单工艺路线',
+
+  PRIMARY KEY (`operation_routing_order_id`) ,
+  INDEX `IDX_OPERATION_RO_01`(`operation_routing_order_no`)
+) COMMENT = '工艺路线单';
+
+
+CREATE TABLE `operation_routing`  (
+  `operation_routing_id`                  char(36)            NOT NULL,
+  `operation_routing_operation_id`        char(36)            NOT NULL ,
+  `operation_routing_order_id`            char(36)            NOT NULL             COMMENT '工艺路线单主键',
+  `operation_routing_qa_procedure`        varchar(250)        NULL                 COMMENT '品质说明',
+  `operation_routing_standard_price`      float(8,4)          NOT NULL             COMMENT '标准单价',
+  `operation_routing_section_type`        varchar(12)         NULL                 COMMENT '所属工段',
+  `operation_routing_machine_type_id`     char(36)            NULL                 COMMENT '机器类型',
+  `operation_routing_actual_station_id`   char(36)            NULL ,
+  `operation_routing_operator_id`         char(36)            NULL                 COMMENT '操作员主键',
+  `operation_routing_standard_time`       float(8,4)          NULL                 COMMENT '标准时间',
+  `operation_routing_actual_time`         float(8,4)          NULL ,
+  `operation_routing_pre_operation_id`    char(36)            NULL                 COMMENT '依赖关系-上道工艺',
+  `operation_routing_sop_file_path`       varchar(255)        NULL ,
+  `operation_routing_status`              enum('P','S','F')   NULL DEFAULT 'P'     COMMENT 'P.已计划	S.已开始	 F.已完成',
+  `operation_routing_required_level`      varchar(10)         NULL                 COMMENT '需要工艺等级',
+  `operation_routing_scrap_qty`           int                 NULL DEFAULT 0       COMMENT '报废数量',
+  `operation_routing_complete_qty`        int                 NULL DEFAULT 0       COMMENT '完工数量',
+  `operation_routing_pre_routing_id`      char(36)            NULL                 COMMENT '依赖关系-上道工序',
+  `operation_routing_sequence_no`         int                 NOT NULL             COMMENT '工序顺序',
+  `operation_routing_part_type`           varchar(40)         NULL ,
+  `operation_routing_if_outsource`        tinyint(1)          NULL ,
+  `operation_routing_pull_in_time`        datetime(0)         NULL                 COMMENT '进站时间',
+  `operation_routing_pull_out_time`       datetime(0)         NULL                 COMMENT '出站时间',
+
+  PRIMARY KEY (`operation_routing_id`) ,
+  INDEX `IDX_OPERATION_ROUTING_01`(`operation_routing_operation_id`) ,
+  INDEX `IDX_OPERATION_ROUTING_02`(`operation_routing_order_id`) ,
+  INDEX `IDX_OPERATION_ROUTING_03`(`operation_routing_operator_id`) ,
+  INDEX `IDX_OPERATION_ROUTING_04`(`operation_routing_actual_station_id`) ,
+  INDEX `IDX_OPERATION_ROUTING_05`(`operation_routing_pre_operation_id`) ,
+  INDEX `IDX_OPERATION_ROUTING_06`(`operation_routing_pre_routing_id`)
+) COMMENT = '工艺路线';
+
+-- -----------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `requirement_order`  (
+  `requirement_order_id`                       char(36)              NOT NULL,
+  `requirement_order_no`                       varchar(12)           NOT NULL               COMMENT '需求订单号',
+  `requirement_order_type`                     varchar(10)           NOT NULL               COMMENT '需求订单类型',
+  `requirement_order_status`                   varchar(10)           NOT NULL               COMMENT '状态',
+  `requirement_order_priority`                 varchar(10)           NOT NULL               COMMENT '优先级',
+  `requirement_order_plant_id`                 char(36)              NOT NULL               COMMENT '工厂主键',
+  `requirement_order_work_center_id`           char(36)              NOT NULL               COMMENT '工作中心主键',
+  `requirement_order_fg_material_id`           char(36)              NOT NULL               COMMENT '物料号',
+  `requirement_order_planned_qty`              int                   NOT NULL               COMMENT '计划生产数量',
+  `requirement_order_required_delivery_date`   datetime              NOT NULL               COMMENT '需求交期',
+  `requirement_order_sale_order_no`            varchar(64)           NULL                   COMMENT '销售订单号',
+  `requirement_order_repeat_type`              varchar(10)           NULL                   COMMENT '标识',
+
+  PRIMARY KEY (`requirement_order_id`) ,
+  INDEX `IDX_REQUIREMENT_ORDER_01`(`requirement_order_no`) ,
+  INDEX `IDX_REQUIREMENT_ORDER_02`(`requirement_order_work_center_id`)
+) COMMENT = '需求订单';
+
+
+CREATE TABLE `customer`  (
+  `customer_id`                          char(36)           NOT NULL ,
+  `customer_production_order_id`         varchar(36)        NOT NULL       COMMENT '生产订单主键',
+  `customer_name`                        varchar(30)        NOT NULL       COMMENT '姓名',
+  `customer_sex`                         enum('M','F')      NULL           COMMENT '性别',
+  `customer_mail_address`                varchar(120)       NULL           COMMENT '邮寄地址',
+  `customer_telephone`                   varchar(24)        NULL           COMMENT '电话',
+  `customer_type`                        varchar(20)        NULL,
+  PRIMARY KEY (`customer_id`),
+  INDEX `IDX_CUSTOMER_01`(`customer_production_order_id`),
+  INDEX `IDX_CUSTOMER_02`(`customer_name`)
+) COMMENT = '客户信息';
+
+-- -----------------------------------------------------------------------------------------------------------
+
+CREATE TABLE `production_order`  (
+  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
+  `production_order_no`         varchar(64)       NOT NULL,
+  `type`                        varchar(10)       NOT NULL,
+  `bom_order_id`                bigint(20)        NULL ,
+  `operation_routing_order_id`  bigint(20)        NULL ,
+  `source`                      varchar(64)       NULL       COMMENT '订单来源',
+  `material_ready`              varchar(10)       NULL       COMMENT '物料准备',
+  `status`                      varchar(10)       NOT NULL,
+  `priority`                    varchar(10)       NOT NULL,
+  `requirement_order_id`        bigint(20)        NOT NULL,
+  `plant_id`                    bigint(20)        NOT NULL,
+  `work_center_id`              bigint(20)        NULL ,
+  `fg_material_id`              varchar(64)       NULL       COMMENT '成品物料主键',
+  `planned_qty`                 int(11)           NULL ,
+  `finished_qty`                int(11)           NULL ,
+  `second_quality_qty`          int(11)           NULL       COMMENT '次品数量',
+  `defect_qty`                  int(11)           NULL ,
+  `actual_qty`                  int(11)           NULL ,
+  `required_delivery_date`      datetime(0)       NULL ,
+  `planned_start_date`          datetime(0)       NULL ,
+  `planned_end_date`            datetime(0)       NULL ,
+  `actual_start_date`           datetime(0)       NULL ,
+  `actual_end_date`             datetime(0)       NULL ,
+  `schedule_order_no`           varchar(100)      NULL       COMMENT '排产订单编号',
+
+  `created_by` varchar(20) NOT NULL,
+  `created_date` datetime(0) NOT NULL,
+  `last_modified_by` varchar(20) NOT NULL,
+  `last_modified_date` datetime(0) NOT NULL,
+  PRIMARY KEY (`id`)
+) COMMENT = '生产订单';
+
+CREATE TABLE `production_order_routing`  (
+  `id`                         bigint(20)         NOT NULL       AUTO_INCREMENT,
+  `production_order_id`        bigint(20)         NULL ,
+  `operation_id`               bigint(20)         NOT NULL,
+  `qa_procedure`               varchar(200)       NULL ,
+  `machine_type_id`            bigint(20)         NULL ,
+  `standard_time`              varchar(20)        NULL ,
+  `standard_price`             varchar(20)        NULL ,
+  `section_type`               varchar(20)        NULL ,
+  `pre_operation_id`           bigint(20)         NULL       COMMENT '依赖关系-上道工序',
+  `sop_file_path`              varchar(1000)      NULL ,
+
+  PRIMARY KEY (`id`)
+) COMMENT = '生产订单工序信息';
+
+CREATE TABLE `production_order_size`  (
+  `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
+  `production_order_id`        bigint(20)         NOT NULL,
+  `line_no`                    int(11)            NULL       COMMENT '行项目',
+  `size`                       varchar(10)        NULL ,
+  `planned_qty`                int(11)            NULL ,
+  `actual_qty`                 int(11)            NULL ,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PRO_SIZE_01`(`production_order_id`)
+) COMMENT = '生产订单尺码明细';
+
+-- -----------------------------------------------------------------------------------------------------------
+
+
 CREATE TABLE `size_label_match_rule`  (
   `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
   `rule_no`                 varchar(10)          NULL         COMMENT '规则编码',
@@ -409,21 +588,6 @@ CREATE TABLE `price_scopes_match_rule`  (
 ) COMMENT = '价格带匹配规则';
 
 
-CREATE TABLE `interface_log_visualization`  (
-  `id`                         bigint(20)             NOT NULL        AUTO_INCREMENT,
-  `chart_type`                 varchar(20)            NOT NULL                COMMENT '图表类型',
-  `chart_code`                 varchar(20)            NOT NULL                COMMENT '图表编码',
-  `chart_series_name`          varchar(20)            NOT NULL                COMMENT '图表数据-类型',
-  `chart_data_key`             varchar(64)            NOT NULL                COMMENT '图表数据-键',
-  `chart_data_value`           varchar(64)            NOT NULL                COMMENT '图表数据-值',
-
-  `created_by`                 varchar(20)            NOT NULL                COMMENT '创建人',
-  `created_date`               datetime(0)            NOT NULL                COMMENT '创建日期',
-  `last_modified_by`           varchar(20)            NOT NULL                COMMENT '修改人',
-  `last_modified_date`         datetime(0)            NOT NULL                COMMENT '修改日期',
-  PRIMARY KEY (`id`) 
-) COMMENT = '可视化接口日志';
-
 CREATE TABLE `match_rule`  (
   `id`                        bigint(20) NOT NULL AUTO_INCREMENT,
   `rule_no`                   varchar(10) NULL ,
@@ -435,7 +599,7 @@ CREATE TABLE `match_rule`  (
   `type`                      varchar(10) NOT NULL                  COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATCH_RULE_01`(`rule_no`) 
+  INDEX `IDX_MATCH_RULE_01`(`rule_no`)
 ) COMMENT='规则表' ;
 
 
@@ -447,7 +611,7 @@ CREATE TABLE `material_match_rule`  (
 
   PRIMARY KEY (`id`) ,
   INDEX `IDX_MMR_01`(`material_id`) ,
-  INDEX `IDX_MMR_02`(`rule_id`) 
+  INDEX `IDX_MMR_02`(`rule_id`)
 ) COMMENT='物料匹配规则';
 
 CREATE TABLE `material_match_rule_log`  (
@@ -455,53 +619,10 @@ CREATE TABLE `material_match_rule_log`  (
   `bom_id`                 bigint(20)          NULL ,
   `rule_id`                bigint(20)          NULL ,
 
-  PRIMARY KEY (`id`) 
+  PRIMARY KEY (`id`)
 ) COMMENT = '物料匹配规则日志';
 
 
-CREATE TABLE `operation`  (
-  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
-  `operation_no`             varchar(20)          NOT NULL,
-  `description`              varchar(1000)        NULL ,
-  `standard_operation_procedure` varchar(200)     NULL ,
-  `machine_type_id`          bigint(20)           NULL ,
-  `standard_time`            varchar(64)          NULL ,
-  `standard_price`           varchar(10)          NULL ,
-  `part_type`                varchar(40)          NULL ,
-  `section_type`             varchar(10)          NULL ,
-  `section_name`             varchar(40)          NULL ,
-  `if_outsource`             tinyint(1)           NULL ,
-  `qa_procedure`             varchar(1000)        NULL ,
-  `requirement`              varchar(1000)        NULL ,
-  `level`                    varchar(10)          NULL ,
-  `design_part_code`         varchar(10)          NULL ,
-  `part_code`                varchar(10)          NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OPERATION_01`(`operation_no`) ,
-  INDEX `IDX_OPERATION_02`(`machine_type_id`)
-) COMMENT = '工艺';
-
-CREATE TABLE `operator_capability`  (
-  `operator_capability_id`               char(36)        NOT NULL,
-  `operator_capability_operator_id`      char(20)        NULL,
-  `operator_capability_operation_id`     char(20)        NOT NULL,
-  `operator_capability_level`            varchar(10)     NULL,
-  PRIMARY KEY (`operator_capability_id`),
-  INDEX `IDX_CAPABILITY_01`(`operator_capability_operator_id`),
-  INDEX `IDX_CAPABILITY_02`(`operator_capability_operation_id`)
-) COMMENT = '操作员工序能力';
-
-
-CREATE TABLE `operation_media`  (
-  `id`                       bigint(20)           NOT NULL AUTO_INCREMENT,
-  `operation_id`             varchar(10)          NOT NULL,
-  `media_id`                 varchar(1000)        NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OM_01`(`operation_id`) ,
-  INDEX `IDX_OM_02`(`media_id`(255))
-) COMMENT = '工艺多媒体';
 
 CREATE TABLE `cutting_marker`  (
   `id`                          bigint(20)         NOT NULL AUTO_INCREMENT,
@@ -627,48 +748,6 @@ CREATE TABLE `material_picking_order_bom`  (
   INDEX `IDX_MATERIAL_POB_02`(`material_picking_order_id`) 
 ) COMMENT = '领料单物料清单';
 
-CREATE TABLE `operation_routing`  (
-  `id`                         bigint(20)          NOT NULL AUTO_INCREMENT,
-  `operation_id`               bigint(20)          NULL ,
-  `operation_routing_order_id` bigint(20)          NOT NULL             COMMENT '工艺路线单主键',
-  -- `line_no`                    int(11)             NULL     COMMENT '行项目',
-  `qa_procedure`               varchar(200)        NULL     COMMENT '品质说明',
-  `standard_price`             varchar(20)         NULL     COMMENT '标准单价',
-  `section_type`               varchar(20)         NULL     COMMENT '所属工段',
-  `machine_type_id`            bigint(20)          NULL     COMMENT '机器类型',
-  `actual_station_id`          bigint(20)          NULL ,
-  `operator_id`                bigint(20)          NULL     COMMENT '操作员主键',
-  `standard_time`              varchar(20)         NULL     COMMENT '标准时间',
-  `actual_time`                varchar(20)         NULL ,
-  `pre_operation_id`           bigint(20)          NULL     COMMENT '依赖关系-上道工艺',
-  `sop_file_path`              varchar(1000)       NULL ,
-  `status`                     varchar(10)         NULL DEFAULT 'notstart' COMMENT '已计划	planned  已开始	started  已完成	finished',
-  `required_level`             varchar(10)         NULL     COMMENT '需要工艺等级',
-  `scrap_qty`                  int(11)             NULL DEFAULT 0       COMMENT '用于生产订单报工',
-  `complete_qty`               int(11)             NULL DEFAULT 0       COMMENT '用于生产订单报工',
-  `pre_routing_id`             bigint(20)          NULL     COMMENT '依赖关系-上道工序',
-  `part_type`                  varchar(40)         NULL ,
-  `if_outsource`               tinyint(1)          NULL ,
-  `pull_in_time`               datetime(0)         NULL  COMMENT '进站时间',
-  `pull_out_time`              datetime(0)         NULL  COMMENT '出站时间',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OPERATION_ROUTING_01`(`operation_id`) ,
-  INDEX `IDX_OPERATION_ROUTING_02`(`operation_routing_order_id`) ,
-  INDEX `IDX_OPERATION_ROUTING_03`(`machine_type_id`) ,
-  INDEX `IDX_OPERATION_ROUTING_04`(`actual_station_id`) ,
-  INDEX `IDX_OPERATION_ROUTING_05`(`pre_operation_id`) ,
-  INDEX `IDX_OPERATION_ROUTING_06`(`pre_routing_id`) 
-) COMMENT = '工艺路线';
-
-CREATE TABLE `operation_routing_order`  (
-  `row_id`                     varchar(36)         NOT NULL,
-  `operation_routing_order_no` varchar(64)         NOT NULL ,
-  `operation_routing_type`     enum('M','P','W')   NOT  NULL  COMMENT 'M:物料工艺路线,P:生产订单工艺路线,W:作业单工艺路线',
-
-  PRIMARY KEY (`row_id`) ,
-  INDEX `IDX_OPERATION_RO_01`(`operation_routing_order_no`)
-) COMMENT = '工艺路线单';
 
 CREATE TABLE `operator_check_in`  (
   `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
@@ -702,7 +781,7 @@ CREATE TABLE `production_cutting_plan`  (
 
   PRIMARY KEY (`id`) ,
   INDEX `IDX_PRO_CUTTING_PLAN_01`(`production_cutting_plan_no`) ,
-  INDEX `IDX_PRO_CUTTING_PLAN_02`(`production_order_id`) 
+  INDEX `IDX_PRO_CUTTING_PLAN_02`(`production_order_id`)
 ) COMMENT = '生产裁剪排料计划';
 
 CREATE TABLE `production_cutting_size`  (
@@ -716,69 +795,9 @@ CREATE TABLE `production_cutting_size`  (
   `actual_qty`                  int(11)           NULL ,
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRO_CUTTING_SIZE_01`(`production_cutting_plan_id`) 
+  INDEX `IDX_PRO_CUTTING_SIZE_01`(`production_cutting_plan_id`)
 ) COMMENT = '生产裁剪排料尺码';
 
-CREATE TABLE `production_order`  (
-  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
-  `production_order_no`         varchar(64)       NOT NULL,
-  `type`                        varchar(10)       NOT NULL,
-  `bom_order_id`                bigint(20)        NULL ,
-  `operation_routing_order_id`  bigint(20)        NULL ,
-  `source`                      varchar(64)       NULL       COMMENT '订单来源',
-  `material_ready`              varchar(10)       NULL       COMMENT '物料准备',
-  `status`                      varchar(10)       NOT NULL,
-  `priority`                    varchar(10)       NOT NULL,
-  `requirement_order_id`        bigint(20)        NOT NULL,
-  `plant_id`                    bigint(20)        NOT NULL,
-  `work_center_id`              bigint(20)        NULL ,
-  `fg_material_id`              varchar(64)       NULL       COMMENT '成品物料主键',
-  `planned_qty`                 int(11)           NULL ,
-  `finished_qty`                int(11)           NULL ,
-  `second_quality_qty`          int(11)           NULL       COMMENT '次品数量',
-  `defect_qty`                  int(11)           NULL ,
-  `actual_qty`                  int(11)           NULL ,
-  `required_delivery_date`      datetime(0)       NULL ,
-  `planned_start_date`          datetime(0)       NULL ,
-  `planned_end_date`            datetime(0)       NULL ,
-  `actual_start_date`           datetime(0)       NULL ,
-  `actual_end_date`             datetime(0)       NULL ,
-  `schedule_order_no`           varchar(100)      NULL       COMMENT '排产订单编号',
-
-  `created_by` varchar(20) NOT NULL,
-  `created_date` datetime(0) NOT NULL,
-  `last_modified_by` varchar(20) NOT NULL,
-  `last_modified_date` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`) 
-) COMMENT = '生产订单';
-
-CREATE TABLE `production_order_routing`  (
-  `id`                         bigint(20)         NOT NULL       AUTO_INCREMENT,
-  `production_order_id`        bigint(20)         NULL ,
-  `operation_id`               bigint(20)         NOT NULL,
-  `line_no`                    int(11)            NULL       COMMENT '行项目',
-  `qa_procedure`               varchar(200)       NULL ,
-  `machine_type_id`            bigint(20)         NULL ,
-  `standard_time`              varchar(20)        NULL ,
-  `standard_price`             varchar(20)        NULL ,
-  `section_type`               varchar(20)        NULL ,
-  `pre_operation_id`           bigint(20)         NULL       COMMENT '依赖关系-上道工序',
-  `sop_file_path`              varchar(1000)      NULL ,
-
-  PRIMARY KEY (`id`) 
-) COMMENT = '生产订单工序信息';
-
-CREATE TABLE `production_order_size`  (
-  `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
-  `production_order_id`        bigint(20)         NOT NULL,
-  `line_no`                    int(11)            NULL       COMMENT '行项目',
-  `size`                       varchar(10)        NULL ,
-  `planned_qty`                int(11)            NULL ,
-  `actual_qty`                 int(11)            NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRO_SIZE_01`(`production_order_id`) 
-) COMMENT = '生产订单尺码明细';
 
 CREATE TABLE `production_work_order`  (
   `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
@@ -887,25 +906,6 @@ CREATE TABLE `request_warehousing_entry`  (
   INDEX `IDX_RE_WAREHOUSING_ENTRY_01`(`request_warehouing_id`) 
 ) COMMENT = '商品进货单明细';
 
-CREATE TABLE `requirement_order`  (
-  `id`                       bigint(20)            NOT NULL AUTO_INCREMENT,
-  `requirement_order_no`     varchar(64)           NOT NULL               COMMENT '需求订单号',
-  `TYPE`                     varchar(10)           NOT NULL               COMMENT '需求订单类型',
-  `STATUS`                   varchar(10)           NOT NULL               COMMENT '状态',
-  `priority`                 varchar(10)           NOT NULL               COMMENT '优先级',
-  `plant_id`                 bigint(20)            NOT NULL               COMMENT '工厂主键',
-  `work_center_id`           bigint(20)            NULL       COMMENT '工作中心主键',
-  `fg_material_id`           bigint(20)            NULL       COMMENT '物料号',
-  `planned_qty`              int(11)               NULL       COMMENT '计划生产数量',
-  `required_delivery_date`   datetime(0)           NULL       COMMENT '需求交期',
-  `sale_order_no`            varchar(64)           NULL       COMMENT '销售订单号',
-  `repeat_type`              varchar(10)           NULL       COMMENT '标识',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_REQUIREMENT_ORDER_01`(`requirement_order_no`) ,
-  INDEX `IDX_REQUIREMENT_ORDER_02`(`work_center_id`) 
-) COMMENT = '需求订单';
-
 CREATE TABLE `sequence`  (
   `sequence_key`             varchar(64)          NOT NULL,
   `sequence_value`           bigint(20)           NOT NULL,
@@ -938,6 +938,24 @@ CREATE TABLE `production_order_measure_data`  (
   INDEX `IDX_PRO_ORDER_MD_01`(`production_order_id`)
 ) COMMENT = '生产订单量体数据';
 
+
+
+
+
+CREATE TABLE `interface_log_visualization`  (
+  `id`                         bigint(20)             NOT NULL        AUTO_INCREMENT,
+  `chart_type`                 varchar(20)            NOT NULL                COMMENT '图表类型',
+  `chart_code`                 varchar(20)            NOT NULL                COMMENT '图表编码',
+  `chart_series_name`          varchar(20)            NOT NULL                COMMENT '图表数据-类型',
+  `chart_data_key`             varchar(64)            NOT NULL                COMMENT '图表数据-键',
+  `chart_data_value`           varchar(64)            NOT NULL                COMMENT '图表数据-值',
+
+  `created_by`                 varchar(20)            NOT NULL                COMMENT '创建人',
+  `created_date`               datetime(0)            NOT NULL                COMMENT '创建日期',
+  `last_modified_by`           varchar(20)            NOT NULL                COMMENT '修改人',
+  `last_modified_date`         datetime(0)            NOT NULL                COMMENT '修改日期',
+  PRIMARY KEY (`id`)
+) COMMENT = '可视化接口日志';
 
 -- ----------------------------
 -- Function structure for nextval

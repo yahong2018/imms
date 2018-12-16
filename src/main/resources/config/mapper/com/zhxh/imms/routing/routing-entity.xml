@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.imms.routing.entity">
+    <resultMap id="Operation" type="com.zhxh.imms.routing.entity.Operation">
+        <id property="operationId" column="operation_id"/>
+        <result property="operationId" column="operation_id"/>
+        <result property="operationNo" column="operation_no"/>
+        <result property="operationName" column="operation_name"/>
+        <result property="operationStandardOperationProcedure" column="operation_standard_operation_procedure"/>
+        <result property="operationMachineTypeId" column="operation_machine_type_id"/>
+        <result property="operationStandardTime" column="operation_standard_time"/>
+        <result property="operationStandardPrice" column="operation_standard_price"/>
+        <result property="operationPartType" column="operation_part_type"/>
+        <result property="operationSectionType" column="operation_section_type"/>
+        <result property="operationSectionName" column="operation_section_name"/>
+        <result property="operationIfOutsource" column="operation_if_outsource"/>
+        <result property="operationQaProcedure" column="operation_qa_procedure"/>
+        <result property="operationRequirement" column="operation_requirement"/>
+        <result property="operationLevel" column="operation_level"/>
+        <result property="operationDesignPartCode" column="operation_design_part_code"/>
+        <result property="operationPartCode" column="operation_part_code"/>
+    </resultMap>
+
+    <resultMap id="OperationMedia" type="com.zhxh.imms.routing.entity.OperationMedia">
+        <id property="operationMediaId" column="operation_media_id"/>
+        <result property="operationMediaOperationId" column="operation_media_operation_id"/>
+        <result property="operationMediaMediaId" column="operation_media_media_id"/>
+    </resultMap>
+
+    <resultMap id="OperationRouting" type="com.zhxh.imms.routing.entity.OperationRouting">
+        <id property="operationRoutingId" column="operation_routing_id"/>
+        <result property="operationRoutingOperationId" column="operation_routing_operation_id"/>
+        <result property="operationRoutingOrderId" column="operation_routing_order_id"/>
+        <result property="operationRoutingQaProcedure" column="operation_routing_qa_procedure"/>
+        <result property="operationRoutingStandardPrice" column="operation_routing_standard_price"/>
+        <result property="operationRoutingSectionType" column="operation_routing_section_type"/>
+        <result property="operationRoutingMachineTypeId" column="operation_routing_machine_type_id"/>
+        <result property="operationRoutingActualStationId" column="operation_routing_actual_station_id"/>
+        <result property="operationRoutingOperatorId" column="operation_routing_operator_id"/>
+        <result property="operationRoutingStandardTime" column="operation_routing_standard_time"/>
+        <result property="operationRoutingActualTime" column="operation_routing_actual_time"/>
+        <result property="operationRoutingPreOperationId" column="operation_routing_pre_operation_id"/>
+        <result property="operationRoutingSopFilePath" column="operation_routing_sop_file_path"/>
+        <result property="operationRoutingStatus" column="operation_routing_status"/>
+        <result property="operationRoutingRequiredLevel" column="operation_routing_required_level"/>
+        <result property="operationRoutingScrapQty" column="operation_routing_scrap_qty"/>
+        <result property="operationRoutingCompleteQty" column="operation_routing_complete_qty"/>
+        <result property="operationRoutingPreRoutingId" column="operation_routing_pre_routing_id"/>
+        <result property="operationRoutingSequenceNo" column="operation_routing_sequence_no"/>
+        <result property="operationRoutingPartType" column="operation_routing_part_type"/>
+        <result property="operationRoutingIfOutsource" column="operation_routing_if_outsource"/>
+        <result property="operationRoutingPullInTime" column="operation_routing_pull_in_time"/>
+        <result property="operationRoutingPullOutTime" column="operation_routing_pull_out_time"/>
+    </resultMap>
+
+    <resultMap id="OperationRoutingOrder" type="com.zhxh.imms.routing.entity.OperationRoutingOrder">
+        <id property="operationRoutingOrderId" column="operation_routing_order_id"/>
+        <result property="operationRoutingOrderNo" column="operation_routing_order_no"/>
+        <result property="operationRoutingType" column="operation_routing_type"/>
+    </resultMap>
+
+    <resultMap id="OperatorCapability" type="com.zhxh.imms.routing.entity.OperatorCapability">
+        <id property="operatorCapabilityId" column="operator_capability_id"/>
+        <result property="operatorCapabilityOperatorId" column="operator_capability_operator_id"/>
+        <result property="operatorCapabilityOperationId" column="operator_capability_operation_id"/>
+        <result property="operatorCapabilityLevel" column="operator_capability_level"/>
+    </resultMap>
+
+</mapper>
