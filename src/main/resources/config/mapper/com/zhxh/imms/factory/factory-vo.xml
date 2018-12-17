@@ -3,4 +3,40 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.factory.vo">
 
+    <resultMap id="LineVO" type="com.zhxh.imms.factory.vo.LineVO" extends="com.zhxh.imms.factory.entity.Line">
+        <result property="startMainLineNo" column="start_main_line_no"/>
+        <result property="endMainLineNo" column="end_main_line_no"/>
+        <result property="workCenterNo" column="work_center_no"/>
+        <result property="workCenterName" column="work_center_name"/>
+    </resultMap>
+
+    <resultMap id="MachineVO" type="com.zhxh.imms.factory.vo.MachineVO" extends="com.zhxh.imms.factory.entity.Machine">
+        <result property="workStationNo" column="work_station_no"/>
+        <result property="workStationName" column="work_station_name"/>
+        <result property="machineTypeNo" column="machine_type_no"/>
+        <result property="machineTypeName" column="machine_type_name"/>
+    </resultMap>
+
+    <resultMap id="OperatorVO" type="com.zhxh.imms.factory.vo.OperatorVO" extends="com.zhxh.imms.factory.entity.Operator">
+        <result property="operatorName" column="operator_name"/>
+        <result property="supervisorUserId" column="supervisor_user_id"/>
+        <result property="supervisorName" column="supervisor_name"/>
+    </resultMap>
+
+    <resultMap id="PrincipalAxisVO" type="com.zhxh.imms.factory.vo.PrincipalAxisVO" extends="com.zhxh.imms.factory.entity.PrincipalAxis">
+        <result property="workCenterNo" column="work_center_no"/>
+        <result property="workCenterName" column="work_center_name"/>
+    </resultMap>
+
+    <resultMap id="WorkCenterVO" type="com.zhxh.imms.factory.vo.WorkCenterVO" extends="com.zhxh.imms.factory.entity.WorkCenter">
+        <result property="plantNo" column="plant_no"/>
+        <result property="plantName" column="plant_name"/>
+    </resultMap>
+
+    <resultMap id="WorkStationVO" type="com.zhxh.imms.factory.vo.WorkStationVO" extends="com.zhxh.imms.factory.entity.WorkStation">
+        <result property="plantNo" column="plant_no"/>
+        <result property="plantName" column="plant_name"/>
+        <result property="workCenterNo" column="work_center_no"/>
+        <result property="workCenterName" column="work_center_name"/>
+    </resultMap>
 </mapper>

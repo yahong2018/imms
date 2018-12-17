@@ -6,6 +6,7 @@ public class WorkStationVO extends WorkStation {
     private String plantName;
     private String plantNo;
     private String workCenterNo;
+    private String workCenterName;
 
     public String getPlantNo() {
         return plantNo;
@@ -29,5 +30,13 @@ public class WorkStationVO extends WorkStation {
 
     public void setWorkCenterNo(String workCenterNo) {
         this.workCenterNo = workCenterNo;
+    }
+
+    public String getWorkCenterName() {
+        return workCenterName;
+    }
+
+    public void setWorkCenterName(String workCenterName) {
+        this.workCenterName = workCenterName;
     }
 }

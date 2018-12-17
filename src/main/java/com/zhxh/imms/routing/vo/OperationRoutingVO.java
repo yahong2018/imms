@@ -5,7 +5,8 @@ import com.zhxh.imms.routing.entity.OperationRouting;
 public class OperationRoutingVO extends OperationRouting {
     private String operationNo;
     private String operationName;
-    private String operatorUserId;
+    private String userId;
+    private String userName;
 
     public String getOperationNo() {
         return operationNo;
@@ -23,11 +24,20 @@ public class OperationRoutingVO extends OperationRouting {
         this.operationName = operationName;
     }
 
-    public String getOperatorUserId() {
-        return operatorUserId;
+
+    public String getUserId() {
+        return userId;
     }
 
-    public void setOperatorUserId(String operatorUserId) {
-        this.operatorUserId = operatorUserId;
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 }

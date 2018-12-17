@@ -2,4 +2,101 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.factory.dao">
+    <select id="SQL_GET_LINE_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.factory.vo.LineVO">
+        select  line_id,
+                line_work_center_id,
+                line_sequence_number,
+                line_start_main_line_id,
+                line_end_main_line_id,
+                line_length,
+                line_width,
+                line_rotating_direction,
+                line_speed,
+                line_pre_lines_pacing,
+                line_left_distance,
+                line_production_line_code,
+                pa_0.principal_axis_no as start_main_line_no,
+                pa_1.principal_axis_no as end_main_line_no,
+                work_center_no,
+                work_center_name
+        from line join principal_axis pa_0 on line_start_main_line_id = pa_0.principal_axis_id 
+                  join principal_axis pa_1 on line_end_main_line_id = pa_1.principal_axis_id 
+                  join work_center on line_work_center_id = work_center_id
+    </select>
+
+    <select id="SQL_GET_MACHINE_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.factory.vo.MachineVO">
+        select  machine_id,             
+                machine_no,             
+                machine_name,           
+                machine_machine_type_id,        
+                machine_status,         
+                machine_description,    
+                machine_work_station_id,
+                machine_type_no,
+                machine_type_name,
+                work_station_no,
+                work_station_name                
+         from machine join material_type on machine_machine_type_id = machine_type_id
+                      join work_station on machine_work_station_id = work_station_id
+    </select>
+    
+    <select id="SQL_GET_OPERATOR_VO"  parameterType="java.util.Map" resultMap="com.zhxh.imms.factory.vo.OperatorVO">
+        select  operator_id,           
+                operator_user_id,      
+                operator_plant_id,     
+                operator_supervisor_id,
+                u.user_name as operator_name,
+                osp.operator_user_id as supervisor_user_id
+                u_sp.user_name as supervisor_name,                            
+        from operator join system_user u on operator_user_id=u.user_id
+                      left join operator o_sp on  operator_supervisor_id = o_sp.operator_id
+                      join system_user u_sp on o_sp.operator_user_id = u_sp.user_id 
+    </select>
+    
+    <select id="SQL_GET_PRINCIPAL_AXIS_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.factory.vo.PrincipalAxisVO">
+        select  principal_axis_id,                
+                principal_axis_no,                
+                principal_axis_sequence_number,   
+                principal_axis_rotating_direction,
+                principal_axis_length,            
+                principal_axis_width,             
+                principal_axis_speed,             
+                principal_axis_work_center_id,    
+                work_center_no,
+                work_center_name        
+        from principal_axis join work_center on principal_axis_work_center_id = work_center_id        
+    </select>
+    
+    <select id="SQL_GET_WORK_CENTER_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.factory.vo.WorkCenterVO">
+        select  work_center_id,         
+                work_center_no,         
+                work_center_name,       
+                work_center_description,
+                work_center_plant_id,
+                plant_no,
+                plant_name                
+        from work_center join plant on work_center_plant_id = plant_id
+    </select>
+    
+    <select id="SQL_GET_WORK_STATION_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.factory.vo.WorkStationVO">
+        select  work_station_id,
+                work_station_no,
+                work_station_plant_id,
+                work_station_description,
+                work_station_work_type,
+                work_station_type,
+                work_station_status,
+                work_station_direction,
+                work_station_ip_address,
+                work_station_max_wip_qty,
+                work_station_current_wip_qty,
+                work_station_work_center_id,
+                work_station_remote_file_address,
+                work_center_no,         
+                work_center_name,    
+                plant_no,
+                plant_name  
+          from work_station join work_center on work_station_work_center_id=work_center_id
+                            join plant on work_station_plant_id = plant_id 
+    </select>
 </mapper>

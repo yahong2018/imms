@@ -6,9 +6,18 @@ public class LineVO extends Line {
     private String startMainLineNo;
     private String endMainLineNo;
     private String workCenterNo;
+    private String workStationName;
 
     public String getWorkCenterNo() {
         return workCenterNo;
+    }
+
+    public String getWorkStationName() {
+        return workStationName;
+    }
+
+    public void setWorkStationName(String workStationName) {
+        this.workStationName = workStationName;
     }
 
     public String getStartMainLineNo() {

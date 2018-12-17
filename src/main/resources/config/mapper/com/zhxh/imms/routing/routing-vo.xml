@@ -12,13 +12,15 @@
     </resultMap>
 
     <resultMap id="OperationVO" type="com.zhxh.imms.material.vo.OperationVO" extends="com.zhxh.imms.routing.entity.Operation">
-        <result property="operationMachineTypeNo" column="operation_machine_type_no"/>
-        <result property="operationMachineTypeName" column="operation_machine_type_name"/>
+        <result property="machineTypeNo" column="machine_type_no"/>
+        <result property="machineTypeName" column="machine_type_name"/>
     </resultMap>
 
     <resultMap id="OperationRoutingVO" type="com.zhxh.imms.material.vo.OperationRoutingVO" extends="com.zhxh.imms.routing.entity.OperationRouting">
         <result property="operationNo" column="operation_no"/>
         <result property="operationName" column="operation_name"/>
-        <result property="operatorUserId" column="operator_user_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
     </resultMap>
+
 </mapper>

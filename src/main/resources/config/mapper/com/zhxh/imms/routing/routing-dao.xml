@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.imms.routing.dao">
+    <select id="SQL_GET_OPERATION_MEDIA_VO" parameterType="java.util.Map"  resultMap="com.zhxh.imms.routing.vo.OperationMediaVO">
+        select operation_media_id,operation_media_operation_id,operation_media_media_id,
+               media_type,media_url,media_name,media_size,media_description,media_data_source
+        from operation_media join media on operation_media_media_id = media_id
+    </select>
+
+    <select id="SQL_GET_OPERATION_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.routing.vo.OperationVO">
+        select  operation_id,                         
+                operation_no,                          
+                operation_name,                        
+                operation_standard_operation_procedure,
+                operation_machine_type_id,             
+                operation_standard_time,               
+                operation_standard_price,              
+                operation_part_type,                   
+                operation_section_type,                
+                operation_section_name,                
+                operation_if_outsource,                
+                operation_qa_procedure,                
+                operation_requirement,                 
+                operation_level,                       
+                operation_design_part_code,            
+                operation_part_code,
+                machine_type_no,
+                machine_type_name                   
+        from operation join machine_type on operation_machine_type_id = machine_type_id
+    </select>
+
+    <select id="SQL_GET_OPERATION_ROUTING_VO" parameterType="java.util.Map"   resultMap="com.zhxh.imms.routing.vo.OperationRoutingVO">
+        select  operation_routing_id,
+                operation_routing_operation_id,
+                operation_routing_order_id,
+                operation_routing_qa_procedure,
+                operation_routing_standard_price,
+                operation_routing_section_type,
+                operation_routing_machine_type_id,
+                operation_routing_actual_station_id,
+                operation_routing_operator_id,
+                operation_routing_standard_time,
+                operation_routing_actual_time,
+                operation_routing_pre_operation_id,
+                operation_routing_sop_file_path,
+                operation_routing_status,
+                operation_routing_required_level,
+                operation_routing_scrap_qty,
+                operation_routing_complete_qty,
+                operation_routing_pre_routing_id,
+                operation_routing_sequence_no,
+                operation_routing_part_type,
+                operation_routing_if_outsource,
+                operation_routing_pull_in_time,
+                operation_routing_pull_out_time,
+                operation_no,
+                operation_name,
+                user_id,
+                user_name
+        from operation_routing join operation on operation_routing_operation_id = operation_id
+                               join operator on  operation_routing_operator_id = operator_id
+                               join system_user on operator_user_id=user_id
+    </select>
+</mapper>

@@ -264,7 +264,7 @@ CREATE TABLE `machine`  (
   `machine_id`                        char(36) NOT NULL,
   `machine_no`                        varchar(12) NULL ,
   `machine_name`                      varchar(30) NULL ,
-  `machine_type_id`                   char(36) NULL ,
+  `machine_machine_type_id`           char(36) NULL ,
   `machine_status`                    enum('E','D') NOT NULL DEFAULT 'E'    comment '设备状态：E 可用  D 不可用',
   `machine_description`               varchar(250) NULL ,
   `machine_work_station_id`           char(36) NULL ,
@@ -272,7 +272,7 @@ CREATE TABLE `machine`  (
   PRIMARY KEY (`machine_id`) ,
   INDEX `IDX_MACHINE_01`(`machine_no`) ,
   INDEX `IDX_MACHINE_02`(`machine_name`) ,
-  INDEX `IDX_MACHINE_03`(`machine_type_id`) ,
+  INDEX `IDX_MACHINE_03`(`machine_machine_type_id`) ,
   INDEX `IDX_MACHINE_04`(`machine_work_station_id`)
 ) COMMENT = '设备';
 

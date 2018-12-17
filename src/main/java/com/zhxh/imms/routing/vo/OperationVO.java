@@ -3,22 +3,22 @@ package com.zhxh.imms.routing.vo;
 import com.zhxh.imms.routing.entity.Operation;
 
 public class OperationVO extends Operation {
-    private String operationMachineTypeNo;
-    private String operationMachineTypeName;
+    private String machineTypeNo;
+    private String machineTypeName;
 
-    public String getOperationMachineTypeNo() {
-        return operationMachineTypeNo;
+    public String getMachineTypeNo() {
+        return machineTypeNo;
     }
 
-    public void setOperationMachineTypeNo(String operationMachineTypeNo) {
-        this.operationMachineTypeNo = operationMachineTypeNo;
+    public String getMachineTypeName() {
+        return machineTypeName;
     }
 
-    public String getOperationMachineTypeName() {
-        return operationMachineTypeName;
+    public void setMachineTypeName(String machineTypeName) {
+        this.machineTypeName = machineTypeName;
     }
 
-    public void setOperationMachineTypeName(String operationMachineTypeName) {
-        this.operationMachineTypeName = operationMachineTypeName;
+    public void setMachineTypeNo(String machineTypeNo) {
+        this.machineTypeNo = machineTypeNo;
     }
 }
