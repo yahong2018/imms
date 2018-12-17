@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.imms.mes.ro.dao">
+    <select id="SQL_GET_Requirement_Order_VO"  parameterType="java.util.Map"  resultMap="com.zhxh.imms.mes.ro.vo.RequirementOrderVO">
+        select  requirement_order_id,
+                requirement_order_no,
+                requirement_order_type,
+                requirement_order_status,
+                requirement_order_priority,
+                requirement_order_plant_id,
+                requirement_order_work_center_id,
+                requirement_order_fg_material_id,
+                requirement_order_planned_qty,
+                requirement_order_required_delivery_date,
+                requirement_order_sale_order_no,
+                requirement_order_repeat_type,
+                work_center_no,
+                work_center_name,
+                material_no,
+                material_name
+        from requirement_order join material on  requirement_order_fg_material_id = material_id
+                               join work_center on requirement_order_work_center_id = work_center_id
+
+    </select>
+</mapper>

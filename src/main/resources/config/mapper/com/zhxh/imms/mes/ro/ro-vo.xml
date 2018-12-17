@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhxh.imms.mes.ro.vo">
+    <resultMap id="RequirementOrderVO" type="com.zhxh.imms.mes.ro.vo.RequirementOrderVO" extends="com.zhxh.imms.mes.ro.entity.RequirementOrder">
+        <result property="materialNo" column="material_no"/>
+        <result property="materialName" column="material_name"/>
+        <result property="workCenterNo" column="work_center_no"/>
+        <result property="workCenterName" column="work_center_name"/>
+    </resultMap>
+</mapper>

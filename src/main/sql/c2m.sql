@@ -352,7 +352,6 @@ CREATE TABLE `operation`  (
 ) COMMENT = '工艺';
 
 
-
 CREATE TABLE `operation_media`  (
   `operation_media_id`                       char(36)      NOT NULL,
   `operation_media_operation_id`             char(36)      NOT NULL,
@@ -457,7 +456,7 @@ CREATE TABLE `customer`  (
 -- -----------------------------------------------------------------------------------------------------------
 
 CREATE TABLE `production_order`  (
-  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
+  `production_order_id`         char(36)          NOT NULL,
   `production_order_no`         varchar(64)       NOT NULL,
   `type`                        varchar(10)       NOT NULL,
   `bom_order_id`                bigint(20)        NULL ,
