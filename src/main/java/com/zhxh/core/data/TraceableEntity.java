@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class TrackableEntity implements EntityObject {
-    public static void fillCreateInfo(TrackableEntity entity){
+public class TraceableEntity implements EntityObject {
+    public static void fillCreateInfo(TraceableEntity entity){
         entity.setCreateBy(AuthenticateLogic.getCurrentLogin().getUserId());
         entity.setCreateDate(new Date());
     }
 
-    public static void fillUpdateInfo(TrackableEntity entity){
+    public static void fillUpdateInfo(TraceableEntity entity){
         entity.setUpdateBy(AuthenticateLogic.getCurrentLogin().getUserId());
         entity.setUpdateDate(new Date());
     }
@@ -23,15 +23,6 @@ public class TrackableEntity implements EntityObject {
     private String createBy;
     private String updateBy;
     private int optLock;
-    private int delFlag;
-
-    public int getDelFlag() {
-        return delFlag;
-    }
-
-    public void setDelFlag(int delFlag) {
-        this.delFlag = delFlag;
-    }
 
     public int getOptLock() {
         return optLock;
@@ -80,6 +71,6 @@ public class TrackableEntity implements EntityObject {
         internal_fields.add("updateBy");
         internal_fields.add("updateDate");
         internal_fields.add("optLock");
-        internal_fields.add("delFlag");
+//        internal_fields.add("delFlag");
     }
 }

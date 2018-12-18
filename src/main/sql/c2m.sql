@@ -456,184 +456,136 @@ CREATE TABLE `customer`  (
 -- -----------------------------------------------------------------------------------------------------------
 
 CREATE TABLE `production_order`  (
-  `production_order_id`         char(36)          NOT NULL,
-  `production_order_no`         varchar(64)       NOT NULL,
-  `type`                        varchar(10)       NOT NULL,
-  `bom_order_id`                bigint(20)        NULL ,
-  `operation_routing_order_id`  bigint(20)        NULL ,
-  `source`                      varchar(64)       NULL       COMMENT '订单来源',
-  `material_ready`              varchar(10)       NULL       COMMENT '物料准备',
-  `status`                      varchar(10)       NOT NULL,
-  `priority`                    varchar(10)       NOT NULL,
-  `requirement_order_id`        bigint(20)        NOT NULL,
-  `plant_id`                    bigint(20)        NOT NULL,
-  `work_center_id`              bigint(20)        NULL ,
-  `fg_material_id`              varchar(64)       NULL       COMMENT '成品物料主键',
-  `planned_qty`                 int(11)           NULL ,
-  `finished_qty`                int(11)           NULL ,
-  `second_quality_qty`          int(11)           NULL       COMMENT '次品数量',
-  `defect_qty`                  int(11)           NULL ,
-  `actual_qty`                  int(11)           NULL ,
-  `required_delivery_date`      datetime(0)       NULL ,
-  `planned_start_date`          datetime(0)       NULL ,
-  `planned_end_date`            datetime(0)       NULL ,
-  `actual_start_date`           datetime(0)       NULL ,
-  `actual_end_date`             datetime(0)       NULL ,
-  `schedule_order_no`           varchar(100)      NULL       COMMENT '排产订单编号',
+  `production_order_id`                          char(36)          NOT NULL,
+  `production_order_no`                          varchar(64)       NOT NULL,
+  `production_order_type`                        varchar(10)       NOT NULL,
+  `production_order_bom_order_id`                char(36)          NULL ,
+  `production_order_operation_routing_order_id`  char(36)          NULL ,
+  `production_order_source`                      varchar(10)       NULL       COMMENT '订单来源',
+  `production_order_material_ready`              varchar(10)       NULL       COMMENT '物料准备',
+  `production_order_status`                      varchar(10)       NOT NULL,
+  `production_order_priority`                    varchar(10)       NOT NULL,
+  `production_order_requirement_order_id`        char(36)          NOT NULL,
+  `production_order_plant_id`                    char(36)          NOT NULL,
+  `production_order_work_center_id`              char(36)          NULL ,
+  `production_order_fg_material_id`              varchar(64)       NULL       COMMENT '成品物料主键',
+  `production_order_planned_qty`                 int               NULL ,
+  `production_order_finished_qty`                int               NULL ,
+  `production_order_second_quality_qty`          int               NULL       COMMENT '次品数量',
+  `production_order_defect_qty`                  int               NULL ,
+  `production_order_actual_qty`                  int               NULL ,
+  `production_order_required_delivery_date`      datetime(0)       NULL ,
+  `production_order_planned_start_date`          datetime(0)       NULL ,
+  `production_order_planned_end_date`            datetime(0)       NULL ,
+  `production_order_actual_start_date`           datetime(0)       NULL ,
+  `production_order_actual_end_date`             datetime(0)       NULL ,
+  `production_order_schedule_order_id`           char(36)          NULL       COMMENT '排程编号',
 
-  `created_by` varchar(20) NOT NULL,
-  `created_date` datetime(0) NOT NULL,
-  `last_modified_by` varchar(20) NOT NULL,
-  `last_modified_date` datetime(0) NOT NULL,
-  PRIMARY KEY (`id`)
+  `production_order_create_by`                   varchar(6)        NOT NULL,
+  `production_order_create_date`                 datetime          NOT NULL,
+  `production_order_update_by`                   varchar(6)        NULL,
+  `production_order_update_date`                 datetime          NOT NULL,
+  `production_order_optLock`                     int               NOT NULL DEFAULT 0,
+
+  PRIMARY KEY (`production_order_id`)
 ) COMMENT = '生产订单';
 
 CREATE TABLE `production_order_routing`  (
-  `id`                         bigint(20)         NOT NULL       AUTO_INCREMENT,
-  `production_order_id`        bigint(20)         NULL ,
-  `operation_id`               bigint(20)         NOT NULL,
-  `qa_procedure`               varchar(200)       NULL ,
-  `machine_type_id`            bigint(20)         NULL ,
-  `standard_time`              varchar(20)        NULL ,
-  `standard_price`             varchar(20)        NULL ,
-  `section_type`               varchar(20)        NULL ,
-  `pre_operation_id`           bigint(20)         NULL       COMMENT '依赖关系-上道工序',
-  `sop_file_path`              varchar(1000)      NULL ,
+  `production_order_routing_id`                         char(36)         NOT NULL       AUTO_INCREMENT,
+  `production_order_routing_production_order_id`        char(36)         NULL ,
+  `production_order_routing_operation_id`               char(36)         NOT NULL,
+  `production_order_routing_qa_procedure`               varchar(200)     NULL ,
+  `production_order_routing_machine_type_id`            char(36)         NULL ,
+  `production_order_routing_standard_time`              float(10,4)      NULL ,
+  `production_order_routing_standard_price`             float(8,4)       NULL ,
+  `production_order_routing_section_type`               varchar(20)      NULL ,
+  `production_order_routing_pre_operation_id`           char(36)         NULL       COMMENT '依赖关系-上道工序',
+  `production_order_routing_sop_file_path`              varchar(255)     NULL ,
 
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`production_order_routing_id`)
 ) COMMENT = '生产订单工序信息';
 
 CREATE TABLE `production_order_size`  (
-  `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
-  `production_order_id`        bigint(20)         NOT NULL,
-  `line_no`                    int(11)            NULL       COMMENT '行项目',
-  `size`                       varchar(10)        NULL ,
-  `planned_qty`                int(11)            NULL ,
-  `actual_qty`                 int(11)            NULL ,
+  `production_order_size_id`                         char(36)         NOT NULL AUTO_INCREMENT,
+  `production_order_size_production_order_id`        char(36)         NOT NULL,
+  -- `line_no`                    int(11)            NULL       COMMENT '行项目',
+  `production_order_size_size`                       varchar(10)      NULL ,
+  `production_order_size_planned_qty`                int              NULL ,
+  `production_order_size_actual_qty`                 int              NULL ,
 
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRO_SIZE_01`(`production_order_id`)
+  PRIMARY KEY (`production_order_size_id`) ,
+  INDEX `IDX_PRO_SIZE_01`(`production_order_size_production_order_id`)
 ) COMMENT = '生产订单尺码明细';
 
 -- -----------------------------------------------------------------------------------------------------------
 
 
-CREATE TABLE `size_label_match_rule`  (
-  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
-  `rule_no`                 varchar(10)          NULL         COMMENT '规则编码',
-  `product_category_id`     bigint(20)           NULL         COMMENT '产品品类',
-  `product_size`            varchar(10)          NULL         COMMENT '产品尺码',
-  `size_label_size`         varchar(10)          NULL         COMMENT '号标尺码',
+CREATE TABLE `material_picking_list`  (
+  `id`                        bigint(20)          NOT NULL AUTO_INCREMENT,
+  `status`                    varchar(10)         NULL          COMMENT '状态',
+  -- `line_no`                   int(11)             NULL          COMMENT '行项目',
+  `container_no`              varchar(64)         NOT NULL                  COMMENT '领料容器',
+  `material_picking_order_id` bigint(20)          NULL          COMMENT '领料单主键',
+
+  `created_date` datetime(0) NOT NULL,
+  `created_by` varchar(10) NOT NULL,
+  `last_modified_date` datetime(0) NULL ,
+  `last_modified_by` varchar(10) NULL ,
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_SLMR_01`(`rule_no`) ,
-  INDEX `IDX_SLMR_02`(`product_category_id`)
-)  COMMENT = '号标匹配规则';
+  INDEX `IDX_MATERIAL_PL_01`(`container_no`) ,
+  INDEX `IDX_MATERIAL_PL_02`(`material_picking_order_id`)
+) COMMENT = '领料单明细';
 
-CREATE TABLE `size_match_rule`  (
-  `id`                      bigint(20)            NOT NULL AUTO_INCREMENT,
-  `rule_no`                 varchar(10)           NULL       COMMENT '规则编码',
-  `description`             varchar(200)          NULL       COMMENT '规则描述',
-  `fg_material_size`        varchar(10)           NULL       COMMENT '产品规格',
-  `assist_material_size`    varchar(10)           NULL       COMMENT '辅材规格',
-  `unit`                    varchar(10)           NULL       COMMENT '单位',
-  `type`                    varchar(10)           NOT NULL               COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
+
+CREATE TABLE `material_picking_list_detail`  (
+  `id`                        bigint(20)         NOT NULL  AUTO_INCREMENT,
+  `material_picking_list_id`  bigint(20)         NOT NULL                   COMMENT '领料单明细主键',
+  --  `line_no`                   int(11)            NULL           COMMENT '行项目',
+  `material_id`               bigint(20)         NULL           COMMENT '物料号',
+  `picked_qty`                double             NULL           COMMENT '领用量',
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_SMR_01`(`rule_no`)
-) COMMENT = '规格匹配规则';
+  INDEX `IDX_MATERIAL_PLD_01`(`material_picking_list_id`) ,
+  INDEX `IDX_MATERIAL_PLD_02`(`material_id`)
+) COMMENT = '领料明细';
 
-
-CREATE TABLE `zipper_match_rule`  (
+CREATE TABLE `material_picking_order`  (
   `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `rule_no`                   varchar(10)        NULL      COMMENT '规则编码',
-  `product_category_id`       bigint(20)         NULL      COMMENT '产品品类',
-  `product_size`              varchar(10)        NULL      COMMENT '产品尺码',
-  `zipper_category_id`        bigint(20)         NULL      COMMENT '拉链品类',
-  `zipper_size`               varchar(10)        NULL      COMMENT '拉链长度',
-  `unit`                      varchar(10)        NULL      COMMENT '单位',
+  `material_picking_order_no` varchar(64)        NOT NULL,
+  `production_order_id`       bigint(20)         NOT NULL,
+  `status`                    varchar(10)        NULL ,
+  `type`                      varchar(10)        NULL ,
+  `planned_picking_date`      datetime(0)        NULL ,
+  `actual_picking_date`       datetime(0)        NULL ,
+  `operator`                  varchar(10)        NULL ,
+
+  `created_date` datetime(0) NOT NULL,
+  `created_by` varchar(10) NOT NULL,
+  `last_modified_date` datetime(0) NULL ,
+  `last_modified_by` varchar(10) NULL ,
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_ZMR_01`(`rule_no`) ,
-  INDEX `IDX_ZMR_02`(`product_category_id`) ,
-  INDEX `IDX_ZMR_03`(`zipper_category_id`)
-) COMMENT = '拉链长度匹配规则';
+  INDEX `IDX_MATERIAL_PO_01`(`material_picking_order_no`) ,
+  INDEX `IDX_MATERIAL_PO_02`(`production_order_id`)
+) COMMENT = '领料单';
 
-
-
-
-CREATE TABLE `price_scopes`  (
-  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
-  `price_scopes_no`            varchar(10)       NULL         COMMENT '价格带编码',
-  `price`                      decimal(10, 2)    NULL         COMMENT '价格',
-  `material_group_id`          bigint(20)        NULL         COMMENT '物料组',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRICE_SCOPES_01`(`price_scopes_no`) ,
-  INDEX `IDX_PRICE_SCOPES_02`(`material_group_id`)
-) COMMENT = '价格带';
-
-CREATE TABLE `price_scopes_match_rule`  (
+CREATE TABLE `material_picking_order_bom`  (
   `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `main_material_id`          bigint(20)         NULL        COMMENT '主材物料',
-  `rule_no`                   varchar(10)        NULL        COMMENT '规则编码',
-  `assist_material_id`        bigint(20)         NULL        COMMENT '辅材物料',
-  `description`               varchar(200)       NULL        COMMENT '规则描述',
+  `component_material_id`     bigint(200)        NULL       COMMENT '组件主键',
+  `qty`                       double             NULL       COMMENT '组件用量',
+  `component_material_uom`    varchar(20)        NULL       COMMENT '组件单位',
+  `picked_qty`                double             NULL ,
+  `material_picking_order_id` bigint(20)         NULL ,
 
   PRIMARY KEY (`id`) ,
-  INDEX `IDX_PSMR_01`(`main_material_id`) ,
-  INDEX `IDX_PSMR_02`(`rule_no`) ,
-  INDEX `IDX_PSMR_03`(`assist_material_id`)
-) COMMENT = '价格带匹配规则';
+  INDEX `IDX_MATERIAL_POB_01`(`component_material_id`) ,
+  INDEX `IDX_MATERIAL_POB_02`(`material_picking_order_id`)
+) COMMENT = '领料单物料清单';
 
 
-CREATE TABLE `match_rule`  (
-  `id`                        bigint(20) NOT NULL AUTO_INCREMENT,
-  `rule_no`                   varchar(10) NULL ,
-  `description`               varchar(200) NULL ,
-  `version`                   varchar(10) NULL ,
-  `disable`                   int(1) NULL ,
-  `unit`                      varchar(10) NULL ,
-  `script`                    longtext NULL,
-  `type`                      varchar(10) NOT NULL                  COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
+-- ----------------------------------------------------------------------------------------------------------------
 
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATCH_RULE_01`(`rule_no`)
-) COMMENT='规则表' ;
-
-
-CREATE TABLE `material_match_rule`  (
-  `id`                      bigint(20)          NOT NULL AUTO_INCREMENT,
-  `material_id`             bigint(20)          NULL ,
-  `rule_id`                 bigint(20)          NULL ,
-   `type`                   varchar(10)         NULL      COMMENT 'price:价格匹配 zipper:拉链长度匹配 sizelabel:号标匹配 color:颜色匹配',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MMR_01`(`material_id`) ,
-  INDEX `IDX_MMR_02`(`rule_id`)
-) COMMENT='物料匹配规则';
-
-CREATE TABLE `material_match_rule_log`  (
-  `id`                     bigint(20)          NOT NULL AUTO_INCREMENT,
-  `bom_id`                 bigint(20)          NULL ,
-  `rule_id`                bigint(20)          NULL ,
-
-  PRIMARY KEY (`id`)
-) COMMENT = '物料匹配规则日志';
-
-
-
-CREATE TABLE `cutting_marker`  (
-  `id`                          bigint(20)         NOT NULL AUTO_INCREMENT,
-  `cutting_order_id`            bigint(20)         NOT NULL,
-  `line_no`                     int(11)            NULL                   COMMENT '行项目',
-  `media_id`                    bigint(20)         NULL,
-  `remark`                      varchar(64)        NULL,
-  `marker_file_id`              bigint(20)         NULL,
-  PRIMARY KEY (`id`),
-  INDEX `IDX_CUTTING_MARKER_01`(`cutting_order_id`),
-  INDEX `IDX_CUTTING_MARKER_02`(`media_id`)
-) COMMENT = '生产裁剪排料图' ;
 
 CREATE TABLE `cutting_order`  (
   `id`                          bigint(20)          NOT NULL AUTO_INCREMENT,
@@ -684,82 +636,7 @@ CREATE TABLE `cutting_order_size`  (
   INDEX `IDX_CUTTING_ORDER_SIZE_01`(`cutting_order_id`)
 )COMMENT = '裁剪单尺码明细';
 
-CREATE TABLE `material_picking_list`  (
-  `id`                        bigint(20)          NOT NULL AUTO_INCREMENT,
-  `status`                    varchar(10)         NULL          COMMENT '状态',
- -- `line_no`                   int(11)             NULL          COMMENT '行项目',
-  `container_no`              varchar(64)         NOT NULL                  COMMENT '领料容器',
-  `material_picking_order_id` bigint(20)          NULL          COMMENT '领料单主键',
 
-  `created_date` datetime(0) NOT NULL,
-  `created_by` varchar(10) NOT NULL,
-  `last_modified_date` datetime(0) NULL ,
-  `last_modified_by` varchar(10) NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_PL_01`(`container_no`) ,
-  INDEX `IDX_MATERIAL_PL_02`(`material_picking_order_id`) 
-) COMMENT = '领料单明细';
-
-
-CREATE TABLE `material_picking_list_detail`  (
-  `id`                        bigint(20)         NOT NULL  AUTO_INCREMENT,
-  `material_picking_list_id`  bigint(20)         NOT NULL                   COMMENT '领料单明细主键',
---  `line_no`                   int(11)            NULL           COMMENT '行项目',
-  `material_id`               bigint(20)         NULL           COMMENT '物料号',
-  `picked_qty`                double             NULL           COMMENT '领用量',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_PLD_01`(`material_picking_list_id`) ,
-  INDEX `IDX_MATERIAL_PLD_02`(`material_id`) 
-) COMMENT = '领料明细';
-
-CREATE TABLE `material_picking_order`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `material_picking_order_no` varchar(64)        NOT NULL,
-  `production_order_id`       bigint(20)         NOT NULL,
-  `status`                    varchar(10)        NULL ,
-  `type`                      varchar(10)        NULL ,
-  `planned_picking_date`      datetime(0)        NULL ,
-  `actual_picking_date`       datetime(0)        NULL ,
-  `operator`                  varchar(10)        NULL ,
-
-  `created_date` datetime(0) NOT NULL,
-  `created_by` varchar(10) NOT NULL,
-  `last_modified_date` datetime(0) NULL ,
-  `last_modified_by` varchar(10) NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_PO_01`(`material_picking_order_no`) ,
-  INDEX `IDX_MATERIAL_PO_02`(`production_order_id`) 
-) COMMENT = '领料单';
-
-CREATE TABLE `material_picking_order_bom`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `component_material_id`     bigint(200)        NULL       COMMENT '组件主键',
-  `qty`                       double             NULL       COMMENT '组件用量',
-  `component_material_uom`    varchar(20)        NULL       COMMENT '组件单位',
-  `picked_qty`                double             NULL ,
-  `material_picking_order_id` bigint(20)         NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_POB_01`(`component_material_id`) ,
-  INDEX `IDX_MATERIAL_POB_02`(`material_picking_order_id`) 
-) COMMENT = '领料单物料清单';
-
-
-CREATE TABLE `operator_check_in`  (
-  `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
-  `operator_id`                bigint(20)         NOT NULL           COMMENT '操作员主键',
-  `work_station_id`            bigint(20)         NOT NULL           COMMENT '工位主键',
-  `check_in_time`              datetime(0)        NULL   COMMENT '入岗时间',
-  `check_out_time`             datetime(0)        NULL   COMMENT '出岗时间',
-  `status`                     varchar(10)        NULL   COMMENT '状态',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_OPERATOR_CHECK_IN_01`(`operator_id`) ,
-  INDEX `IDX_OPERATOR_CHECK_IN_02`(`work_station_id`) 
-) COMMENT = '操作员入岗';
 
 CREATE TABLE `production_cutting_plan`  (
   `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
@@ -798,6 +675,21 @@ CREATE TABLE `production_cutting_size`  (
 ) COMMENT = '生产裁剪排料尺码';
 
 
+CREATE TABLE `cutting_marker`  (
+  `id`                          bigint(20)         NOT NULL AUTO_INCREMENT,
+  `cutting_order_id`            bigint(20)         NOT NULL,
+  `line_no`                     int(11)            NULL                   COMMENT '行项目',
+  `media_id`                    bigint(20)         NULL,
+  `remark`                      varchar(64)        NULL,
+  `marker_file_id`              bigint(20)         NULL,
+  PRIMARY KEY (`id`),
+  INDEX `IDX_CUTTING_MARKER_01`(`cutting_order_id`),
+  INDEX `IDX_CUTTING_MARKER_02`(`media_id`)
+) COMMENT = '生产裁剪排料图' ;
+
+-- -----------------------------------------------------------------------------------------------------------
+
+
 CREATE TABLE `production_work_order`  (
   `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
   `line_no`                    int(11)            NULL       COMMENT '行项目',
@@ -827,6 +719,131 @@ CREATE TABLE `production_work_order`  (
   INDEX `IDX_PRO_WORK_ORDER_04`(`operation_routing_order_id`) ,
   INDEX `IDX_PRO_WORK_ORDER_05`(`cutting_order_id`) 
 ) COMMENT = '生产作业单';
+
+
+
+
+CREATE TABLE `size_label_match_rule`  (
+  `id`                      bigint(20)           NOT NULL AUTO_INCREMENT,
+  `rule_no`                 varchar(10)          NULL         COMMENT '规则编码',
+  `product_category_id`     bigint(20)           NULL         COMMENT '产品品类',
+  `product_size`            varchar(10)          NULL         COMMENT '产品尺码',
+  `size_label_size`         varchar(10)          NULL         COMMENT '号标尺码',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_SLMR_01`(`rule_no`) ,
+  INDEX `IDX_SLMR_02`(`product_category_id`)
+)  COMMENT = '号标匹配规则';
+
+CREATE TABLE `size_match_rule`  (
+  `id`                      bigint(20)            NOT NULL AUTO_INCREMENT,
+  `rule_no`                 varchar(10)           NULL       COMMENT '规则编码',
+  `description`             varchar(200)          NULL       COMMENT '规则描述',
+  `fg_material_size`        varchar(10)           NULL       COMMENT '产品规格',
+  `assist_material_size`    varchar(10)           NULL       COMMENT '辅材规格',
+  `unit`                    varchar(10)           NULL       COMMENT '单位',
+  `type`                    varchar(10)           NOT NULL               COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_SMR_01`(`rule_no`)
+) COMMENT = '规格匹配规则';
+
+
+CREATE TABLE `zipper_match_rule`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `rule_no`                   varchar(10)        NULL      COMMENT '规则编码',
+  `product_category_id`       bigint(20)         NULL      COMMENT '产品品类',
+  `product_size`              varchar(10)        NULL      COMMENT '产品尺码',
+  `zipper_category_id`        bigint(20)         NULL      COMMENT '拉链品类',
+  `zipper_size`               varchar(10)        NULL      COMMENT '拉链长度',
+  `unit`                      varchar(10)        NULL      COMMENT '单位',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_ZMR_01`(`rule_no`) ,
+  INDEX `IDX_ZMR_02`(`product_category_id`) ,
+  INDEX `IDX_ZMR_03`(`zipper_category_id`)
+) COMMENT = '拉链长度匹配规则';
+
+
+
+CREATE TABLE `price_scopes`  (
+  `id`                         bigint(20)        NOT NULL AUTO_INCREMENT,
+  `price_scopes_no`            varchar(10)       NULL         COMMENT '价格带编码',
+  `price`                      decimal(10, 2)    NULL         COMMENT '价格',
+  `material_group_id`          bigint(20)        NULL         COMMENT '物料组',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PRICE_SCOPES_01`(`price_scopes_no`) ,
+  INDEX `IDX_PRICE_SCOPES_02`(`material_group_id`)
+) COMMENT = '价格带';
+
+CREATE TABLE `price_scopes_match_rule`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `main_material_id`          bigint(20)         NULL        COMMENT '主材物料',
+  `rule_no`                   varchar(10)        NULL        COMMENT '规则编码',
+  `assist_material_id`        bigint(20)         NULL        COMMENT '辅材物料',
+  `description`               varchar(200)       NULL        COMMENT '规则描述',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_PSMR_01`(`main_material_id`) ,
+  INDEX `IDX_PSMR_02`(`rule_no`) ,
+  INDEX `IDX_PSMR_03`(`assist_material_id`)
+) COMMENT = '价格带匹配规则';
+
+
+CREATE TABLE `match_rule`  (
+  `id`                        bigint(20) NOT NULL AUTO_INCREMENT,
+  `rule_no`                   varchar(10) NULL ,
+  `description`               varchar(200) NULL ,
+  `version`                   varchar(10) NULL ,
+  `disable`                   int(1) NULL ,
+  `unit`                      varchar(10) NULL ,
+  `script`                    longtext NULL,
+  `type`                      varchar(10) NOT NULL                  COMMENT 'zipper:拉链长度匹配 sizelabel:号标匹配',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_MATCH_RULE_01`(`rule_no`)
+) COMMENT='规则表' ;
+
+
+CREATE TABLE `material_match_rule`  (
+  `id`                      bigint(20)          NOT NULL AUTO_INCREMENT,
+  `material_id`             bigint(20)          NULL ,
+  `rule_id`                 bigint(20)          NULL ,
+  `type`                   varchar(10)         NULL      COMMENT 'price:价格匹配 zipper:拉链长度匹配 sizelabel:号标匹配 color:颜色匹配',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_MMR_01`(`material_id`) ,
+  INDEX `IDX_MMR_02`(`rule_id`)
+) COMMENT='物料匹配规则';
+
+CREATE TABLE `material_match_rule_log`  (
+  `id`                     bigint(20)          NOT NULL AUTO_INCREMENT,
+  `bom_id`                 bigint(20)          NULL ,
+  `rule_id`                bigint(20)          NULL ,
+
+  PRIMARY KEY (`id`)
+) COMMENT = '物料匹配规则日志';
+
+
+
+
+
+
+CREATE TABLE `operator_check_in`  (
+  `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
+  `operator_id`                bigint(20)         NOT NULL           COMMENT '操作员主键',
+  `work_station_id`            bigint(20)         NOT NULL           COMMENT '工位主键',
+  `check_in_time`              datetime(0)        NULL   COMMENT '入岗时间',
+  `check_out_time`             datetime(0)        NULL   COMMENT '出岗时间',
+  `status`                     varchar(10)        NULL   COMMENT '状态',
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_OPERATOR_CHECK_IN_01`(`operator_id`) ,
+  INDEX `IDX_OPERATOR_CHECK_IN_02`(`work_station_id`)
+) COMMENT = '操作员入岗';
+
+-- ----------
 
 CREATE TABLE `quality_check`  (
   `id`                         bigint(20)          NOT NULL AUTO_INCREMENT,
@@ -875,6 +892,10 @@ CREATE TABLE `quality_issue`  (
   INDEX `IDX_QUALITY_ISSUE_06`(`defect_id`) ,
   INDEX `IDX_QUALITY_ISSUE_07`(`correction_id`) 
 ) COMMENT = '质量问题记录';
+
+
+-- ---------------------------------------------------------------------------------------------------------------------
+
 
 CREATE TABLE `request_warehousing`  (
   `id`                        bigint(20)           NOT NULL AUTO_INCREMENT,

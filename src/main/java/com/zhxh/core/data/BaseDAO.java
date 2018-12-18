@@ -64,8 +64,8 @@ public class BaseDAO {
     private final static UUID EMPTY_UUID = new UUID(0, 0);
 
     public int insert(Object item) throws Exception {
-        if (item instanceof TrackableEntity) {
-            TrackableEntity.fillCreateInfo((TrackableEntity) item);
+        if (item instanceof TraceableEntity) {
+            TraceableEntity.fillCreateInfo((TraceableEntity) item);
         }
 
         Class clazz = item.getClass();
@@ -83,8 +83,8 @@ public class BaseDAO {
     }
 
     public int update(Object item) throws Exception {
-        if (item instanceof TrackableEntity) {
-            TrackableEntity.fillUpdateInfo((TrackableEntity) item);
+        if (item instanceof TraceableEntity) {
+            TraceableEntity.fillUpdateInfo((TraceableEntity) item);
         }
         this.verify(item, DATA_OPERATION_UPDATE);
 
@@ -160,9 +160,12 @@ public class BaseDAO {
     }
 
     protected String getPropertyFullName(Class clazz, String shortPropertyName) {
-        if (TrackableEntity.class.isAssignableFrom(clazz)) {
-            if (TrackableEntity.internal_fields.contains(shortPropertyName)) {
-                return TrackableEntity.class.getCanonicalName() + "." + shortPropertyName;
+        if (TraceableEntity.class.isAssignableFrom(clazz)) {
+            StringBuffer traceablePropertyShortName = new StringBuffer(shortPropertyName.substring(clazz.getName().length()));
+            traceablePropertyShortName.replace(0, 1, traceablePropertyShortName.substring(0, 1).toUpperCase());
+            String theShortPropertyName = traceablePropertyShortName.toString();
+            if (TraceableEntity.internal_fields.contains(theShortPropertyName)) {
+                return TraceableEntity.class.getCanonicalName() + "." + theShortPropertyName;
             }
         }
         return clazz.getCanonicalName() + "." + shortPropertyName;
