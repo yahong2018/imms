@@ -432,7 +432,7 @@ CREATE TABLE `requirement_order`  (
   `requirement_order_planned_qty`              int                   NOT NULL               COMMENT '计划生产数量',
   `requirement_order_required_delivery_date`   datetime              NOT NULL               COMMENT '需求交期',
   `requirement_order_sale_order_no`            varchar(64)           NULL                   COMMENT '销售订单号',
-  `requirement_order_repeat_type`              varchar(10)           NULL                   COMMENT '标识',
+  `requirement_order_repeat_type`              enum('F','R','S')     NOT NULL DEFAULT 'F'   COMMENT '标识:F 首单  R 翻单 S 补单',
 
   PRIMARY KEY (`requirement_order_id`) ,
   INDEX `IDX_REQUIREMENT_ORDER_01`(`requirement_order_no`) ,
@@ -519,6 +519,41 @@ CREATE TABLE `production_order_size`  (
 
 -- -----------------------------------------------------------------------------------------------------------
 
+CREATE TABLE `material_picking_order`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `material_picking_order_no` varchar(64)        NOT NULL,
+  `production_order_id`       bigint(20)         NOT NULL,
+  `status`                    varchar(10)        NULL ,
+  `type`                      varchar(10)        NULL ,
+  `planned_picking_date`      datetime(0)        NULL ,
+  `actual_picking_date`       datetime(0)        NULL ,
+  `operator`                  varchar(10)        NULL ,
+
+  `created_date` datetime(0) NOT NULL,
+  `created_by` varchar(10) NOT NULL,
+  `last_modified_date` datetime(0) NULL ,
+  `last_modified_by` varchar(10) NULL ,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_MATERIAL_PO_01`(`material_picking_order_no`) ,
+  INDEX `IDX_MATERIAL_PO_02`(`production_order_id`)
+) COMMENT = '领料单';
+
+
+
+CREATE TABLE `material_picking_order_bom`  (
+  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
+  `component_material_id`     bigint(200)        NULL       COMMENT '组件主键',
+  `qty`                       double             NULL       COMMENT '组件用量',
+  `component_material_uom`    varchar(20)        NULL       COMMENT '组件单位',
+  `picked_qty`                double             NULL ,
+  `material_picking_order_id` bigint(20)         NULL ,
+
+  PRIMARY KEY (`id`) ,
+  INDEX `IDX_MATERIAL_POB_01`(`component_material_id`) ,
+  INDEX `IDX_MATERIAL_POB_02`(`material_picking_order_id`)
+) COMMENT = '领料单物料清单';
+
 
 CREATE TABLE `material_picking_list`  (
   `id`                        bigint(20)          NOT NULL AUTO_INCREMENT,
@@ -549,39 +584,6 @@ CREATE TABLE `material_picking_list_detail`  (
   INDEX `IDX_MATERIAL_PLD_01`(`material_picking_list_id`) ,
   INDEX `IDX_MATERIAL_PLD_02`(`material_id`)
 ) COMMENT = '领料明细';
-
-CREATE TABLE `material_picking_order`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `material_picking_order_no` varchar(64)        NOT NULL,
-  `production_order_id`       bigint(20)         NOT NULL,
-  `status`                    varchar(10)        NULL ,
-  `type`                      varchar(10)        NULL ,
-  `planned_picking_date`      datetime(0)        NULL ,
-  `actual_picking_date`       datetime(0)        NULL ,
-  `operator`                  varchar(10)        NULL ,
-
-  `created_date` datetime(0) NOT NULL,
-  `created_by` varchar(10) NOT NULL,
-  `last_modified_date` datetime(0) NULL ,
-  `last_modified_by` varchar(10) NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_PO_01`(`material_picking_order_no`) ,
-  INDEX `IDX_MATERIAL_PO_02`(`production_order_id`)
-) COMMENT = '领料单';
-
-CREATE TABLE `material_picking_order_bom`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `component_material_id`     bigint(200)        NULL       COMMENT '组件主键',
-  `qty`                       double             NULL       COMMENT '组件用量',
-  `component_material_uom`    varchar(20)        NULL       COMMENT '组件单位',
-  `picked_qty`                double             NULL ,
-  `material_picking_order_id` bigint(20)         NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MATERIAL_POB_01`(`component_material_id`) ,
-  INDEX `IDX_MATERIAL_POB_02`(`material_picking_order_id`)
-) COMMENT = '领料单物料清单';
 
 
 -- ----------------------------------------------------------------------------------------------------------------

@@ -12,7 +12,6 @@ import java.util.Map;
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
-
 public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
     protected Class clazz;
 
@@ -44,16 +43,9 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         return this.getPageListCount(listMap,null);
     }
 
-    public List getPageList(Map listMap) {
-        return this.getPageList(listMap, null);
-    }
 
     public final T getById(Object id) {
         return (T) this.getById(this.clazz, id);
-    }
-
-    public final T getOne(String where) {
-        return this.getOne(where, null);
     }
 
     public T getOne(String where, Map parameters) {
@@ -90,11 +82,6 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
    	    return this.delete(dbItem);
     }
 
-    public final T verifyIsExists(T item) throws Exception {
-        String idProperty = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz).getKeyProperty();
-        Object idValue = BeanUtils.getValue(item, idProperty);
-        return this.verifyExistsById(idValue);
-    }
 
     @Override
     public final void verify(Object item, int operationCode) throws BusinessException {
@@ -102,9 +89,6 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         this.doVerify((T) item, operationCode);
     }
 
-    protected String getKeyProperty() {
-        return super.getKeyProperty(this.clazz);
-    }
 
     protected void doVerify(T item, int operationCode) {
     }
@@ -136,7 +120,4 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         return sqlHelper.delete(item);
     }
 
-    protected String getPropertyFullName(String shortPropertyName) {
-        return super.getPropertyFullName(this.clazz, shortPropertyName);
-    }
 }

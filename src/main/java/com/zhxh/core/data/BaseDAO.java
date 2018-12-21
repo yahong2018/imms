@@ -19,7 +19,6 @@ public class BaseDAO {
     public static final int DATA_OPERATION_INSERT = 1;
     public static final int DATA_OPERATION_UPDATE = 2;
     public static final int DATA_OPERATION_DELETE = 3;
-    public static final int DATA_OPERATION_GET = 4;
 
     @Resource(name = "sqlHelper")
     protected SqlHelper sqlHelper;
@@ -49,14 +48,6 @@ public class BaseDAO {
         return sqlHelper.getPageListCount(clazz, listMap, parameters);
     }
 
-    public int getPageListCount(Class clazz, Map listMap) {
-        return this.getPageListCount(clazz, listMap, null);
-    }
-
-    public List getPageList(Class clazz, Map listMap) {
-        return this.getPageList(clazz, listMap, null);
-    }
-
     public String getIdLabel(Class clazz) {
         return this.getPropertyLabel(this.getPropertyFullName(clazz, EntitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
     }
@@ -82,7 +73,7 @@ public class BaseDAO {
         return this.doInternalInsert(item);
     }
 
-    public int update(Object item) throws Exception {
+    public int update(Object item) {
         if (item instanceof TraceableEntity) {
             TraceableEntity.fillUpdateInfo((TraceableEntity) item);
         }
@@ -92,7 +83,7 @@ public class BaseDAO {
     }
 
 
-    public int delete(Object item) throws Exception {
+    public int delete(Object item) {
         if (!this.exists(item)) {
             String keyProperty = getKeyProperty(item.getClass());
             String idLabel = this.getIdLabel(item.getClass());
@@ -105,20 +96,8 @@ public class BaseDAO {
         return this.doInternalDelete(item);
     }
 
-    public List executeList(Class clazz, String sql, Map parameters) {
-        return this.sqlHelper.executeList(clazz, sql, parameters);
-    }
-
     public int executeNoneQuery(String sql, Map parameters) {
         return this.sqlHelper.executeNoneQuery(sql, parameters);
-    }
-
-    public List executeList(Class clazz, String sql) {
-        return this.executeList(clazz, sql, null);
-    }
-
-    public int executeNoneQuery(String sql) {
-        return this.executeNoneQuery(sql, null);
     }
 
     public boolean exists(Object item) {
