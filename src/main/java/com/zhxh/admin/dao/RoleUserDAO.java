@@ -27,11 +27,8 @@ public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
     }
 
     @Override
-    public int insert(Object item) throws Exception {
-        super.verifyBean(item, DATA_OPERATION_INSERT);
-
-        RoleUser roleUser = (RoleUser) item;
-        RoleUser dbItem = this.getByUserIdAndRoleId(roleUser.getUserId(), roleUser.getRoleId());
+    protected int doInsert(RoleUser item) {
+        RoleUser dbItem = this.getByUserIdAndRoleId(item.getUserId(), item.getRoleId());
         if (dbItem != null) {
             throwException(ERROR_DATA_ALREADY_EXISTS);
         }

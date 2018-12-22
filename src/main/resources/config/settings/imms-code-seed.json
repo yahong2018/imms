@@ -1,0 +1,26 @@
+[
+  {
+    "name": "bomOrder",
+    "seed": 1,
+    "prefix": "",
+    "postfix": "",
+    "length": 10,
+    "shortLength": 6
+  },
+  {
+    "name": "productionOrder",
+    "seed": 1,
+    "prefix": "",
+    "postfix": "",
+    "length": 10,
+    "shortLength": 6
+  },
+  {
+    "name": "pickingOrder",
+    "seed": 1,
+    "prefix": "",
+    "postfix": "",
+    "length": 10,
+    "shortLength": 6
+  },
+]

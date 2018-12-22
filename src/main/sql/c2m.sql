@@ -11,6 +11,25 @@ CREATE TABLE `data_dict`  (
 ) COMMENT = '数据字典表';
 
 -- -------------------------------------------------------------------------------------------------------------------
+CREATE TABLE `code_seed`(
+  `code_seed_id`                  char(36)            NOT NULL,
+  `code_seed_no`                  varchar(50)         NOT NULL,
+  `code_seed_name`                varchar(50)         NOT NULL,
+  `code_seed_intial_value`        int                 NOT NULL,
+  `code_seed_prefix`              varchar(10)         NOT NULL,
+  `code_seed_postfix`             varchar(10)         NOT NULL,
+  `code_seed_total_length`        int                 NOT NULL,
+
+  PRIMARY KEY (`code_seed_id`)
+);
+
+insert into `code_seed` values(UUID(),'bomOrderId','Bom单号',1,'','',10);
+insert into `code_seed` values(UUID(),'productionOrderId','生产计划单号',1,'','',10);
+insert into `code_seed` values(UUID(),'pickingOrderId','领料单号',1,'','',10);
+insert into `code_seed` values(UUID(),'cuttingOrderId','裁剪单号',1,'','',10);
+insert into `code_seed` values(UUID(),'workOrderId','作业单号',1,'','',10);
+
+
 CREATE TABLE `media`  (
   `media_id`                       char(36)            NOT NULL,
   `media_type`                     varchar(10)         NOT NULL,            -- 类型：Pad需要根据类型来显示图片或者播放视频

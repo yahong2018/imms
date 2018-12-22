@@ -54,7 +54,7 @@ public class BaseDAO {
 
     private final static UUID EMPTY_UUID = new UUID(0, 0);
 
-    public int insert(Object item) throws Exception {
+    public final int insert(Object item) throws BusinessException {
         if (item instanceof TraceableEntity) {
             TraceableEntity.fillCreateInfo((TraceableEntity) item);
         }
@@ -73,7 +73,7 @@ public class BaseDAO {
         return this.doInternalInsert(item);
     }
 
-    public int update(Object item) {
+    public final int update(Object item) {
         if (item instanceof TraceableEntity) {
             TraceableEntity.fillUpdateInfo((TraceableEntity) item);
         }
@@ -83,7 +83,7 @@ public class BaseDAO {
     }
 
 
-    public int delete(Object item) {
+    public final int delete(Object item) {
         if (!this.exists(item)) {
             String keyProperty = getKeyProperty(item.getClass());
             String idLabel = this.getIdLabel(item.getClass());
@@ -217,7 +217,7 @@ public class BaseDAO {
     }
 
 
-    private boolean checkUnique(Object item) {
+    public boolean checkUnique(Object item) {
         Class clazz = item.getClass();
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.getCheckUniqueSql();

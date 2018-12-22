@@ -17,6 +17,7 @@ public class RequirementOrderController extends SimpleCRUDController<Requirement
 
     @Override
     protected BaseDAOWithEntity<RequirementOrder> getCrudDao() {
-        return null;
+        return this.requirementOrderDAO;
     }
+
 }
