@@ -7,12 +7,12 @@ import java.time.LocalDateTime;
 public class ProductionOrder extends TraceableEntity {
     private String  productionOrderId;
     private String  productionOrderNo;
-    private String  productionOrderType;
+    private OrderType  productionOrderType;
     private String  productionOrderBomOrderId;
     private String  productionOrderOperationRoutingOrderId;
     private String  productionOrderSource;
     private String  productionOrderMaterialReady;
-    private String  productionOrderStatus;
+    private ProductionOrderStatus  productionOrderStatus;
     private String  productionOrderPriority;
     private String  productionOrderRequirementOrderId;
     private String  productionOrderPlantId;
@@ -46,11 +46,11 @@ public class ProductionOrder extends TraceableEntity {
         this.productionOrderNo = productionOrderNo;
     }
 
-    public String getProductionOrderType() {
+    public OrderType getProductionOrderType() {
         return productionOrderType;
     }
 
-    public void setProductionOrderType(String productionOrderType) {
+    public void setProductionOrderType(OrderType productionOrderType) {
         this.productionOrderType = productionOrderType;
     }
 
@@ -86,11 +86,11 @@ public class ProductionOrder extends TraceableEntity {
         this.productionOrderMaterialReady = productionOrderMaterialReady;
     }
 
-    public String getProductionOrderStatus() {
+    public ProductionOrderStatus getProductionOrderStatus() {
         return productionOrderStatus;
     }
 
-    public void setProductionOrderStatus(String productionOrderStatus) {
+    public void setProductionOrderStatus(ProductionOrderStatus productionOrderStatus) {
         this.productionOrderStatus = productionOrderStatus;
     }
 

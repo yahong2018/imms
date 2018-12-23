@@ -14,7 +14,7 @@ public class RequirementOrderLogic {
     @Resource(name="requirementOrderDAO")
     private RequirementOrderDAO requirementOrderDAO;
 
-    public RequirementOrder createFromVo(RequirementOrderVO vo){
+    RequirementOrder createFromVo(RequirementOrderVO vo){
         RequirementOrder requirementOrder = this.vo2Entity(vo);
         this.requirementOrderDAO.insert(requirementOrder);
         return requirementOrder;
@@ -40,6 +40,14 @@ public class RequirementOrderLogic {
             //设置工厂
             //
         }
+
+        //
+        //转换OrderSize
+        //
+
+        //
+        //转换Bom
+        //
 
         return result;
     }

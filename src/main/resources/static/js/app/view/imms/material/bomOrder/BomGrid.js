@@ -74,6 +74,7 @@ Ext.define("app.view.imms.material.bomOrder.BomGrid", {
         if(e.sender==null||e.sender.$className!='app.ux.dbgrid.DbGridToolbar'){
             return;
         }
+        
         e.config.items.push({
             xtype: 'dbgridinsertbutton',
             privilege: "INSERT",

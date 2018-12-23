@@ -482,7 +482,7 @@ CREATE TABLE `production_order`  (
   `production_order_operation_routing_order_id`  char(36)          NULL ,
   `production_order_source`                      varchar(10)       NULL       COMMENT '订单来源',
   `production_order_material_ready`              varchar(10)       NULL       COMMENT '物料准备',
-  `production_order_status`                      varchar(10)       NOT NULL,
+  `production_order_status`                      enum('PREADY','CREATED','RELEASED','ISSUED','CUTED','STITCHING','STITCHED','FINISHED') NOT NULL default 'CREATED',
   `production_order_priority`                    varchar(10)       NOT NULL,
   `production_order_requirement_order_id`        char(36)          NOT NULL,
   `production_order_plant_id`                    char(36)          NOT NULL,

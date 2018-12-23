@@ -1,5 +1,6 @@
 package com.zhxh.imms.order.logic;
 
+import com.zhxh.imms.kanban.EventType;
 import com.zhxh.imms.order.dao.ScheduleOrderDAO;
 import com.zhxh.imms.order.entity.ProductionOrder;
 import com.zhxh.imms.order.entity.RequirementOrder;
@@ -32,7 +33,7 @@ public class ScheduleOrderLogic {
         //3.创建生产订单
         ProductionOrder productionOrder = this.productionOrderLogic.createProductionOrder(requirementOrder,scheduleOrder);
         //4.通知可视化进行数据更新
-        this.publishEvent("ISSUE_REQUIREMENT_ORDER", requirementOrderVO.getRequirementOrderNo());
+        this.publishEvent(EventType.ISSUE_REQUIREMENT_ORDER, requirementOrderVO.getRequirementOrderNo());
         //5.返回生产订单的单号
         return productionOrder.getProductionOrderNo();
     }

@@ -1,6 +1,7 @@
 package com.zhxh.imms.order.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.imms.material.vo.BomVO;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +12,7 @@ public class RequirementOrder implements EntityObject {
 
     private String requirementOrderId;
     private String requirementOrderNo;
-    private String requirementOrderType;
+    private OrderType requirementOrderType;
     private String requirementOrderStatus;
     private String requirementOrderPriority;
     private String requirementOrderPlantId;
@@ -21,6 +22,34 @@ public class RequirementOrder implements EntityObject {
     private LocalDateTime requirementOrderRequiredDeliveryDate;
     private String requirementOrderSaleOrderNo;
     private String requirementOrderRepeatType;
+    private String requirementOrderSource;
+
+    private ProductionOrderSize[] orderSizes;
+    private BomVO[] boms;
+
+    public BomVO[] getBoms() {
+        return boms;
+    }
+
+    public void setBoms(BomVO[] boms) {
+        this.boms = boms;
+    }
+
+    public ProductionOrderSize[] getOrderSizes() {
+        return orderSizes;
+    }
+
+    public void setOrderSizes(ProductionOrderSize[] orderSizes) {
+        this.orderSizes = orderSizes;
+    }
+
+    public String getRequirementOrderSource() {
+        return requirementOrderSource;
+    }
+
+    public void setRequirementOrderSource(String requirementOrderSource) {
+        this.requirementOrderSource = requirementOrderSource;
+    }
 
     public boolean isFirstOrder(){
         return REPEAT_TYPE_FIRST.equalsIgnoreCase(this.requirementOrderRepeatType);
@@ -74,7 +103,7 @@ public class RequirementOrder implements EntityObject {
         return requirementOrderStatus;
     }
 
-    public String getRequirementOrderType() {
+    public OrderType getRequirementOrderType() {
         return requirementOrderType;
     }
 
@@ -122,7 +151,7 @@ public class RequirementOrder implements EntityObject {
         this.requirementOrderStatus = requirementOrderStatus;
     }
 
-    public void setRequirementOrderType(String requirementOrderType) {
+    public void setRequirementOrderType(OrderType requirementOrderType) {
         this.requirementOrderType = requirementOrderType;
     }
 

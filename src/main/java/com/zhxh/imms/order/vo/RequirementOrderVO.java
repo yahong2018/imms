@@ -39,7 +39,4 @@ public class RequirementOrderVO extends RequirementOrder {
     public void setWorkCenterName(String workCenterName) {
         this.workCenterName = workCenterName;
     }
-
-
-
 }
