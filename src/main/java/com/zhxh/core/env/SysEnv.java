@@ -24,7 +24,6 @@ public class SysEnv implements ApplicationContextAware {
 
     private static Map<String, String> errorsMessageHolder;
     private static Map<String, String> entityFieldLabelHolder;
-    private static Map<String, String> entityTableMappingHolder;
 
     private static final String configLocation = "classpath:config/settings/env.properties";
 
@@ -45,10 +44,6 @@ public class SysEnv implements ApplicationContextAware {
 
         String messageErrorLocation = propertyMap.get("sysenv.messageErrorLocation");
         errorsMessageHolder = PropertyLoader.getPropertyMap(messageErrorLocation);
-
-        String entityTableMappingLocation = propertyMap.get("sysenv.entityTableMappingLocation");
-        entityTableMappingHolder = PropertyLoader.getPropertyMap(entityTableMappingLocation);
-
         String fieldLabelLocation = propertyMap.get("sysenv.fieldLabelLocation");
         entityFieldLabelHolder = PropertyLoader.getPropertyMap(fieldLabelLocation);
     }
@@ -103,10 +98,6 @@ public class SysEnv implements ApplicationContextAware {
         }
         int index = fieldName.lastIndexOf(".");
         return fieldName.substring(index+1);
-    }
-
-    public static Map<String, String> getEntityTableMappingHolder() {
-        return entityTableMappingHolder;
     }
 
     public static Object getBean(String name) {

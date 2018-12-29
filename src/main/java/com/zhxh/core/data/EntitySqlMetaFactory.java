@@ -11,16 +11,16 @@ import java.util.Map;
 
 public class EntitySqlMetaFactory {
     public void init() {
-        for (Map.Entry<String, String> entry : SysEnv.getEntityTableMappingHolder().entrySet()) {
-            String className = entry.getKey();
-            String tableName = entry.getValue();
-            try {
-                Class clazz = Class.forName(className);
-                EntitySqlMetaFactory.initMeta(clazz, tableName);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
+//        for (Map.Entry<String, String> entry : SysEnv.getEntityTableMappingHolder().entrySet()) {
+//            String className = entry.getKey();
+//            String tableName = entry.getValue();
+//            try {
+//                Class clazz = Class.forName(className);
+//                EntitySqlMetaFactory.initMeta(clazz, tableName);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
     }
 
     public static EntitySqlMeta getEntitySqlMeta(Class<?> clazz) {
