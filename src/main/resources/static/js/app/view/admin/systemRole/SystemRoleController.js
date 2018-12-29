@@ -31,9 +31,9 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
                 }
                 privilegeList.push({
                     privilegeCode:privilegeCode,
-                    programId:child.get('programId'),                    
+                    programId:child.get('programId'),       
+                    recordId:child.get("recordId")             
                 });
-
                 throughTree(child);
             }
         };

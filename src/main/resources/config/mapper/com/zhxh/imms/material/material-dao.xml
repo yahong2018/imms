@@ -2,50 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.material.dao">
-    <sql id="MATERIAL_FIELDS">
-        material_id,material_no,material_name,material_material_type_id,
-        material_uom_id,material_width,material_weight,material_size_id,material_price,material_color,material_description
-    </sql>
-
-    <sql id="MATERIAL_VO_FIELDS">
-         material_type_no,material_type_name,uom_no,uom_name,size_no,size_name
-    </sql>
-
-    <sql id="MATERIAL_MEDIA_FIELDS">
-        material_media_id,material_media_media_id,material_media_material_id
-    </sql>
-    <sql id="MATERIAL_MEDIA_VO_FIELDS">
-        media_type,media_url,media_name,media_size,media_description,media_data_source
-    </sql>
-
     <select id="SQL_GET_MATERIAL_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.material.vo.MaterialVO">
-        select <include refid="MATERIAL_FIELDS"/>,
-               <include refid="MATERIAL_VO_FIELDS"/>
-          from material   join material_type on material_material_type_id = material_type_id
-                          join uom  on uom_id = material_uom_id
-                          join size on size_id = material_size_id
-    </select>
-
-    <select id="SQL_GET_MATERIAL_MEDIA_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.material.vo.MaterialMediaVO">
-        select <include refid="MATERIAL_MEDIA_FIELDS"/>,
-               <include refid="MATERIAL_MEDIA_VO_FIELDS"/>
-          from material_media join media on material_media_media_id = media_id
+        select  record_id,material_no,material_name,material_material_type_id,
+                material_uom_id,material_width,material_weight,material_size_id,material_price,material_color,material_description,
+                material_type_no,material_type_name,uom_no,uom_name,size_no,size_name
+          from material m   join material_type mt on m.material_type_id = mt.record_id
+                          join uom u  on m.material_uom_id = u.record_id
+                          join size s on m.material_size_id=s.record_id
     </select>
 
     <select id="SQL_GET_BOM_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.material.vo.BomVO">
-        select bom_id,bom_bom_order_id,component_material_id,component_abstract_material_id,component_qty,component_material_uom_id,
-               component_type_no,parent_bom_id,component_material_no_path,component_material_name_path,
-               component_material_match_rule_id,if_main_fabric,bom_data_source,
-               bom_order_no,
+        select b.record_id,bom_order_id,component_type_no,component_material_id,component_abstract_material_id,component_qty,component_material_uom_id,
+               parent_bom_id,component_material_no_path,component_material_name_path,
+               component_material_match_rule_id,if_main_fabric,bom_order_no,
                mc.material_no as component_material_no,mc.material_name as component_material_name,
                ma.material_no as component_abstract_material_no, ma.material_name as component_abstract_material_name,
                uom_no as component_material_uom_no,uom_name as component_material_uom_name,
                '' as component_material_match_rule_no,'' as component_material_match_rule_name
-        from bom b join bom_order on b.bom_bom_order_id = bom_order_id
-                 join material mc on b.component_material_id=mc.material_id
-                 join uom on b.component_material_uom_id = uom_id
-                 left join material ma on b.component_abstract_material_id = ma.material_id
+        from bom b join bom_order bo on b.bom_order_id = bo.record_id
+                 join material mc on b.component_material_id=mc.record_id
+                 join uom u on b.component_material_uom_id = u.record_id
+                 left join material ma on b.component_abstract_material_id = ma.record_id
     </select>
-
-
 </mapper>

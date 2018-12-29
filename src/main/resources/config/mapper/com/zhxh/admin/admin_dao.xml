@@ -18,23 +18,23 @@
     <select id="GET_PARENT_PROGRAM" parameterType="java.util.Map" resultMap="com.zhxh.admin.entity.SystemProgram">
         select <include refid="SYSTEM_PROGRAM_FIELDS"/>
         from system_program pp
-        where id =(
+        where record_id =(
 	        select p.parent from system_program p
-	        where p.id=#{programId}
+	        where p.record_id=#{programId}
         )
     </select>
 
     <insert id="INSERT_ROLE_PRIVILEGE" parameterType="com.zhxh.admin.entity.RolePrivilege" useGeneratedKeys="true"
-            keyProperty="rolePrivilegeId" keyColumn="role_privilege_id">
-        insert into role_privilege(program_privilege_id,role_id,program_id,privilege_id)
-        values(#{programPrivilegeId},#{roleId},#{programId},#{privilegeId})
+            keyProperty="recordId" keyColumn="record_id">
+        insert into role_privilege(record_id,program_privilege_id,role_id,program_id,privilege_code)
+        values(#{recordId}, #{programPrivilegeId},#{roleId},#{programId},#{privilegeCode})
     </insert>
 
     <select id="GET_OTHER_GRANTED_PRIVILEGE_COUNT" parameterType="java.util.Map" resultType="java.lang.Integer">
         <![CDATA[
         select count(*) from role_privilege rp
         where rp.program_id = #{programId}
-          and rp.privilege_id <> #{runPrivilegeId}
+          and rp.privilege_code <> #{runPrivilegeId}
           and rp.role_privilege_id <> #{rolePrivilegeId}
         ]]>
     </select>

@@ -4,6 +4,7 @@ package com.zhxh.imms.code.logic;
 import com.zhxh.core.exception.ErrorCode;
 import com.zhxh.imms.code.dao.CodeSeedDAO;
 import com.zhxh.imms.code.entity.CodeSeed;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -14,6 +15,7 @@ import java.util.List;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("codeSeedLogic")
+
 public class CodeSeedLogic {
     @Resource(name = "codeSeedDAO")
     private CodeSeedDAO codeSeedDAO;
@@ -21,10 +23,10 @@ public class CodeSeedLogic {
 
     @PostConstruct
     public void init() {
-//        List<CodeSeed> codeSeedList = this.codeSeedDAO.getAll();
-//        for (CodeSeed codeSeed : codeSeedList) {
-//            this.seedList.put(codeSeed.getCodeSeedName(), codeSeed);
-//        }
+        List<CodeSeed> codeSeedList = this.codeSeedDAO.getAll();
+        for (CodeSeed codeSeed : codeSeedList) {
+            this.seedList.put(codeSeed.getSeedName(), codeSeed);
+        }
     }
 
     public synchronized String createCode(String seedNo) {
@@ -33,17 +35,17 @@ public class CodeSeedLogic {
         }
 
         CodeSeed codeSeed = seedList.get(seedNo);
-        codeSeed.setCodeSeedInitialValue(codeSeed.getCodeSeedInitialValue() + 1);
+        codeSeed.setInitialValue(codeSeed.getInitialValue() + 1);
         codeSeedDAO.update(codeSeed);
         return this.buildCode(codeSeed);
     }
 
     private String buildCode(CodeSeed codeSeed) {
-        int prefixLength = codeSeed.getCodeSeedPrefix().length();
-        int postFixLength = codeSeed.getCodeSeedPostfix().length();
-        int snLength = codeSeed.getCodeSeedTotalLength() - prefixLength - postFixLength;
+        int prefixLength = codeSeed.getPrefix().length();
+        int postFixLength = codeSeed.getPostfix().length();
+        int snLength = codeSeed.getTotalLength() - prefixLength - postFixLength;
         StringBuffer buffer = new StringBuffer("%s").append("%0").append(snLength).append("%s");
         String formatter = buffer.toString();
-        return String.format(formatter, codeSeed.getCodeSeedPrefix(), codeSeed.getCodeSeedInitialValue(), codeSeed.getCodeSeedPostfix());
+        return String.format(formatter, codeSeed.getPrefix(), codeSeed.getInitialValue(), codeSeed.getPostfix());
     }
 }

@@ -9,8 +9,8 @@ Ext.define('app.view.main.menu.programPrivilege.ProgramPrivilege', {
     columns: [
         { dataIndex: 'programPrivilegeId', text: '编号', width:70},
         { dataIndex: 'programId', text: '菜单编号',flex:1},
-        { dataIndex: 'privilegeId', text: '按钮代码', flex:1},
-        { dataIndex: 'privilegeName', text: '按钮名称', flex: 1},
+        { dataIndex: 'privilegeCode', text: '权限代码', flex:1},
+        { dataIndex: 'privilegeName', text: '权限名称', flex: 1},
     ],
     dockedItems: [
         {

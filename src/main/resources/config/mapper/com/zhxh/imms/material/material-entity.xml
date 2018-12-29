@@ -2,11 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.material.entity">
-    <resultMap id="Material" type="com.zhxh.imms.material.entity.Material">
-        <id property="materialId" column="material_id"/>
-
+    <resultMap id="Material" type="com.zhxh.imms.material.entity.Material" extends="com.zhxh.core.data.EntityObject">
         <result property="materialNo" column="material_no"/>
-        <result property="materialMaterialTypeId" column="material_material_type_id"/>
+        <result property="materialTypeId" column="material_type_id"/>
         <result property="materialName" column="material_name"/>
         <result property="materialUomId" column="material_uom_id"/>
         <result property="materialWidth" column="material_width"/>
@@ -17,35 +15,23 @@
         <result property="materialDescription" column="material_description"/>
     </resultMap>
 
-    <resultMap id="MaterialMedia" type="com.zhxh.imms.material.entity.MaterialMedia">
-        <id property="materialMediaId" column="material_media_id"/>
-
-        <result property="materialMediaMediaId" column="material_media_media_id"/>
-        <result property="materialMediaMaterialId" column="material_media_material_id"/>
-    </resultMap>
-
-    <resultMap id="BomOrder" type="com.zhxh.imms.material.entity.BomOrder">
-        <id property="bomOrderId" column="bom_order_id"/>
-
+    <resultMap id="BomOrder" type="com.zhxh.imms.material.entity.BomOrder"  extends="com.zhxh.core.data.EntityObject">
         <result property="bomOrderNo" column="bom_order_no"/>
         <result property="bomOrderTypeNo" column="bom_order_type_no"/>
     </resultMap>
 
-    <resultMap id="Bom" type="com.zhxh.imms.material.entity.Bom">
-        <id property="bomId" column="bom_id"/>
-
-        <result property="bomBomOrderId" column="bom_bom_order_id"/>
+    <resultMap id="Bom" type="com.zhxh.imms.material.entity.Bom"  extends="com.zhxh.core.data.EntityObject">
+        <result property="bomOrderId" column="bom_order_id"/>
+        <result property="componentTypeNo" column="component_type_no"/>
         <result property="componentMaterialId" column="component_material_id"/>
         <result property="componentAbstractMaterialId" column="component_abstract_material_id"/>
         <result property="componentQty" column="component_qty"/>
         <result property="componentMaterialUomId" column="component_material_uom_id"/>
-        <result property="componentTypeNo" column="component_type_no"/>
         <result property="parentBomId" column="parent_bom_id"/>
         <result property="componentMaterialNoPath" column="component_material_no_path"/>
         <result property="componentMaterialNamePath" column="component_material_name_path"/>
         <result property="componentMaterialMatchRuleId" column="component_material_match_rule_id"/>
         <result property="ifMainFabric" column="if_main_fabric"/>
-        <result property="bomDataSource" column="bom_data_source"/>
     </resultMap>
 
 </mapper>

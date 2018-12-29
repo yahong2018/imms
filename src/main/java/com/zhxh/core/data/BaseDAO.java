@@ -4,6 +4,7 @@ import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.annotation.DependsOn;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;

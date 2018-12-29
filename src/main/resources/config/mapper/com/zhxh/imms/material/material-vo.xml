@@ -12,15 +12,6 @@
         <result property="uomName" column="uom_name"/>
     </resultMap>
 
-    <resultMap id="MaterialMediaVO" type="com.zhxh.imms.material.vo.MaterialMediaVO" extends="com.zhxh.imms.material.entity.MaterialMedia">
-        <result property="mediaType" column="media_type"/>
-        <result property="mediaUrl" column="media_url"/>
-        <result property="mediaName" column="media_name"/>
-        <result property="mediaSize" column="media_size"/>
-        <result property="mediaDescription" column="media_description"/>
-        <result property="mediaDataSource" column="media_data_source"/>
-    </resultMap>
-
     <resultMap id="BomVO" type="com.zhxh.imms.material.vo.BomVO" extends="com.zhxh.imms.material.entity.Bom">
         <result property="bomOrderNo" column="bom_order_no"/>
         <result property="componentMaterialNo" column="component_material_no"/>

@@ -86,7 +86,6 @@ public class SystemRoleLogic {
         //1.获取原权限  oldList
         //2.收回已取消的权限    oldList - currentList
         //3.授予新的权限   currentList - oldList
-
         List<RolePrivilege> oldList = this.getRolePrivileges(roleId);
         List<RolePrivilege> revokeList = new ArrayList<>();
         for(RolePrivilege old:oldList){

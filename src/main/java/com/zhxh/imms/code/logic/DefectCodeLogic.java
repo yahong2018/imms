@@ -1,5 +1,7 @@
 package com.zhxh.imms.code.logic;
 
-public class DefectCodeLogic {
+import org.springframework.stereotype.Component;
 
+@Component("defectCodeLogic")
+public class DefectCodeLogic {
 }

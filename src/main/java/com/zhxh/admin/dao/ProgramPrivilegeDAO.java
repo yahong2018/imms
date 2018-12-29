@@ -52,11 +52,11 @@ public class ProgramPrivilegeDAO extends BaseDAOWithEntity<ProgramPrivilege> {
 		return Integer.parseInt(total == null ? "0" : total.get("TOTAL").toString()) ; 
 	}
 	
-	public ProgramPrivilege getProgramPrivilegeByProgramIdAndPrivilegeId(String programId,String privilegeId) {
-        String where = "program_id=#{programId} and privilege_id=#{privilegeId}"; 
+	public ProgramPrivilege getProgramPrivilegeByProgramIdAndPrivilegeId(String programId,String privilegeCode) {
+        String where = "program_id=#{programId} and privilege_code=#{privilegeCode}";
         Map parameters = new HashMap();
         parameters.put("programId", programId);
-        parameters.put("privilegeId", privilegeId);
+        parameters.put("privilegeCode", privilegeCode);
         return this.getOne(where, parameters);
     }
 
