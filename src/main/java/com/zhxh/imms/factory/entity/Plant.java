@@ -2,7 +2,7 @@ package com.zhxh.imms.factory.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Plant implements EntityObject {
+public class Plant extends EntityObject {
     private String plantId;
     private String plantNo;
     private String plantName;

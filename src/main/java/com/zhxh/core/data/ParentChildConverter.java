@@ -22,7 +22,7 @@ public class ParentChildConverter {
             T topItem = (T) topList[i];
 
             C itemWithChildren = childClass.newInstance();
-            EntityObject.copy(topItem, itemWithChildren);
+            BeanUtils.copy(topItem, itemWithChildren);
 
             Object[] childrenSource = getChildren(topItem,sourceList, id, pId);
             C[] children = (C[]) Array.newInstance(childClass, childrenSource.length);
@@ -31,7 +31,7 @@ public class ParentChildConverter {
             for (int j = 0; j < children.length; j++) {
                 T child = (T) childrenSource[j];
                 C sub = childClass.newInstance();
-                EntityObject.copy(child, sub);
+                BeanUtils.copy(child, sub);
                 plan2Tree(sub, sourceList, id, pId);
 
                 children[j] = sub;
@@ -53,7 +53,7 @@ public class ParentChildConverter {
         for (int i = 0; i < children.length; i++) {
             T child = (T) childrenSource[i];
             C sub = childClass.newInstance();
-            EntityObject.copy(child, sub);
+            BeanUtils.copy(child, sub);
             children[i] = sub;
 
             plan2Tree(sub, sourceList, id, pId);

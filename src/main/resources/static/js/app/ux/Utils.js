@@ -67,7 +67,7 @@ Ext.define('app.ux.Utils', {
                 continue;
             }
             var privilege = privilegeList[i];
-            var actionButtonList = comp.query('[privilege="' + privilege.privilegeId + '"]');
+            var actionButtonList = comp.query('[privilege="' + privilege.privilegeCode + '"]');
             if (actionButtonList) {
                 for (var j = 0; j < actionButtonList.length; j++) {
                     var actionButton = actionButtonList[j];
@@ -79,11 +79,11 @@ Ext.define('app.ux.Utils', {
 
     hasPrivilege: function (config) {
         var privilegeList = app.ux.GlobalVars.currentLogin.privilegeList;
-        var privilegeId = config.privilegeId;
+        var privilegeCode = config.privilegeCode;
         var programId = config.programId;
 
         for (var i = 0; i < privilegeList.length; i++) {
-            if (privilegeList[i].programId == programId && privilegeList[i].privilegeId == privilegeId) {
+            if (privilegeList[i].programId == programId && privilegeList[i].privilegeCode == privilegeCode) {
                 return true;
             }
         }

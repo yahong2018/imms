@@ -1,63 +1,88 @@
 CREATE TABLE system_user
 (
-  user_id         VARCHAR(20)  NOT NULL,
-  user_name       VARCHAR(50)  NOT NULL,
-  pwd             VARCHAR(50)  NOT NULL,
-  user_status     INT          NOT NULL,           -- 0.正常  1.已禁用
-  email           VARCHAR(255) NOT NULL,
-  online          BIT          NOT NULL DEFAULT 0, -- 0.离线  1.在线
-  last_login_time DATETIME     NULL ,              -- 最后登录时间
-  PRIMARY KEY (user_id)
+  record_id                 CHAR(36)                   NOT NULL,
+  user_code                 VARCHAR(20)                NOT NULL,
+  user_name                 VARCHAR(50)                NOT NULL,
+  pwd                       VARCHAR(50)                NOT NULL,
+  user_status               enum('DISABLED','ENABLED') NOT NULL,
+  email                     VARCHAR(255)               NOT NULL,
+  online                    BIT                        NOT NULL DEFAULT 0, -- 0.离线  1.在线
+  last_login_time           DATETIME                   NULL ,              -- 最后登录时间
+
+  PRIMARY KEY (record_id),
+  index IDX_SYSTEM_USER_0(user_code),
+  index IDX_SYSTEM_USER_1(user_name),
+  index IDX_SYSTEM_USER_2(user_status),
+  index IDX_SYSTEM_USER_3(online)
 );
+
 
 CREATE TABLE system_role
 (
-  role_id   VARCHAR(20) NOT NULL,
-  role_name VARCHAR(50) NOT NULL,
-  PRIMARY KEY (role_id)
+  record_id                  CHAR(36)                 NOT NULL,
+  role_code                  VARCHAR(20)              NOT NULL,
+  role_name                  VARCHAR(50)              NOT NULL,
+
+
+  PRIMARY KEY (record_id),
+  index IDX_SYSTEM_ROLE_0(role_code),
+  index IDX_SYSTEM_ROLE_1(role_name)
 );
 
 
 CREATE TABLE role_user
 (
-  role_user_id INT AUTO_INCREMENT NOT NULL,
-  role_id      VARCHAR(20)        NOT NULL,
-  user_id      VARCHAR(20)        NOT NULL,
-  PRIMARY KEY (role_user_id)
+  record_id                 CHAR(36)                  NOT NULL,
+  role_id                   CHAR(36)                  NOT NULL,
+  user_id                   CHAR(36)                  NOT NULL,
+
+  PRIMARY KEY (record_id),
+  index IDX_ROLE_USER_0(role_id),
+  index IDX_ROLE_USER_1(user_id)
 );
 
 
 CREATE TABLE role_privilege
 (
-  role_privilege_id    INT AUTO_INCREMENT NOT NULL,
-  program_privilege_id INT                NOT NULL,
-  role_id              VARCHAR(20)        NOT NULL,
-  program_id           VARCHAR(50)        NOT NULL,
-  privilege_id         VARCHAR(50)        NOT NULL,
-  PRIMARY KEY (role_privilege_id)
+  record_id                 CHAR(36)                   NOT NULL,
+  program_privilege_id      CHAR(36)                   NOT NULL,
+  role_id                   CHAR(36)                   NOT NULL,
+  program_id                CHAR(36)                   NOT NULL,
+  privilege_code            VARCHAR(50)                NOT NULL,
+
+  PRIMARY KEY (record_id),
+  index IDX_ROLE_PRIVILEGE_0(role_id),
+  index IDX_ROLE_PRIVILEGE_1(program_id)
 );
 
 
 CREATE TABLE system_program
 (
-  program_id   VARCHAR(50)  NOT NULL,
-  program_name VARCHAR(120) NOT NULL,
-  url          VARCHAR(255) NOT NULL,
-  glyph        VARCHAR(100) NULL,
-  show_order   INT          NOT NULL,
-  parameters   VARCHAR(255) NOT NULL,
-  progress     INT          NOT NULL,
-  parent       VARCHAR(50)  NOT NULL,
-  PRIMARY KEY (program_id)
+  record_id                  CHAR(36)                   NOT NULL,
+  program_code               VARCHAR(50)                NOT NULL,
+  program_name               VARCHAR(120)               NOT NULL,
+  url                        VARCHAR(255)               NOT NULL,
+  glyph                      VARCHAR(100)               NULL,
+  show_order                 INT                        NOT NULL,
+  parameters                 VARCHAR(255)               NOT NULL,
+  parent                     VARCHAR(50)                NOT NULL,
+
+  PRIMARY KEY (record_id),
+  index IDX_SYSTEM_PROGRAM_0(program_code),
+  index IDX_SYSTEM_PROGRAM_1(parent)
+
 );
 
 CREATE TABLE program_privilege
 (
-  program_privilege_id INT AUTO_INCREMENT NOT NULL,
-  program_id           VARCHAR(50)        NOT NULL,
-  privilege_id         VARCHAR(50)        NOT NULL,
-  privilege_name       VARCHAR(120)       NOT NULL,
-  PRIMARY KEY (program_privilege_id)
+  record_id                  CHAR(36)                   NOT NULL,
+  program_id                 CHAR(50)                   NOT NULL,
+  privilege_code             VARCHAR(50)                NOT NULL,
+  privilege_name             VARCHAR(120)               NOT NULL,
+
+  PRIMARY KEY (record_id),
+  index IDX_PROGRAM_PRIVILEGE_0(program_id),
+  index IDX_PROGRAM_PRIVILEGE_1(privilege_code)
 );
 
 

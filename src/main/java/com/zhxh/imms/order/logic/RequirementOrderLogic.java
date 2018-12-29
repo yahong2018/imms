@@ -1,6 +1,7 @@
 package com.zhxh.imms.order.logic;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.utils.BeanUtils;
 import com.zhxh.imms.order.dao.RequirementOrderDAO;
 import com.zhxh.imms.order.entity.RequirementOrder;
 import com.zhxh.imms.order.vo.RequirementOrderVO;
@@ -22,7 +23,7 @@ public class RequirementOrderLogic {
 
     private RequirementOrder vo2Entity(RequirementOrderVO vo){
         RequirementOrder result = new RequirementOrder();
-        EntityObject.copy(vo,result);
+        BeanUtils.copy(vo,result);
         if(StringUtils.isEmpty(vo.getRequirementOrderFgMaterialId())){
             //
             //设置MaterialId

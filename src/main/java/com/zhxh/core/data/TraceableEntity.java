@@ -2,19 +2,24 @@ package com.zhxh.core.data;
 
 
 import com.zhxh.admin.logic.AuthenticateLogic;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-public class TraceableEntity implements EntityObject {
+@Getter
+@Setter
+public class TraceableEntity extends EntityObject {
     public static void fillCreateInfo(TraceableEntity entity){
-        entity.setCreateBy(AuthenticateLogic.getCurrentLogin().getUserId());
+        entity.setCreateBy(AuthenticateLogic.getCurrentLogin().getRecordId());
         entity.setCreateDate(new Date());
     }
 
     public static void fillUpdateInfo(TraceableEntity entity){
-        entity.setUpdateBy(AuthenticateLogic.getCurrentLogin().getUserId());
+        entity.setUpdateBy(AuthenticateLogic.getCurrentLogin().getRecordId());
         entity.setUpdateDate(new Date());
     }
 
@@ -23,46 +28,6 @@ public class TraceableEntity implements EntityObject {
     private String createBy;
     private String updateBy;
     private int optLock;
-
-    public int getOptLock() {
-        return optLock;
-    }
-
-    public void setOptLock(int optLock) {
-        this.optLock = optLock;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateBy(String createBy) {
-        this.createBy = createBy;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public String getCreateBy() {
-        return createBy;
-    }
-
-    public void setUpdateBy(String updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public String getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
 
     static final List<String> internal_fields = new ArrayList<>();
     static {

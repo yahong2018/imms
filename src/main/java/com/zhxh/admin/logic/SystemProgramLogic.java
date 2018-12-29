@@ -4,6 +4,7 @@ import com.zhxh.admin.dao.SystemProgramDAO;
 import com.zhxh.admin.entity.SystemProgram;
 import com.zhxh.admin.vo.SystemProgramWithChildren;
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.utils.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -32,11 +33,11 @@ public class SystemProgramLogic {
 	 public List<SystemProgramWithChildren> getAllWithChildren() {
 			List<SystemProgramWithChildren> result = new ArrayList<>();
 			List<SystemProgram> systemProgramsList = systemProgramDAO.getAll();
-			SystemProgram[] company = systemProgramsList.stream().filter(x -> x.getProgramId().equals(x.getParent())).toArray(SystemProgram[]::new);
+			SystemProgram[] company = systemProgramsList.stream().filter(x -> x.getRecordId().equals(x.getParentId())).toArray(SystemProgram[]::new);
 			for (int a = 0; a < company.length; a++) {
 
 				SystemProgramWithChildren companyWithChildren = new SystemProgramWithChildren();
-				EntityObject.copy(company[a], companyWithChildren);
+				BeanUtils.copy(company[a], companyWithChildren);
 				SystemProgram[] childrenSystemProgram = systemProgramsList.stream()
 						 .filter(SystemProgram::isTopMenu)
 		                 .sorted(Comparator.comparing(SystemProgram::getShowOrder))
@@ -48,7 +49,7 @@ public class SystemProgramLogic {
 				for (int i = 0; i < children.length; i++) {
 					SystemProgram child = childrenSystemProgram[i];
 					SystemProgramWithChildren sub = new SystemProgramWithChildren();
-					EntityObject.copy(child, sub);
+					BeanUtils.copy(child, sub);
 					this.systemProgram2Tree(sub, systemProgramsList);
 
 					children[i] = sub;
@@ -60,10 +61,9 @@ public class SystemProgramLogic {
 		}
 
 		private void systemProgram2Tree(SystemProgramWithChildren parent, List<SystemProgram> systemProgramsList) {
-			 
 			SystemProgram[] childrenSystemProgram = systemProgramsList.stream()
 					 .filter(
-		                        x -> x.getParent().equals(parent.getProgramId()) && (!x.getProgramId().equals(parent.getProgramId()))
+		                        x -> x.getParentId().equals(parent.getRecordId()) && (!x.getRecordId().equals(parent.getRecordId()))
 		                ).sorted(Comparator.comparing(SystemProgram::getShowOrder))
 		                .toArray(SystemProgram[]::new);
 			SystemProgramWithChildren[] children = new SystemProgramWithChildren[childrenSystemProgram.length];
@@ -71,7 +71,7 @@ public class SystemProgramLogic {
 			for (int i = 0; i < children.length; i++) {
 				SystemProgram child = childrenSystemProgram[i];
 				SystemProgramWithChildren sub = new SystemProgramWithChildren();
-				EntityObject.copy(child, sub);
+				BeanUtils.copy(child, sub);
 				children[i] = sub;
 
 				this.systemProgram2Tree(sub, systemProgramsList);

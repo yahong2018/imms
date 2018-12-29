@@ -6,7 +6,7 @@ import com.zhxh.core.data.meta.annotation.CheckUnique;
 
 import java.util.UUID;
 
-public class Uom implements EntityObject {
+public class Uom extends EntityObject {
     @AutoGeneration
     private String uomId;
 

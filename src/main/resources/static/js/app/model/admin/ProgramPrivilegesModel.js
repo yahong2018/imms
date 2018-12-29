@@ -3,10 +3,10 @@ Ext.define('app.model.admin.ProgramPrivilegesModel', {
     requires: ["app.ux.ZhxhDate","app.model.EmptyGenerator"],
     identifier:'empty',
     fields:[
-        { name: "programPrivilegeId", dbFieldName: 'program_privilege_id', type: "int", unique: true },
+        { name: "recordId", dbFieldName: 'record_id', type: "string"},
         { name: "programId", dbFieldName: 'program_id', type: "string" },
-        { name: "privilegeId", dbFieldName: 'privilege_id', type: "string" },
+        { name: "privilegeCode", dbFieldName: 'privilege_code', type: "string" },
         { name: "privilegeName", dbFieldName: 'privilege_name', type: "string" },
     ],
-    idProperty:'programPrivilegeId'
+    idProperty:'recordId'
 });

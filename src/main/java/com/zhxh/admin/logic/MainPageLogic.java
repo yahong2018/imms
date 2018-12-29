@@ -20,7 +20,7 @@ public class MainPageLogic {
     public List<SystemMenu> getCurrentUserMenu() {
         SystemUser currentUser = authenticateLogic.getCurrentLogin();
         assert currentUser != null;
-        return this.getUserMenu(currentUser.getUserId());
+        return this.getUserMenu(currentUser.getRecordId());
     }
 
     public List<SystemMenu> getUserMenu(String userId) {
@@ -52,7 +52,8 @@ public class MainPageLogic {
 
     private SystemMenu menuFromProgram(SystemProgram top) {
         SystemMenu menu = new SystemMenu();
-        menu.setProgramId(top.getProgramId());
+        menu.setProgramId(top.getRecordId());
+        menu.setProgramCode(top.getProgramCode());
         menu.setProgramName(top.getProgramName());
         menu.setUrl(top.getUrl());
         menu.setGlyph(top.getGlyph());
@@ -67,7 +68,7 @@ public class MainPageLogic {
     private void buildMenu(List<SystemProgram> programList, SystemProgram program, SystemMenu menu) {
         SystemProgram[] parentPrograms = programList.stream()
                 .filter(
-                        x -> x.getParent().equals(program.getProgramId()) && (!x.getProgramId().equals(program.getProgramId()))
+                        x -> x.getParentId().equals(program.getRecordId()) && (!x.getRecordId().equals(program.getRecordId()))
                 ).sorted(Comparator.comparing(SystemProgram::getShowOrder))
                 .toArray(SystemProgram[]::new);
 

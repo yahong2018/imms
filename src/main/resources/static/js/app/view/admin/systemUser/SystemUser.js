@@ -10,15 +10,15 @@ Ext.define('app.view.admin.systemUser.SystemUser', {
         type: 'SystemUserModel'
     },
     columns: [
-        { dataIndex: 'userId', text: '用户账号', width: 100 },
+        { dataIndex: 'userCode', text: '用户账号', width: 100 },
         { dataIndex: 'userName', text: '账号名称', width: 100 },
         {
             dataIndex: 'userStatus', text: '启用状态', width: 100, renderer: function (value) {
                 {
-                    if (value == 0) {
-                        return "0.正常";
+                    if (value == 'ENABLED') {
+                        return "启用";
                     }
-                    return "1.停用";
+                    return "停用";
                 }
             }
         },

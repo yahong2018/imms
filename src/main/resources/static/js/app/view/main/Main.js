@@ -19,7 +19,7 @@ Ext.define('app.view.main.Main', {
 
 	initComponent: function () {
 		Ext.setGlyphFontFamily('FontAwesome');
-		
+	
 		this.callParent();
 	},
 

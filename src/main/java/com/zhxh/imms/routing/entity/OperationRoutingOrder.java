@@ -2,7 +2,7 @@ package com.zhxh.imms.routing.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class OperationRoutingOrder implements EntityObject {
+public class OperationRoutingOrder extends EntityObject {
     private String operationRoutingOrderId;
     private String operationRoutingOrderNo;
     private String operationRoutingType;

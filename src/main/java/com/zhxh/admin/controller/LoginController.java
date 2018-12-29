@@ -23,12 +23,9 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
-    public String doLogin(Model model, String userId, String password) {
-        SystemUser user = new SystemUser();
-        user.setUserId(userId);
-        user.setPassword(password);
+    public String doLogin(Model model, String userCode, String password) {
         try {
-            authenticateLogic.authenticate(user);
+            authenticateLogic.authenticate(userCode,password);
             String url = SysEnv.getAppRoot() + SysEnv.getUrlAppIndex();
             if (StringUtils.isEmpty(url)) {
                 url = "/";

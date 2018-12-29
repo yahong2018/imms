@@ -1,24 +1,14 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.DataTable;
+import lombok.Getter;
+import lombok.Setter;
 
-public class SystemRole implements EntityObject {
-    private String roleId;
+@DataTable("system_role")
+@Getter
+@Setter
+public class SystemRole extends EntityObject {
+    private String roleCode;
     private String roleName;
-
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public String getRoleName() {
-        return roleName;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
-
-    public void setRoleName(String roleName) {
-        this.roleName = roleName;
-    }
 }

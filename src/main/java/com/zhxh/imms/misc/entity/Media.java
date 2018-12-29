@@ -2,7 +2,7 @@ package com.zhxh.imms.misc.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Media implements EntityObject {
+public class Media extends EntityObject {
     private String mediaId;
     private String mediaType;
     private String mediaUrl;

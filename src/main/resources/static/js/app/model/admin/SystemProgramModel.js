@@ -3,7 +3,8 @@ Ext.define('app.model.admin.SystemProgramModel', {
     requires: ["app.ux.ZhxhDate","app.model.EmptyGenerator"],
     identifier:'empty',
     fields: [
-    	  {name:"programId",type:"string",unique:true},
+          {name:"recordId",type:"string",unique:true},
+          {name:"programCode",type:"string"},
           {name:"programName",type:"string"},
           {name:"url",type:"string"},
           {name:"showOrder",type:"string"},
@@ -12,5 +13,5 @@ Ext.define('app.model.admin.SystemProgramModel', {
           {name:"glyph",type:"string"},
           {name:"parent",type:"string"},
     ],
-    idProperty: 'programId'
+    idProperty: 'recordId'
 });

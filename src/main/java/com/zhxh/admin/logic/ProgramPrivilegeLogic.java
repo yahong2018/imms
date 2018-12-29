@@ -23,15 +23,15 @@ public class ProgramPrivilegeLogic {
     private RolePrivilegeDAO rolePrivilegeDAO;
 
 	@Transactional(rollbackFor = Exception.class)
-	public int update(ProgramPrivilege item) throws Exception {
+	public int update(ProgramPrivilege item) {
 		return programPrivilegeDAO.update(item);
 	}
 
 	@Transactional(rollbackFor = Exception.class)
-	public int delete(Object[] ids) throws Exception {
+	public int delete(Object[] ids){
 		for (Object id : ids) {
 				ProgramPrivilege item = programPrivilegeDAO.getById(id);
-				int result = rolePrivilegeDAO.removeRolePrivilegeByProgramIdAndPrivilegeId(item.getProgramId(),item.getPrivilegeId());
+				rolePrivilegeDAO.removeRolePrivilegeByProgramIdAndPrivilegeId(item.getProgramId(),item.getPrivilegeCode());
 		}
 		for (Object id : ids) {
 			int result = programPrivilegeDAO.deleteById(id);
@@ -43,18 +43,6 @@ public class ProgramPrivilegeLogic {
 		return ids.length;
 	}
 
-	 public List<ProgramPrivilege> getProgramPrivilegeByProgramId(String programId) {
-		 return programPrivilegeDAO.getProgramPrivilegeByProgramId(programId);
-    }
-
-	public List getPageList(Map map, Map parameters) {
-		return programPrivilegeDAO.getPageList(map, parameters);
-	}
-
-	public int getPageListCount(Map map, Map parameters) {
-		return programPrivilegeDAO.getPageListCount(map, parameters);
-	}
-	
 	public List getPageListByProgramId(Map map, Map parameters) {
 		return programPrivilegeDAO.getPageListByProgramId(map, parameters);
 	}

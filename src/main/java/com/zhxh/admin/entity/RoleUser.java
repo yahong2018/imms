@@ -1,39 +1,17 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.DataTable;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.UUID;
 
-public class RoleUser implements EntityObject {
-    private int roleUserId;
-    
-    @NotEmpty
+@DataTable("role_user")
+@Getter
+@Setter
+public class RoleUser extends EntityObject {
     private String roleId;
-    
-    @NotEmpty
     private String userId;
-
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public int getRoleUserId() {
-        return roleUserId;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public void setRoleUserId(int roleUserId) {
-        this.roleUserId = roleUserId;
-    }
 }

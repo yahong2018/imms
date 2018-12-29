@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping("/imms/routing/operationMedia")
 public class OperationMediaController extends SimpleCRUDController<OperationMedia> {
-    @Resource(name="operationMedia")
+    @Resource(name="operationMediaDAO")
     private OperationMediaDAO operationMediaDAO;
 
     @Override

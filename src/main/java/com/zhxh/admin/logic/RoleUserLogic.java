@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
@@ -19,12 +20,9 @@ public class RoleUserLogic {
 	private RoleUserDAO roleUserDAO;
 
 	@Transactional(rollbackFor = Exception.class)
-	public int updateUserRoles(String userId, RoleUser[] roleUserList) throws Exception {
-		if (StringUtils.isEmpty(userId)) {
-			return 0;
-		}		
+	public int updateUserRoles(String userId, RoleUser[] roleUserList){
 		for (RoleUser roleUser : roleUserList) {
-			if (!StringUtils.equals(roleUser.getUserId(), userId)) {
+			if (roleUser.getUserId().equals(userId)) {
 				throwException(ERROR_UNKNOWN_EXCEPTION, "userId必须一致！");
 			}
 		}

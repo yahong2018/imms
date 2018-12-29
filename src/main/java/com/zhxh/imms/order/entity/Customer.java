@@ -2,7 +2,7 @@ package com.zhxh.imms.order.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Customer implements EntityObject {
+public class Customer extends EntityObject {
     private String rowId;
     private String productionOrderId;
     private String name;

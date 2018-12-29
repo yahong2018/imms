@@ -9,7 +9,7 @@ import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
 import java.util.UUID;
 
 @TreeTable
-public class Size implements EntityObject {
+public class Size extends EntityObject {
     @AutoGeneration
     private String sizeId;
 

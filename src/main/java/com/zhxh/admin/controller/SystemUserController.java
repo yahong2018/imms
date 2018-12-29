@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.zhxh.core.data.Code;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
@@ -30,16 +31,16 @@ import com.zhxh.core.web.ListRequestProcessHandler;
 public class SystemUserController {
     @Resource(name = "systemUserLogic")
     private SystemUserLogic systemUserLogic;
-    
-    @Resource(name="roleUserLogic")
+
+    @Resource(name = "roleUserLogic")
     private RoleUserLogic roleUserLogic;
 
-    @InitBinder
-    public void intDate(WebDataBinder dataBinder){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        dateFormat.setLenient(false);
-        dataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   //true:允许输入空值，false:不能为空
-    }
+//    @InitBinder
+//    public void intDate(WebDataBinder dataBinder){
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        dateFormat.setLenient(false);
+//        dataBinder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));   //true:允许输入空值，false:不能为空
+//    }
 
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
 
@@ -61,63 +62,70 @@ public class SystemUserController {
 
     @RequestMapping("openLoginAccount.handler")
     @ResponseBody
-    public SystemUser openLoginAccount(SystemUser user) throws Exception {
+    public SystemUser openLoginAccount(SystemUser user) {
+        if (user.getUserStatus() == null) {
+            user.setUserStatus(Code.ENABLED);
+        }
+
         systemUserLogic.openLoginAccount(user);
         return user;
     }
 
     @RequestMapping("update.handler")
     @ResponseBody
-    public SystemUser update(SystemUser user) throws Exception {
+    public SystemUser update(SystemUser user) {
+        if (user.getUserStatus() == null) {
+            user.setUserStatus(Code.ENABLED);
+        }
         systemUserLogic.update(user);
         return user;
     }
 
     @RequestMapping("delete.handler")
     @ResponseBody
-    public int delete(@RequestBody String[] userIdList) throws Exception {    	
+    public int delete(@RequestBody String[] userIdList) {
         return systemUserLogic.delete(userIdList);
     }
 
     @RequestMapping("disableUser.handler")
     @ResponseBody
-    public int disableUser(String userId) throws Exception {
-       return systemUserLogic.disableUser(userId);
+    public int disableUser(String userId) {
+        return systemUserLogic.disableUser(userId);
     }
 
     @RequestMapping("enableUser.handler")
     @ResponseBody
-    public int enableUser(String userId) throws Exception {
+    public int enableUser(String userId) {
         return systemUserLogic.enableUser(userId);
     }
 
     @RequestMapping("resetPassword.handler")
     @ResponseBody
-    public int resetPassword(String userId) throws Exception {
+    public int resetPassword(String userId) {
         return systemUserLogic.resetPassword(userId);
     }
 
     @RequestMapping("getUserRoles.handler")
     @ResponseBody
-    public List<SystemRole> getUserRoles(String userId){
+    public List<SystemRole> getUserRoles(String userId) {
         return systemUserLogic.getUserRoles(userId);
     }
-    
+
     @RequestMapping("updateUserRoles.handler")
     @ResponseBody
-    public int updateRoles(String userId, @RequestBody RoleUser[] roleUsers) throws Exception {
-    	return roleUserLogic.updateUserRoles(userId, roleUsers);
+    public int updateRoles(String userId, @RequestBody RoleUser[] roleUsers) {
+        return roleUserLogic.updateUserRoles(userId, roleUsers);
     }
 
     @RequestMapping("addRole.handler")
     @ResponseBody
-    public int addRole(String userId,String roleId) throws Exception {
-        return systemUserLogic.addRole(userId,roleId);
+    public int addRole(String userId, String roleId) {
+        return systemUserLogic.addRole(userId, roleId);
     }
 
     @RequestMapping("removeRole.handler")
     @ResponseBody
-    public int removeRole(String userId,String roleId) throws Exception {
-        return systemUserLogic.removeRole(userId,roleId);
+    public int removeRole(String userId, String roleId) {
+        return systemUserLogic.removeRole(userId, roleId);
     }
 }

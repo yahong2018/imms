@@ -2,7 +2,7 @@ package com.zhxh.imms.factory.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class PrincipalAxis implements EntityObject {
+public class PrincipalAxis extends EntityObject {
     private String principalAxisId;
     private String principalAxisNo;
     private int principalAxisSequenceNumber;

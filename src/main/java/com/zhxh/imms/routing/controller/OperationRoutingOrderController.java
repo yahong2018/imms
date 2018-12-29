@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 @Controller
 @RequestMapping("/imms/routing/operationRoutingOrder")
 public class OperationRoutingOrderController extends SimpleCRUDController<OperationRoutingOrder> {
-    @Resource(name="operationRoutingOrder")
+    @Resource(name="operationRoutingOrderDAO")
     private OperationRoutingOrderDAO operationRoutingOrderDAO;
 
     @Override

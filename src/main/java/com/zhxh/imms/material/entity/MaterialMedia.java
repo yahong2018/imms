@@ -3,7 +3,7 @@ package com.zhxh.imms.material.entity;
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.data.meta.annotation.AutoGeneration;
 
-public class MaterialMedia implements EntityObject {
+public class MaterialMedia extends EntityObject {
     @AutoGeneration
     private String materialMediaId;
 

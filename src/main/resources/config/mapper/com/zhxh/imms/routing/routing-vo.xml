@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.routing.vo">
-    <resultMap id="OperationMediaVO" type="com.zhxh.imms.material.vo.OperationMediaVO" extends="com.zhxh.imms.routing.entity.OperationMedia">
+    <resultMap id="OperationMediaVO" type="com.zhxh.imms.routing.vo.OperationMediaVO" extends="com.zhxh.imms.routing.entity.OperationMedia">
         <result property="mediaType" column="media_type"/>
         <result property="mediaUrl" column="media_url"/>
         <result property="mediaName" column="media_name"/>
@@ -11,12 +11,12 @@
         <result property="mediaDataSource" column="media_data_source"/>
     </resultMap>
 
-    <resultMap id="OperationVO" type="com.zhxh.imms.material.vo.OperationVO" extends="com.zhxh.imms.routing.entity.Operation">
+    <resultMap id="OperationVO" type="com.zhxh.imms.routing.vo.OperationVO" extends="com.zhxh.imms.routing.entity.Operation">
         <result property="machineTypeNo" column="machine_type_no"/>
         <result property="machineTypeName" column="machine_type_name"/>
     </resultMap>
 
-    <resultMap id="OperationRoutingVO" type="com.zhxh.imms.material.vo.OperationRoutingVO" extends="com.zhxh.imms.routing.entity.OperationRouting">
+    <resultMap id="OperationRoutingVO" type="com.zhxh.imms.routing.vo.OperationRoutingVO" extends="com.zhxh.imms.routing.entity.OperationRouting">
         <result property="operationNo" column="operation_no"/>
         <result property="operationName" column="operation_name"/>
         <result property="userId" column="user_id"/>

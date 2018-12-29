@@ -52,20 +52,18 @@ public class BaseDAO {
         return this.getPropertyLabel(this.getPropertyFullName(clazz, EntitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
     }
 
-    private final static UUID EMPTY_UUID = new UUID(0, 0);
+    private final static String EMPTY_UUID = new UUID(0, 0).toString();
 
     public final int insert(Object item) throws BusinessException {
-        if (item instanceof TraceableEntity) {
-            TraceableEntity.fillCreateInfo((TraceableEntity) item);
+        if (item instanceof EntityObject) {
+            EntityObject theItem = (EntityObject) item;
+            if (EMPTY_UUID.equals(theItem.getRecordId())||StringUtils.isEmpty(theItem.getRecordId())) {
+                theItem.setRecordId(UUID.randomUUID().toString());
+            }
         }
 
-        Class clazz = item.getClass();
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-        Object IdValue = BeanUtils.getValue(item, meta.getKeyProperty());
-        if (meta.isAutoGenerationKey()) {
-            if (IdValue == null || StringUtils.isEmpty(IdValue.toString()) || EMPTY_UUID.toString().equals(IdValue)) {
-                BeanUtils.setValue(item, meta.getKeyProperty(), UUID.randomUUID().toString());
-            }
+        if (item instanceof TraceableEntity) {
+            TraceableEntity.fillCreateInfo((TraceableEntity) item);
         }
 
         this.verify(item, DATA_OPERATION_INSERT);

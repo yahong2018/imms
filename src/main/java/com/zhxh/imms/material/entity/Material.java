@@ -5,7 +5,7 @@ import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 
 
-public class Material implements EntityObject {
+public class Material extends EntityObject {
     @AutoGeneration
     private String materialId;
 

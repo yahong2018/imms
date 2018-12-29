@@ -5,6 +5,7 @@ import com.zhxh.admin.dao.SystemProgramDAO;
 import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.*;
+import com.zhxh.core.data.Code;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.StringUtilsExt;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static com.zhxh.admin.misc.ErrorCode.ERROR_OLD_PASSWORD_ERROR;
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
@@ -34,12 +36,12 @@ public class SystemUserLogic {
     @Resource(name="authenticateLogic")
     private AuthenticateLogic authenticateLogic;
 
-    public int changePassword(String pwd, String oldPwd) throws Exception {
+    public int changePassword(String pwd, String oldPwd) {
         SystemUser currentUser = authenticateLogic.getCurrentLogin();
         return this.changePassword(currentUser, pwd, oldPwd);
     }
 
-    public int changePassword(SystemUser user, String pwd, String oldPwd) throws Exception {
+    public int changePassword(SystemUser user, String pwd, String oldPwd){
         String md5 = StringUtilsExt.getMd5(oldPwd);
         if (!md5.equals(user.getPassword())) {
             throwException(ERROR_OLD_PASSWORD_ERROR);
@@ -48,13 +50,13 @@ public class SystemUserLogic {
         return systemUserDAO.update(user);
     }
 
-    public int changePassword(String userId, String pwd, String oldPwd) throws Exception {
+    public int changePassword(String userId, String pwd, String oldPwd){
         SystemUser user = systemUserDAO.getById(userId);
         return this.changePassword(user, pwd, oldPwd);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int openLoginAccount(SystemUser item) throws Exception {
+    public int openLoginAccount(SystemUser item){
         //1.新建本身的数据
         //2.授予权限:这一步在权限授予里面完成
         //3.通知用户
@@ -67,19 +69,19 @@ public class SystemUserLogic {
         return result;
     }
     
-    public int update(SystemUser item) throws Exception {
-        SystemUser dbItem = systemUserDAO.getById(item.getUserId());
+    public int update(SystemUser item) {
+        SystemUser dbItem = systemUserDAO.getById(item.getRecordId());
         item.setPassword(dbItem.getPassword());
         return systemUserDAO.update(item);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int delete(String[] userIdList) throws Exception {
+    public int delete(String[] userIdList){
         //注意：正常来说，系统不允许删除账号
         //1.删除相关的权限信息
         //2.删除本身
         //3.通知系统管理员
-    	for(String userId:userIdList) {    		
+    	for(String userId:userIdList) {
 	        roleUserDAO.revokeUserAllRoles(userId);
 	        int result = systemUserDAO.deleteById(userId);
 	        if(result!=1){
@@ -92,7 +94,7 @@ public class SystemUserLogic {
         return userIdList.length;
     }
 
-    public int addRole(String userId, String roleId) throws Exception {
+    public int addRole(String userId, String roleId) {
         systemUserDAO.verifyExistsById(userId);
         systemRoleDAO.verifyExistsById(roleId);
 
@@ -103,7 +105,7 @@ public class SystemUserLogic {
         return roleUserDAO.insert(roleUser);
     }
 
-    public int removeRole(String userId, String roleId) throws Exception {
+    public int removeRole(String userId, String roleId){
         RoleUser roleUser = roleUserDAO.getByUserIdAndRoleId(userId, roleId);
         if (roleUser != null) {
             roleUserDAO.delete(roleUser);
@@ -111,15 +113,15 @@ public class SystemUserLogic {
         return 0;
     }
 
-    public int disableUser(String userId) throws Exception {
+    public int disableUser(String userId){
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
-        dbUser.setUserStatus(SystemUser.USER_STATUS_DISABLED);
+        dbUser.setUserStatus(Code.DISABLED);
         return systemUserDAO.update(dbUser);
     }
 
-    public int enableUser(String userId) throws Exception {
+    public int enableUser(String userId){
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
-        dbUser.setUserStatus(SystemUser.USER_STATUS_NORMAL);
+        dbUser.setUserStatus(Code.ENABLED);
         return systemUserDAO.update(dbUser);
     }
 
@@ -127,8 +129,8 @@ public class SystemUserLogic {
         return roleUserDAO.getUserRoles(userId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public int resetPassword(String userId) throws Exception {
+    @Transactional(rollbackFor = RuntimeException.class)
+    public int resetPassword(String userId) {
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
         dbUser.setPassword(StringUtilsExt.getMd5(SystemUser.DEFAULT_PASSWORD));
         int result = systemUserDAO.update(dbUser);
@@ -145,22 +147,22 @@ public class SystemUserLogic {
         return this.systemUserDAO;
     }
     
-    public boolean hasPrivilege(String userId,String programId,String privilegeId) {
-    	List<SystemRole> roleList= this.getUserRoles(userId);
-    	for(SystemRole role : roleList) {
-			if(systemRoleLogic.hasPrivilege(role.getRoleId(),programId,privilegeId)) {
-				return true;
-			}
-		}
-    	return false;
-    }
+//    public boolean hasPrivilege(String userId,String programId,String privilegeId) {
+//    	List<SystemRole> roleList= this.getUserRoles(userId);
+//    	for(SystemRole role : roleList) {
+//			if(systemRoleLogic.hasPrivilege(role.getId(),programId,privilegeId)) {
+//				return true;
+//			}
+//		}
+//    	return false;
+//    }
 
     public List<RolePrivilege> getUserAllPrivileges(String userId){
         List<SystemRole> roles = this.getUserRoles(userId);
         List<RolePrivilege> result = new ArrayList<>();
         for(SystemRole role:roles){
-            List<RolePrivilege> privileges = systemRoleLogic.getRolePrivileges(role.getRoleId());
-            privileges.removeIf(x->result.stream().anyMatch(y->y.getPrivilegeId().equals(x.getPrivilegeId()) && y.getProgramId().equals(x.getProgramId())));
+            List<RolePrivilege> privileges = systemRoleLogic.getRolePrivileges(role.getRecordId());
+            privileges.removeIf(x->result.stream().anyMatch(y->y.getPrivilegeCode().equals(x.getPrivilegeCode()) && y.getProgramId().equals(x.getProgramId())));
             result.addAll(privileges);
         }
 
@@ -184,7 +186,7 @@ public class SystemUserLogic {
 			return false;
 		}
 		for(SystemRole role : roleList) {
-			if(systemRoleLogic.hasPrivilege(role.getRoleId(),program.getProgramId(),ProgramPrivilege.PROGRAM_RUN)) {
+			if(systemRoleLogic.hasPrivilege(role.getRecordId(),program.getRecordId(),Code.PROGRAM_RUN)) {
 				return true;
 			}
 		}

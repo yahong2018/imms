@@ -24,7 +24,7 @@ Ext.define("app.ux.data.SaveOperation", {
                 url: theUrl,
                 success: function (form, action) {
                     store.load({
-                        callback: function (records, operation, success) {                            
+                        callback: function (records, operation, success) {
                             var theNewRecord = store.createModel({});
                             var idProperty = theNewRecord.getIdProperty();
                             var idField = me.down('[name="' + idProperty + '"]');
@@ -51,6 +51,9 @@ Ext.define("app.ux.data.SaveOperation", {
                                 // Ext.Msg.alert('系统提示', '已成功保存！');
                             } else if (saveAndNew != true) {
                                 me.close();
+                            }
+                            if (saveAndNew === true) {
+                                me.dataMode = app.ux.data.DataMode.INSERT;
                             }
                             Ext.toast({
                                 html: '数据已保存',

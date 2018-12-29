@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 @Component("operationMediaLogic")
 public class OperationMediaLogic {
-    @Resource(name="operationMedia")
+    @Resource(name="operationMediaDAO")
     private OperationMediaDAO operationMediaDAO;
 
 }

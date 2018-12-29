@@ -3,20 +3,22 @@ package com.zhxh.admin.dao;
 import com.zhxh.admin.entity.ProgramPrivilege;
 import com.zhxh.admin.entity.RolePrivilege;
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.core.data.Code;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Component("rolePrivilegeDAO")
 public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
-	public RolePrivilege getRolePrivilege(String roleId, String programId, String privilegeId) {
-		String where = "role_id=#{roleId} and program_id=#{programId} and privilege_id=#{privilegeId}";
+	public RolePrivilege getRolePrivilege(String roleId, String programId, Code privilegeCode) {
+		String where = "role_id=#{roleId} and program_id=#{programId} and privilege_code=#{privilegeCode}";
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("roleId", roleId);
 		parameters.put("programId", programId);
-		parameters.put("privilegeId", privilegeId);
+		parameters.put("privilegeCode", privilegeCode);
 		
 		return this.getOne(where,parameters);
 	}
@@ -40,22 +42,22 @@ public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
 	    return this.deleteByWhere(where,parameters);
     }
 
-    public int getOtherGrantedPrivilegeCount(RolePrivilege rolePrivilege) {
-        Map parameters = new HashMap();
-        parameters.put("rolePrivilegeId", rolePrivilege.getRolePrivilegeId());
-        parameters.put("programId", rolePrivilege.getProgramId());
-        parameters.put("runPrivilegeId", ProgramPrivilege.PROGRAM_RUN);
-
-        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_OTHER_GRANTED_PRIVILEGE_COUNT, parameters);
-    }
-
-    public int getBrotherGrantedPrivilegeCount(int rolePrivilegeId, String parent) {
-        Map parameters = new HashMap();
-        parameters.put("rolePrivilegeId", rolePrivilegeId);
-        parameters.put("parent", parent);
-
-        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_BROTHER_GRANTED_PRIVILEGE_COUNT, parameters);
-    }
+//    public int getOtherGrantedPrivilegeCount(RolePrivilege rolePrivilege) {
+//        Map parameters = new HashMap();
+//        parameters.put("rolePrivilegeId", rolePrivilege.getRolePrivilegeId());
+//        parameters.put("programId", rolePrivilege.getProgramId());
+//        parameters.put("runPrivilegeId", ProgramPrivilege.PROGRAM_RUN);
+//
+//        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_OTHER_GRANTED_PRIVILEGE_COUNT, parameters);
+//    }
+//
+//    public int getBrotherGrantedPrivilegeCount(int rolePrivilegeId, String parent) {
+//        Map parameters = new HashMap();
+//        parameters.put("rolePrivilegeId", rolePrivilegeId);
+//        parameters.put("parent", parent);
+//
+//        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_BROTHER_GRANTED_PRIVILEGE_COUNT, parameters);
+//    }
 
     public int deleteRoleSubProgramPrivilege(String roleId, String parent) {
         Map parameters = new HashMap();
@@ -70,21 +72,21 @@ public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
         return this.getSqlHelper().getSqlSession().insert(SQL_INSERT_ROLE_PRIVILEGE, item);
     }
 
-    public RolePrivilege getPrivilege(String roleId, String programId,String privilegeId) {
+    public RolePrivilege getPrivilege(String roleId, String programId,String privilegeCode) {
         Map parameters = new HashMap();
         parameters.put("roleId", roleId);
         parameters.put("programId", programId);
-        parameters.put("privilegeId",privilegeId);
+        parameters.put("privilegeCode",privilegeCode);
 
-        String where = "role_id=#{roleId} and program_id=#{programId} and privilege_id=#{privilegeId}";
+        String where = "role_id=#{roleId} and program_id=#{programId} and privilege_code=#{privilegeCode}";
         return this.getOne(where, parameters);
     }
     
-    public int removeRolePrivilegeByProgramIdAndPrivilegeId(String programId,String privilegeId){
-	    String where = " where program_id=#{programId} and privilege_Id=#{privilegeId}";
+    public int removeRolePrivilegeByProgramIdAndPrivilegeId(String programId,String privilegeCode){
+	    String where = " where program_id=#{programId} and privilege_code=#{privilegeCode}";
 	    Map parameters = new HashMap();
 	    parameters.put("programId",programId);
-	    parameters.put("privilegeId",privilegeId);
+	    parameters.put("privilegeCode",privilegeCode);
 	    return this.deleteByWhere(where,parameters);
     }
     
@@ -97,8 +99,8 @@ public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
        
 
     protected final static String SQL_INSERT_ROLE_PRIVILEGE = "com.zhxh.admin.dao.INSERT_ROLE_PRIVILEGE";
-    protected final static String SQL_GET_OTHER_GRANTED_PRIVILEGE_COUNT = "com.zhxh.admin.dao.GET_OTHER_GRANTED_PRIVILEGE_COUNT";
-    protected final static String SQL_GET_BROTHER_GRANTED_PRIVILEGE_COUNT = "com.zhxh.admin.dao.GET_BROTHER_GRANTED_PRIVILEGE_COUNT";
+//    protected final static String SQL_GET_OTHER_GRANTED_PRIVILEGE_COUNT = "com.zhxh.admin.dao.GET_OTHER_GRANTED_PRIVILEGE_COUNT";
+//    protected final static String SQL_GET_BROTHER_GRANTED_PRIVILEGE_COUNT = "com.zhxh.admin.dao.GET_BROTHER_GRANTED_PRIVILEGE_COUNT";
     protected final static String SQL_DELETE_ROLE_SUB_PROGRAM_PRIVILEGE = "com.zhxh.admin.dao.DELETE_ROLE_SUB_PROGRAM_PRIVILEGE";
     
 }

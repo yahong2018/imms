@@ -7,20 +7,23 @@ Ext.define('app.view.admin.systemRole.SystemRoleDetailForm', {
     },
     width: 400,
     items: [{
-        name: 'roleId',
+        name: 'recordId',
+        xtype: 'hidden',
+    }, {
+        name: 'roleCode',
         fieldLabel: '角色编号',
         allowBlank: false,
         xtype: 'textfield',
-        maxLength:6,
-        enforceMaxLength:true,
+        maxLength: 6,
+        enforceMaxLength: true,
         width: 150
     }, {
         name: 'roleName',
         fieldLabel: '角色名称',
         allowBlank: false,
         xtype: 'textfield',
-        maxLength:20,
-        enforceMaxLength:true,
+        maxLength: 20,
+        enforceMaxLength: true,
         width: 350
     }]
 });

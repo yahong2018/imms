@@ -10,6 +10,7 @@ import com.zhxh.admin.vo.SystemMenu;
 import com.zhxh.admin.vo.SystemProgramWithChildren;
 import com.zhxh.admin.vo.SystemUserWithPrivilege;
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.utils.BeanUtils;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
@@ -26,7 +27,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/mainPage")
 public class MainPageController {
-	
 	private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
     @Resource(name = "mainPageLogic")
     private MainPageLogic mainPageLogic;
@@ -54,9 +54,9 @@ public class MainPageController {
             return null;
         }
         result.setPassword("");
-        List<RolePrivilege> privileges = systemUserLogic.getUserAllPrivileges(result.getUserId());
+        List<RolePrivilege> privileges = systemUserLogic.getUserAllPrivileges(result.getRecordId());
         SystemUserWithPrivilege systemUserWithPrivilege = new SystemUserWithPrivilege();
-        EntityObject.copy(result,systemUserWithPrivilege);
+        BeanUtils.copy(result,systemUserWithPrivilege);
         systemUserWithPrivilege.setPrivilegeList(privileges);
 
         return systemUserWithPrivilege;

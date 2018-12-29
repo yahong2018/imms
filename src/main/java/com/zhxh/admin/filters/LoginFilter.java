@@ -48,7 +48,7 @@ public class LoginFilter implements Filter {
 				if (!url.contains(SysEnv.getUrlLoginPage())) {
 					SystemUser currentLogin = authenticateLogic.getCurrentLogin();
 					if(currentLogin==null /* 没有登录 */
-							|| !systemUserLogic.canRun(currentLogin.getUserId(), url)/* 当前用户没有权限 */) {
+							|| !systemUserLogic.canRun(currentLogin.getRecordId(), url)/* 当前用户没有权限 */) {
 						redirectUrl = SysEnv.getAppRoot() + SysEnv.getUrlLoginPage();
 					}
 				}

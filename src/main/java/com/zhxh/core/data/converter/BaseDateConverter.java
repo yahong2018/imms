@@ -1,30 +1,25 @@
 package com.zhxh.core.data.converter;
 
 import com.zhxh.core.utils.Logger;
+import lombok.Setter;
 import org.springframework.core.convert.converter.Converter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
+@Setter
 public abstract class BaseDateConverter<T> implements Converter<String, T> {
-    private   PartternConfig partternConfig;
-
-    public PartternConfig getPartternConfig() {
-        return partternConfig;
-    }
-
-    public void setPartternConfig(PartternConfig partternConfig) {
-        this.partternConfig = partternConfig;
-    }
+    private List<String> patternList;
 
     public T convert(String source) {
-        for (String parttern : this.partternConfig.getPartternList()) {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(parttern);
+        for (String pattern : this.patternList) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
             dateFormat.setLenient(false);
             try {
                 return doConvert(dateFormat,source);
             } catch (ParseException e) {
-                Logger.debug("日期格式解析错误:" + parttern);
+                Logger.debug("日期格式解析错误:" + pattern);
             }
         }
         return null;

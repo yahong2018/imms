@@ -4,7 +4,7 @@ import com.zhxh.core.data.EntityObject;
 
 import java.time.LocalDateTime;
 
-public class OperationRouting implements EntityObject {
+public class OperationRouting extends EntityObject {
     private String        operationRoutingId;
     private String        operationRoutingOperationId;
     private String        operationRoutingOrderId;

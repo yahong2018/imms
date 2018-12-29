@@ -6,4 +6,5 @@ import org.springframework.stereotype.Component;
 
 @Component("systemRoleDAO")
 public class SystemRoleDAO extends BaseDAOWithEntity<SystemRole> {
+
 }

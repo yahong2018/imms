@@ -69,7 +69,7 @@ public class SessionManager implements HttpSessionListener {
             if (sessions.contains(session)) {
                 SystemUser user = this.authenticateLogic.getSessionLogin(session);
                 if (user != null) {
-                    Logger.debug("用户" + user.getUserId() + "退出");
+                    Logger.debug("用户" + user.getUserCode() + "退出");
                     try {
                         authenticateLogic.kickOffUser(user);
                     } catch (Exception e) {

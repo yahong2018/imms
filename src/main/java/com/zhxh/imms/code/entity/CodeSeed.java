@@ -2,7 +2,7 @@ package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class CodeSeed implements EntityObject {
+public class CodeSeed extends EntityObject {
     private String codeSeedId;
     private String codeSeedNo;
     private String codeSeedName;

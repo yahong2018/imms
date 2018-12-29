@@ -2,7 +2,7 @@ package com.zhxh.imms.factory.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Line implements EntityObject {
+public class Line extends EntityObject {
     private String lineId;
     private String lineWorkCenterId;
     private int lineSequenceNumber;

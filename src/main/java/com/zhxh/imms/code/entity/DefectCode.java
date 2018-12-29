@@ -8,7 +8,7 @@ import com.zhxh.core.data.meta.annotation.TreeTable;
 import java.util.UUID;
 
 @TreeTable
-public class DefectCode implements EntityObject {
+public class DefectCode extends EntityObject {
     @AutoGeneration
     private String defectCodeId;
 

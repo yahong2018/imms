@@ -78,8 +78,6 @@ Ext.define("app.ux.data.DataOperation", {
         }
     },
 
-
-
     createDetailWindow: function (dataMode) {
         var detailWindow;
         if (this.createDetailWindowFun) {
@@ -123,7 +121,7 @@ Ext.define("app.ux.data.DataOperation", {
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
-        var canInsert = app.ux.Utils.hasPrivilege({ programId: programId, privilegeId: "INSERT" });
+        var canInsert = app.ux.Utils.hasPrivilege({ programId: programId, privilegeCode: "INSERT" });
         if (!canInsert) {
             detailWindow.down('[buttonName="save"]').setDisabled(true);
             detailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
@@ -131,6 +129,7 @@ Ext.define("app.ux.data.DataOperation", {
 
         detailWindow.show();
     },
+    
     doEdit: function (config) {
         config = config||{};
         var grid = this;
@@ -167,7 +166,7 @@ Ext.define("app.ux.data.DataOperation", {
 
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
-        var canUpdate = app.ux.Utils.hasPrivilege({ programId: programId, privilegeId: "UPDATE" });
+        var canUpdate = app.ux.Utils.hasPrivilege({ programId: programId, privilegeCode: "UPDATE" });
         if (!canUpdate) {
             detailWindow.down('[buttonName="save"]').setDisabled(true);
             detailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);
@@ -205,7 +204,7 @@ Ext.define("app.ux.data.DataOperation", {
         var currentTopWindow = Ext.app.Application.instance.getMainView().down('maincenter').getActiveTab();
         var programId = currentTopWindow.menuData.get('programId');
 
-        var canUpdate = app.ux.Utils.hasPrivilege({ programId: programId, privilegeId: "UPDATE" });
+        var canUpdate = app.ux.Utils.hasPrivilege({ programId: programId, privilegeCode: "UPDATE" });
         if (!canUpdate) {
             detailWindow.down('[buttonName="save"]').setDisabled(true);
             detailWindow.down('[buttonName="saveAndInsert"]').setDisabled(true);

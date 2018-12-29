@@ -5,7 +5,7 @@ import com.zhxh.imms.material.vo.BomVO;
 
 import java.time.LocalDateTime;
 
-public class RequirementOrder implements EntityObject {
+public class RequirementOrder extends EntityObject {
     public static final String REPEAT_TYPE_FIRST="F";
     public static final String REPEAT_TYPE_REPEAT="R";
     public static final String REPEAT_TYPE_SUPPLEMENT="S";

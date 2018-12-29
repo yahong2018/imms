@@ -2,7 +2,7 @@ package com.zhxh.imms.order.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class ProductionOrderRouting implements EntityObject {
+public class ProductionOrderRouting extends EntityObject {
     public String getProductionOrderRoutingId() {
         return productionOrderRoutingId;
     }

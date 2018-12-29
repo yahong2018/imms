@@ -107,9 +107,9 @@ public class DataConfig {
         result.setSqlSession(sqlSession);
         result.init();
 
-        this.setCustomSelectSql(MaterialVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
-        this.setCustomSelectSql(MaterialMediaVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_MEDIA_VO");
-        this.setCustomSelectSql(BomVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_BOM_VO");
+//        this.setCustomSelectSql(MaterialVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
+//        this.setCustomSelectSql(MaterialMediaVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_MEDIA_VO");
+//        this.setCustomSelectSql(BomVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_BOM_VO");
 
         return result;
     }

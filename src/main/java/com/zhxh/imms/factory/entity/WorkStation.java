@@ -2,7 +2,7 @@ package com.zhxh.imms.factory.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class WorkStation implements EntityObject {
+public class WorkStation extends EntityObject {
     private String workStationId;
     private String workStationNo;
     private String workStationPlantId;

@@ -45,14 +45,14 @@ public class ProgramPrivilegeController {
     
     @RequestMapping("update.handler")
     @ResponseBody
-    public ProgramPrivilege update(ProgramPrivilege item) throws Exception {
+    public ProgramPrivilege update(ProgramPrivilege item) {
     	programPrivilegeLogic.update(item);
         return item;
     }
 
     @RequestMapping("delete.handler")
     @ResponseBody
-    public int delete(@RequestBody String[] id) throws Exception {    	
+    public int delete(@RequestBody String[] id)  {
         return programPrivilegeLogic.delete(id);
     }
 }

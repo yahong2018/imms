@@ -4,9 +4,11 @@ import com.zhxh.admin.dao.*;
 import com.zhxh.admin.entity.*;
 import com.zhxh.admin.vo.ProgramPrivilegeVO;
 import com.zhxh.admin.vo.SystemMenuWithPrivilege;
+import com.zhxh.core.data.Code;
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.exception.ErrorCode;
 import com.zhxh.core.exception.ExceptionHelper;
+import com.zhxh.core.utils.BeanUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,10 +35,10 @@ public class SystemRoleLogic {
     @Resource(name="systemRoleDAO")
     private SystemRoleDAO systemRoleDAO;
 
-    public boolean hasPrivilege(String roleId,String programId,String privilegeId) {
-    	RolePrivilege rolePrivilege = rolePrivilegeDAO.getRolePrivilege(roleId, programId, privilegeId);
-    	return rolePrivilege!=null;    		
-    }    
+    public boolean hasPrivilege(String roleId,String programId,Code privilegeCode) {
+        RolePrivilege rolePrivilege = rolePrivilegeDAO.getRolePrivilege(roleId, programId, privilegeCode);
+        return rolePrivilege!=null;
+    }
 
     public List<SystemUser> getRoleUsers(String roleId) {
         return roleUserDAO.getRoleUsers(roleId);
@@ -50,18 +52,18 @@ public class SystemRoleLogic {
         return systemRoleDAO.getAll();
     }
 
-    public SystemRole insert(SystemRole role) throws Exception {
+    public SystemRole insert(SystemRole role)  {
         systemRoleDAO.insert(role);
         return role;
     }
 
-    public SystemRole update(SystemRole role) throws Exception {
+    public SystemRole update(SystemRole role){
         systemRoleDAO.update(role);
         return role;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int delete(String[] roleIdList) throws Exception {
+    public int delete(String[] roleIdList) {
         //注意：正常来说，系统不允许删除账号
         //1.删除相关的权限信息
         //2.删除本身
@@ -80,7 +82,7 @@ public class SystemRoleLogic {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updatePrivileges(String roleId, ProgramPrivilegeVO[] currentList) throws Exception {
+    public void updatePrivileges(String roleId, ProgramPrivilegeVO[] currentList)  {
         //1.获取原权限  oldList
         //2.收回已取消的权限    oldList - currentList
         //3.授予新的权限   currentList - oldList
@@ -93,7 +95,7 @@ public class SystemRoleLogic {
                 if(!old.getProgramId().equals(current.getProgramId())){
                     continue;
                 }
-                if(old.getPrivilegeId().equals(current.getPrivilegeId())){
+                if(old.getPrivilegeCode().equals(current.getPrivilegeCode())){
                     founded=true;
                     break;
                 }
@@ -109,7 +111,7 @@ public class SystemRoleLogic {
                 if(!current.getProgramId().equals(old.getProgramId())){
                     continue;
                 }
-                if(current.getPrivilegeId().equals(old.getPrivilegeId())){
+                if(current.getPrivilegeCode().equals(old.getPrivilegeCode())){
                     founded=true;
                     break;
                 }
@@ -130,78 +132,78 @@ public class SystemRoleLogic {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public synchronized void grantPrivilege(String roleId, RolePrivilege privilege) throws Exception {
-        RolePrivilege rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, privilege.getProgramId(),privilege.getPrivilegeId());
+    public synchronized void grantPrivilege(String roleId, RolePrivilege privilege) {
+        RolePrivilege rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, privilege.getProgramId(),privilege.getPrivilegeCode());
         if (rolePrivilege == null) {
             //1.对本身授权
             if (rolePrivilegeDAO.insert(privilege) != 1) {
-                throw new Exception("授权失败！");
+                throwException(ErrorCode.ERROR_GRANT_PRIVILEGE_FAILED,"授权失败!");
             }
             //2.本身如果没有"运行"权限，对本身授予"运行"权限
             ProgramPrivilege programRunPrivilege = programPrivilegeDAO.getProgramRunPrivilege(privilege.getProgramId());
             if(null!=programRunPrivilege) {
-            	rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, programRunPrivilege.getProgramId(),programRunPrivilege.getPrivilegeId());
-            	if (rolePrivilege == null) {
-            		rolePrivilege = new RolePrivilege(roleId,programRunPrivilege);
-            		
-            		if (rolePrivilegeDAO.insert(rolePrivilege) != 1) {
-            			throw new Exception("授予运行权限失败!");
-            		}
-            	}
-            	//3.如果上级还没有运行权限，对上级菜单授予"运行"权限
-            	this.grantParentRunPrivilege(roleId,privilege);
+                rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, programRunPrivilege.getProgramId(),programRunPrivilege.getPrivilegeCode());
+                if (rolePrivilege == null) {
+                    rolePrivilege = new RolePrivilege(roleId,programRunPrivilege);
+
+                    if (rolePrivilegeDAO.insert(rolePrivilege) != 1) {
+                        throwException(ErrorCode.ERROR_GRANT_PRIVILEGE_FAILED,"授予运行权限失败!");
+                    }
+                }
+                //3.如果上级还没有运行权限，对上级菜单授予"运行"权限
+                this.grantParentRunPrivilege(roleId,privilege);
             }
         }
     }
 
-    private void grantParentRunPrivilege(String roleId, RolePrivilege privilege) throws Exception {
+    private void grantParentRunPrivilege(String roleId, RolePrivilege privilege){
         SystemProgram parent = systemProgramDAO.getParent(privilege.getProgramId());
         if(parent==null){
             return;
         }
 
-        ProgramPrivilege parentRunPrivilege = programPrivilegeDAO.getProgramRunPrivilege(parent.getProgramId());
+        ProgramPrivilege parentRunPrivilege = programPrivilegeDAO.getProgramRunPrivilege(parent.getRecordId());
         if(null!=parentRunPrivilege) {
-        	RolePrivilege  rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, parentRunPrivilege.getProgramId(),parentRunPrivilege.getPrivilegeId());
-        	if (rolePrivilege == null) {
-        		rolePrivilege = new RolePrivilege(roleId,parentRunPrivilege);
-        		if (rolePrivilegeDAO.insert(rolePrivilege) != 1) {
-        			throw new Exception("对上级菜单授予运行权限失败!");
-        		}
-        		
-        		grantParentRunPrivilege(roleId,rolePrivilege);
-        	}
+            RolePrivilege  rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, parentRunPrivilege.getProgramId(),parentRunPrivilege.getPrivilegeCode());
+            if (rolePrivilege == null) {
+                rolePrivilege = new RolePrivilege(roleId,parentRunPrivilege);
+                if (rolePrivilegeDAO.insert(rolePrivilege) != 1) {
+                    throwException(ErrorCode.ERROR_GRANT_PRIVILEGE_FAILED,"对上级菜单授予运行权限失败!");
+                }
+
+                grantParentRunPrivilege(roleId,rolePrivilege);
+            }
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public synchronized void revokePrivilege(String roleId, RolePrivilege privilegeVO) throws Exception {
-        RolePrivilege rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, privilegeVO.getProgramId(),privilegeVO.getPrivilegeId());
+    public synchronized void revokePrivilege(String roleId, RolePrivilege privilegeVO) {
+        RolePrivilege rolePrivilege = rolePrivilegeDAO.getPrivilege(roleId, privilegeVO.getProgramId(),privilegeVO.getPrivilegeCode());
         if (rolePrivilege == null) {
             return;
         }
         String programId = rolePrivilege.getProgramId();
         //1.撤销自身的授权
         if (rolePrivilegeDAO.delete(rolePrivilege) != 1) {
-            throw new Exception("撤销权限失败！");
+            throwException(ErrorCode.ERROR_REVOKE_PRIVILEGE_FAILED,"撤销权限失败!");
         }
         //2.如果是程序的运行权限，则要撤销所有的其他权限
-        if(ProgramPrivilege.PROGRAM_RUN.equals(rolePrivilege.getPrivilegeId())){
+        if(Code.PROGRAM_RUN.equals(rolePrivilege.getPrivilegeCode())){
             rolePrivilegeDAO.removeProgramAllPrivilege(roleId,programId);
         }
         //3.如果是菜单文件夹，还要撤销所有的下级程序的所有权限
         SystemProgram program = systemProgramDAO.getById(programId);
         if(null!=program) {
-        	if (program.isFolder()) {
+            if (program.isFolder()) {
                 try {
                     List<SystemProgram> allPrograms = systemProgramDAO.getAll();
                     this.revokeChildrenPrivilege(allPrograms, roleId, program);
                 } catch (Exception e) {
-                    throw new Exception("撤销下级权限失败:" + ExceptionHelper.exceptionStackTrace(e));
+                    throwException(ErrorCode.ERROR_REVOKE_PRIVILEGE_FAILED,"撤销下级权限失败!");
                 }
             }
         }
-        
+
     }
 
     public List<SystemMenuWithPrivilege> getSystemMenuWithPrivilege() {
@@ -224,8 +226,8 @@ public class SystemRoleLogic {
 
     private void buildMenuWithPrivilege(List<SystemProgram> programList, List<ProgramPrivilege> privilegeList,  SystemProgram program, SystemMenuWithPrivilege menu) {
         SystemProgram[] parentPrograms = programList.stream()
-                .filter(x -> x.getParent().equals(program.getProgramId())
-                        && !x.getProgramId().equals(menu.getProgramId())
+                .filter(x -> x.getParentId().equals(program.getRecordId())
+                        && !x.getRecordId().equals(menu.getProgramId())
                 ).sorted(Comparator.comparing(SystemProgram::getShowOrder))
                 .toArray(SystemProgram[]::new);
 
@@ -244,7 +246,7 @@ public class SystemRoleLogic {
 
     private SystemMenuWithPrivilege menuWithPrivilegeFromProgram(SystemProgram top, List<ProgramPrivilege> privilegeList) {
         SystemMenuWithPrivilege menu = new SystemMenuWithPrivilege();
-        menu.setProgramId(top.getProgramId());
+        menu.setProgramId(top.getRecordId());
         menu.setProgramName(top.getProgramName());
         menu.setUrl(top.getUrl());
         menu.setGlyph(top.getGlyph());
@@ -257,13 +259,13 @@ public class SystemRoleLogic {
             //2.如果有其他的权限，"运行"权限是默认具备的,不需要显示。
             //
             ProgramPrivilege[] privileges = privilegeList.stream()
-                    .filter(x -> !x.isRunPrivilege() && x.getProgramId().equals(top.getProgramId()))
+                    .filter(x -> !x.isRunPrivilege() && x.getProgramId().equals(top.getRecordId()))
                     .toArray(ProgramPrivilege[]::new);
             ProgramPrivilegeVO[] voList = new ProgramPrivilegeVO[privileges.length];
             for(int i=0;i<privileges.length;i++){
                 ProgramPrivilegeVO vo = new ProgramPrivilegeVO();
                 vo.setDataType("app.model.admin.ProgramPrivilegeModel");
-                EntityObject.copy(privileges[i],vo);
+                BeanUtils.copy(privileges[i],vo);
                 voList[i] = vo;
             }
             menu.setChildren(voList);
@@ -297,17 +299,17 @@ public class SystemRoleLogic {
 
     private void revokeChildrenPrivilege(List<SystemProgram> allPrograms, String roleId, SystemProgram program) {
         SystemProgram[] children = allPrograms.stream()
-                .filter(x -> x.getParent().equals(program.getProgramId()) && !x.getProgramId().equals(program.getProgramId()))
+                .filter(x -> x.getParentId().equals(program.getRecordId()) && !x.getRecordId().equals(program.getRecordId()))
                 .toArray(SystemProgram[]::new);
         for (SystemProgram child : children) {
             revokeChildrenPrivilege(allPrograms, roleId, child);
         }
-        rolePrivilegeDAO.deleteRoleSubProgramPrivilege(roleId, program.getProgramId());
+        rolePrivilegeDAO.deleteRoleSubProgramPrivilege(roleId, program.getRecordId());
     }
 
     private SystemMenuWithPrivilege menuWithPrivilegeFromProgram(SystemProgram top, List<ProgramPrivilege> privilegeList, List<RolePrivilege> rolePrivilegeList) {
         SystemMenuWithPrivilege menu = new SystemMenuWithPrivilege();
-        menu.setProgramId(top.getProgramId());
+        menu.setProgramId(top.getRecordId());
         menu.setProgramName(top.getProgramName());
         menu.setUrl(top.getUrl());
         menu.setChecked(true);
@@ -318,12 +320,12 @@ public class SystemRoleLogic {
             //2.如果有其他的权限，"运行"权限是默认具备的,不需要显示。
             //
             ProgramPrivilegeVO[] privileges = privilegeList.stream()
-                    .filter(x -> !x.isRunPrivilege() && x.getProgramId().equals(top.getProgramId()))
+                    .filter(x -> !x.isRunPrivilege() && x.getProgramId().equals(top.getRecordId()))
                     .toArray(ProgramPrivilegeVO[]::new);
 
             Arrays.stream(privileges).forEach(x -> {
                 boolean isChecked = rolePrivilegeList.stream()
-                        .anyMatch(y -> y.getPrivilegeId().equals(x.getPrivilegeId()));
+                        .anyMatch(y -> y.getPrivilegeCode().equals(x.getPrivilegeCode()));
                 x.setChecked(isChecked);
             });
             menu.setChildren(privileges);
@@ -334,7 +336,7 @@ public class SystemRoleLogic {
 
     private void buildMenuWithPrivilege(List<SystemProgram> programList, List<ProgramPrivilege> privilegeList, List<RolePrivilege> rolePrivilegeList, SystemProgram program, SystemMenuWithPrivilege menu) {
         SystemProgram[] parentPrograms = programList.stream()
-                .filter(x -> x.getParent().equals(program.getProgramId()))
+                .filter(x -> x.getParentId().equals(program.getRecordId()))
                 .sorted(Comparator.comparing(SystemProgram::getShowOrder))
                 .toArray(SystemProgram[]::new);
 

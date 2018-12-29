@@ -1,59 +1,26 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.DataTable;
+import lombok.Getter;
+import lombok.Setter;
 
-public class RolePrivilege implements EntityObject {
-    private int rolePrivilegeId;
-    private int programPrivilegeId;
+import java.util.UUID;
+
+@DataTable("role_privilege")
+@Getter
+@Setter
+public class RolePrivilege extends EntityObject {
+    private String programPrivilegeId;
     private String roleId;
     private String programId;
-    private String privilegeId;
+    private String privilegeCode;
 
     public RolePrivilege(){}
     public RolePrivilege(String roleId, ProgramPrivilege programPrivilege){
         this.setRoleId(roleId);
-        this.setPrivilegeId(programPrivilege.getPrivilegeId());
+        this.setPrivilegeCode(programPrivilege.getPrivilegeCode());
         this.setProgramId(programPrivilege.getProgramId());
-        this.setProgramPrivilegeId(programPrivilege.getProgramPrivilegeId());
-    }
-
-    public int getProgramPrivilegeId() {
-        return programPrivilegeId;
-    }
-
-    public void setProgramPrivilegeId(int programPrivilegeId) {
-        this.programPrivilegeId = programPrivilegeId;
-    }
-
-    public String getRoleId() {
-        return roleId;
-    }
-
-    public int getRolePrivilegeId() {
-        return rolePrivilegeId;
-    }
-
-    public String getPrivilegeId() {
-        return privilegeId;
-    }
-
-    public String getProgramId() {
-        return programId;
-    }
-
-    public void setRoleId(String roleId) {
-        this.roleId = roleId;
-    }
-
-    public void setPrivilegeId(String privilegeId) {
-        this.privilegeId = privilegeId;
-    }
-
-    public void setProgramId(String programId) {
-        this.programId = programId;
-    }
-
-    public void setRolePrivilegeId(int rolePrivilegeId) {
-        this.rolePrivilegeId = rolePrivilegeId;
+        this.setProgramPrivilegeId(programPrivilege.getRecordId());
     }
 }

@@ -43,7 +43,7 @@ public class EntitySqlMetaFactory {
             if (dataTable == null) {
                 return null;
             }
-            String tableName = dataTable.tableName();
+            String tableName = dataTable.value();
 
             return initMeta(clazz, tableName);
         }

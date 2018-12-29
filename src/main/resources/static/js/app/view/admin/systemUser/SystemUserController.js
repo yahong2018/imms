@@ -73,8 +73,6 @@ Ext.define('app.view.admin.systemUser.SystemUserController', {
     },
 
     doUpdateRoles: function (grid, win) {
-        debugger;
-
         var checkboxGroup = win.down('checkboxgroup');
         var roleIdList = checkboxGroup.getValue().userRoles;
         var roles=[];

@@ -9,7 +9,7 @@ import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
 import java.util.UUID;
 
 @TreeTable
-public class MachineType implements EntityObject {
+public class MachineType extends EntityObject {
     @AutoGeneration
     private String machineTypeId;
 

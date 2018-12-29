@@ -1,37 +1,12 @@
 package com.zhxh.core.utils;
 
 
-/**
- * Copyright (C) 2010 SUNRico Inc.
- * ------------------------------------------------------------------------------
- * <p>
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * <p>
- * http://www.apache.org/licenses/LICENSE-2.0
- * <p>
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- * <p>
- * http://www.streets.cn
- * <p>
- * ----------------------------------------------------------------------------------
- */
-
-
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 基本Bean功能类
@@ -71,38 +46,75 @@ public class BeanUtils {
      * @param bean
      * @param toBean
      */
-    public static void copy(Object bean, Object toBean) {
-
-        if (bean.getClass() != toBean.getClass()) {
+    public static void copy(Object from, Object dest) {
+        if (from == null || dest == null) {
             return;
         }
+        Class<?> fromClass = from.getClass();
+        Class<?> destClass = dest.getClass();
 
-        Field[] fields = ClassUtils.getPublicFields(bean.getClass());
-
+        Field[] fromFields = ClassUtils.getPublicFields(fromClass);
+        Field[] destFields = ClassUtils.getPublicFields(destClass);
         Set<String> fns = new HashSet<String>();
 
-        for (Field field : fields) {
+        for (Field field : fromFields) {
+            if (Arrays.stream(destFields).filter(x -> x.getName().equalsIgnoreCase(field.getName())).count() == 0) {
+                continue;
+            }
+
             if (!field.isAccessible()) {
                 field.setAccessible(true);
             }
             try {
-                field.set(toBean, field.get(bean));
+                field.set(dest, field.get(from));
                 fns.add(field.getName());
             } catch (Exception e) {
-                e.printStackTrace();
+                Logger.error("EntityObject.copy出现错误:" + e.getMessage());
             }
         }
 
-        String[] props = getPropertyNames(bean.getClass());
+        String[] props = BeanUtils.getPropertyNames(fromClass);
         for (String prop : props) {
             if (!fns.contains(prop)) {
-                Object value = getValue(bean, prop);
-                setValue(toBean, prop, value);
+                Object value = BeanUtils.getValue(from, prop);
+                BeanUtils.setValue(dest, prop, value);
             }
         }
-
         fns.clear();
     }
+
+//    public static void copy(Object bean, Object toBean) {
+//
+//        if (bean.getClass() != toBean.getClass()) {
+//            return;
+//        }
+//
+//        Field[] fields = ClassUtils.getPublicFields(bean.getClass());
+//
+//        Set<String> fns = new HashSet<String>();
+//
+//        for (Field field : fields) {
+//            if (!field.isAccessible()) {
+//                field.setAccessible(true);
+//            }
+//            try {
+//                field.set(toBean, field.get(bean));
+//                fns.add(field.getName());
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        String[] props = getPropertyNames(bean.getClass());
+//        for (String prop : props) {
+//            if (!fns.contains(prop)) {
+//                Object value = getValue(bean, prop);
+//                setValue(toBean, prop, value);
+//            }
+//        }
+//
+//        fns.clear();
+//    }
 
     /**
      * 对一些特别的参数进行的trick动作
@@ -295,23 +307,4 @@ public class BeanUtils {
         String[] props = getPropertyNames(obj.getClass());
         return getValues(obj, props);
     }
-
-
-//	public static void main(String[] args) {
-//
-//		Field[] fields = ClassUtils.getPublicFields(BeanForTest.class);
-//		for (Field field : fields) {
-//			System.out.println("field: "+field.getName());
-//		}
-//
-//		Method[] methods = ClassUtils.getPublicMethods(BeanForTest.class);
-//		for (Method m : methods) {
-//			System.out.println("method: "+m.getName());
-//		}
-//
-//		String[] props = getPropertyNames(BeanForTest.class);
-//		for (String s : props) {
-//			System.out.println("accessor: "+s);
-//		}
-//	}
 }

@@ -7,7 +7,7 @@ import com.zhxh.core.data.meta.annotation.CheckUnique;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BomOrder implements EntityObject {
+public class BomOrder extends EntityObject {
     public final static String PART_BOM = "P";
     public final static String STANDARD_BOM = "S";
     public final static String ORDER_BOM = "O";

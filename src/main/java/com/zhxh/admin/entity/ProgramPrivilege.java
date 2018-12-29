@@ -1,63 +1,35 @@
 package com.zhxh.admin.entity;
 
+import com.zhxh.core.data.Code;
 import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.meta.annotation.DataTable;
+import lombok.Getter;
+import lombok.Setter;
 
-public class ProgramPrivilege implements EntityObject {
-    public final static String PROGRAM_RUN = "PROGRAM_RUN";
-    public final static String DATA_INSERT = "INSERT";
-    public final static String DATA_UPDATE = "UPDATE";
-    public final static String DATA_DELETE = "DELETE";
+import java.util.UUID;
 
-    private int programPrivilegeId;
+
+@DataTable("program_privilege")
+@Getter
+@Setter
+public class ProgramPrivilege extends EntityObject {
     private String programId;
-    private String privilegeId;
+    private String privilegeCode;
     private String privilegeName;
 
-    public String getProgramId() {
-        return programId;
-    }
-
     public boolean isInsertPrivilege() {
-        return DATA_INSERT.equals(this.privilegeId);
+        return Code.DATA_INSERT.equals(this.privilegeCode);
     }
 
     public boolean isUpdatePrivilege() {
-        return DATA_UPDATE.equals(this.privilegeId);
+        return Code.DATA_UPDATE.equals(this.privilegeCode);
     }
 
     public boolean isDeletePrivilege() {
-        return DATA_DELETE.equals(this.privilegeId);
+        return Code.DATA_DELETE.equals(this.privilegeCode);
     }
 
     public boolean isRunPrivilege() {
-        return PROGRAM_RUN.equals(this.privilegeId);
-    }
-
-    public String getPrivilegeId() {
-        return privilegeId;
-    }
-
-    public String getPrivilegeName() {
-        return privilegeName;
-    }
-
-    public void setProgramId(String programId) {
-        this.programId = programId;
-    }
-
-    public void setPrivilegeId(String privilegeId) {
-        this.privilegeId = privilegeId;
-    }
-
-    public void setPrivilegeName(String privilegeName) {
-        this.privilegeName = privilegeName;
-    }
-
-    public int getProgramPrivilegeId() {
-        return programPrivilegeId;
-    }
-
-    public void setProgramPrivilegeId(int programPrivilegeId) {
-        this.programPrivilegeId = programPrivilegeId;
+        return Code.PROGRAM_RUN.equals(this.privilegeCode);
     }
 }

@@ -8,6 +8,6 @@ Ext.define('app.model.TrackableModel', {
         { name: "updateBy", dbFieldName: 'UPDATE_BY', type: "string" },
         { name: "updateDate", dbFieldName: 'UPDATE_DATE', type: 'zhxhDate', dateFormat: 'Y-m-d H:i:s' },
         { name: "optLock", dbFieldName: 'OPTLOCK', type: "int" },
-        { name: "delFlag", dbFieldName: 'DEL_FLAG', type: "int" },
+        // { name: "delFlag", dbFieldName: 'DEL_FLAG', type: "int" },
     ],
 });

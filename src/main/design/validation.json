@@ -1,0 +1,34 @@
+[
+  {
+    "table":"system_user",
+    "label":"系统账户",
+    "fields":[
+      {
+        "fieldName":"id",
+        "required":true,
+        "unique":true,
+        "primaryKey":"true",
+        "dataType":"string",
+        "listLabel":"用户Id",
+        "cardLabel":"用户Id",
+        "format":"([a-f]|[0-9]){8}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){12}"
+      },{
+        "fieldName":"userCode",
+        "required":true,
+        "unique":true,
+        "dataType":"string",
+        "listLabel":"用户编号",
+        "cardLabel":"用户编号",
+        "format":"\\w{6}"
+      },{
+        "fieldName": "userName",
+        "required": true,
+        "unique": false,
+        "dataType": "string",
+        "listLabel": "用户名称",
+        "cardLabel": "用户名称",
+        "format": "\\w{50}"
+      }
+    ]
+  }
+]

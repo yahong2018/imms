@@ -34,9 +34,12 @@ public class AuthenticateLogic {
         return result;
     }
 
-    public void authenticate(SystemUser user) throws Exception {
+    public void authenticate(String userCode, String password) {
         //1.验证账号和密码
-        SystemUser dbUser = systemUserDAO.getById(user.getUserId());
+        SystemUser user = new SystemUser();
+        user.setUserCode(userCode);
+        user.setPassword(password);
+        SystemUser dbUser = systemUserDAO.getUserByCode(user.getUserCode());
         String md5 = StringUtilsExt.getMd5(user.getPassword());
         if (dbUser == null || !md5.equals(dbUser.getPassword())) {
             throwException(ERROR_LOGIN_ACCOUNT);
@@ -57,17 +60,17 @@ public class AuthenticateLogic {
         SessionManager.getCurrentSession().setAttribute(CURRENT_LOGIN_STORED_ID, currentLogin);
     }
 
-    public synchronized void kickOffUser() throws Exception {
+    public synchronized void kickOffUser()  {
         SystemUser user = getCurrentLogin();
         this.kickOffUser(user);
     }
 
-    public synchronized void kickOffUser(SystemUser login) throws Exception {
+    public synchronized void kickOffUser(SystemUser login) {
         HttpSession session = this.getUserSession(login);
         //1.移除Session
         session.removeAttribute(CURRENT_LOGIN_STORED_ID);
         //2.更新数据库
-        SystemUser dbItem = this.systemUserDAO.getById(login.getUserId());
+        SystemUser dbItem = this.systemUserDAO.getById(login.getRecordId());
         dbItem.setOnline(false);
         dbItem.setLastLoginTime(new Timestamp(System.currentTimeMillis()));
         systemUserDAO.update(dbItem);
@@ -79,10 +82,10 @@ public class AuthenticateLogic {
         while (iterator.hasNext()) {
             HttpSession session = iterator.next();
             SystemUser theUser = (SystemUser) session.getAttribute(CURRENT_LOGIN_STORED_ID);
-            if(theUser==null) {
+            if (theUser == null) {
                 continue;
             }
-            if (user.getUserId().equals(theUser.getUserId())) {
+            if (user.getRecordId().equals(theUser.getRecordId())) {
                 return session;
             }
         }

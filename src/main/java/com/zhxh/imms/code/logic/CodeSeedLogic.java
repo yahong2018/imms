@@ -13,7 +13,7 @@ import java.util.List;
 
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
-@Component("CodeSeedLogic")
+@Component("codeSeedLogic")
 public class CodeSeedLogic {
     @Resource(name = "codeSeedDAO")
     private CodeSeedDAO codeSeedDAO;
@@ -21,10 +21,10 @@ public class CodeSeedLogic {
 
     @PostConstruct
     public void init() {
-        List<CodeSeed> codeSeedList = this.codeSeedDAO.getAll();
-        for (CodeSeed codeSeed : codeSeedList) {
-            this.seedList.put(codeSeed.getCodeSeedName(), codeSeed);
-        }
+//        List<CodeSeed> codeSeedList = this.codeSeedDAO.getAll();
+//        for (CodeSeed codeSeed : codeSeedList) {
+//            this.seedList.put(codeSeed.getCodeSeedName(), codeSeed);
+//        }
     }
 
     public synchronized String createCode(String seedNo) {

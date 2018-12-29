@@ -14,7 +14,7 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
         if (role == null) {
             return;
         }
-        var roleId = role.get('roleId');
+        var roleId = role.get('recordId');
 
         var throughTree = function (node) {
             for (var i = 0; i < node.childNodes.length; i++) {
@@ -25,12 +25,12 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
                     continue;
                 }          
                 var dataType = child.get('dataType');
-                var privilegeId = 'PROGRAM_RUN';
+                var privilegeCode = 'PROGRAM_RUN';
                 if (dataType == 'app.model.admin.ProgramPrivilegeModel') {
-                    privilegeId = child.get('privilegeId');
+                    privilegeCode = child.get('privilegeCode');
                 }
                 privilegeList.push({
-                    privilegeId:privilegeId,
+                    privilegeCode:privilegeCode,
                     programId:child.get('programId'),                    
                 });
 
@@ -49,20 +49,22 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
     },
 
     showPrivilege: function (role, privileges) {
-        var roleId = role.get('roleId');
+        var roleId = role.get('recordId');
         var tree = this.getView().down('RolePrivilegePanel');
 
         var setPrivilege = function (node) {
+            debugger;
+
             var programId = node.get('programId');
-            var privilegeId = 'PROGRAM_RUN';
+            var privilegeCode = 'PROGRAM_RUN';
             var dataType = node.get('dataType');
             if (dataType == 'app.model.admin.ProgramPrivilegeModel') {
-                privilegeId = node.get('privilegeId');
+                privilegeCode = node.get('privilegeCode');
             }
             var hasPrivilege = false;
             for (var j = 0; j < privileges.length; j++) {
                 var privilege = privileges[j];
-                if (privilege.privilegeId == privilegeId && privilege.programId == programId) {
+                if (privilege.privilegeCode == privilegeCode && privilege.programId == programId) {
                     hasPrivilege = true;
                     break;
                 }

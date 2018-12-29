@@ -2,17 +2,19 @@ package com.zhxh.core.data;
 
 import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
-public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
+public class BaseDAOWithEntity<T extends EntityObject> extends BaseDAO implements Generic<T> {
     protected Class clazz;
 
     public BaseDAOWithEntity() {
@@ -61,7 +63,7 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
         return super.getIdLabel(this.clazz);
     }
 
-    public final T verifyExistsById(Object id) throws Exception {
+    public final T verifyExistsById(Object id) {
         T dbItem = this.getById(id);
         if (dbItem == null) {
             String idLabel = this.getIdLabel();
@@ -77,7 +79,7 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
     	return super.executeNoneQuery(deleteSql, parameters);
     }
     
-    public final int deleteById(Object id) throws Exception {
+    public final int deleteById(Object id) {
    	    T dbItem = this.verifyExistsById(id);
    	    return this.delete(dbItem);
     }
@@ -95,7 +97,7 @@ public class BaseDAOWithEntity<T> extends BaseDAO implements Generic {
 
     @Override
     protected final int doInternalInsert(Object item) {
-        return this.doInsert((T) item);
+        return this.doInsert((T)item);
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.zhxh.imms.factory.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class Operator implements EntityObject {
+public class Operator extends EntityObject {
     private String operatorId;
     private String operatorUserId;
     private String operatorPlantId;

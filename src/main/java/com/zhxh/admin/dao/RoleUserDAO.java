@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_ALREADY_EXISTS;
 import static com.zhxh.core.exception.ExceptionHelper.*;

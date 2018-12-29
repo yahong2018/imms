@@ -1,4 +1,4 @@
 package com.zhxh.core.data;
 
-public interface Generic<T> {
+public interface Generic<T extends EntityObject> {
 }

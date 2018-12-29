@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 
 @Component("operationRoutingOrderLogic")
 public class OperationRoutingOrderLogic {
-    @Resource(name="operationRoutingOrder")
+    @Resource(name="operationRoutingOrderDAO")
     private OperationRoutingOrderDAO operationRoutingOrderDAO;
 
 }

@@ -3,7 +3,7 @@ package com.zhxh.imms.material.entity;
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.data.meta.annotation.AutoGeneration;
 
-public class Bom implements EntityObject {
+public class Bom extends EntityObject {
     public final static String COMPONENT_TYPE_CUSTOM="C";
     public final static String COMPONENT_TYPE_DEFAULT="D";
 

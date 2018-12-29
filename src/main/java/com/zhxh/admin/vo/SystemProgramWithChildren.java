@@ -1,7 +1,11 @@
 package com.zhxh.admin.vo;
 
 import com.zhxh.admin.entity.SystemProgram;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class SystemProgramWithChildren extends SystemProgram {
     private SystemProgram[] children;
 
@@ -10,13 +14,5 @@ public class SystemProgramWithChildren extends SystemProgram {
     }
     public boolean isExpanded(){
         return !this.isLeaf();
-    }
-
-    public SystemProgram[] getChildren() {
-        return children;
-    }
-
-    public void setChildren(SystemProgram[] children) {
-        this.children = children;
     }
 }

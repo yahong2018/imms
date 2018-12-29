@@ -2,7 +2,7 @@ package com.zhxh.imms.routing.entity;
 
 import com.zhxh.core.data.EntityObject;
 
-public class OperatorCapability implements EntityObject {
+public class OperatorCapability extends EntityObject {
     private String operatorCapabilityId;
     private String operatorCapabilityOperatorId;
     private String operatorCapabilityOperationId;

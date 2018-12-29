@@ -4,7 +4,7 @@ Ext.define('app.view.admin.systemRole.region.SystemRoleGrid', {
     requires: ['app.store.admin.SystemRoleStore', 'app.model.admin.SystemRoleModel'],
     uses:['app.view.admin.systemRole.SystemRoleDetailForm'],
     columns: [
-        { dataIndex: 'roleId', text: '角色编号', width: 100 },
+        { dataIndex: 'roleCode', text: '角色编号', width: 100 },
         { dataIndex: 'roleName', text: '角色名称', flex: 1 }
     ],
     hideDefeaultPagebar: true,

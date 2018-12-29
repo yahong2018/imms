@@ -1,6 +1,7 @@
 package com.zhxh.admin.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -47,7 +48,7 @@ public class SystemRoleController {
 
 	@RequestMapping("insert.handler")
 	@ResponseBody
-	public SystemRole insert(SystemRole role) throws Exception {
+	public SystemRole insert(SystemRole role){
 		systemRoleLogic.insert(role);
 
 		return role;
@@ -55,20 +56,20 @@ public class SystemRoleController {
 
 	@RequestMapping("update.handler")
 	@ResponseBody
-	public SystemRole update(SystemRole role) throws Exception {
+	public SystemRole update(SystemRole role)  {
 		systemRoleLogic.update(role);
 		return role;
 	}
 
 	@RequestMapping("delete.handler")
 	@ResponseBody
-	public int delete(@RequestBody String[] roleIdList) throws Exception {
+	public int delete(@RequestBody String[] roleIdList) {
 		return systemRoleLogic.delete(roleIdList);
 	}
 
 	@RequestMapping("updateRolePrivileges.handler")
 	@ResponseBody
-	public int updateRolePrivileges(String roleId,@RequestBody ProgramPrivilegeVO[] privilegeList) throws Exception {
+	public int updateRolePrivileges(String roleId,@RequestBody ProgramPrivilegeVO[] privilegeList) {
 		systemRoleLogic.updatePrivileges(roleId,privilegeList);
 		return 0;
 	}

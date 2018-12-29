@@ -7,6 +7,6 @@ import javax.annotation.Resource;
 
 @Component("operationRoutingLogic")
 public class OperationRoutingLogic {
-    @Resource(name="operationRouting")
+    @Resource(name="operationRoutingDAO")
     private OperationRoutingDAO operationRoutingDAO;
 }
