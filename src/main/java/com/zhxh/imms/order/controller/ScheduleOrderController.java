@@ -13,9 +13,9 @@ public class ScheduleOrderController {
     @Resource(name="scheduleOrderLogic")
     private ScheduleOrderLogic scheduleOrderLogic;
 
-    @RequestMapping(value = "issue")
-    public String issueScheduleOrder(RequirementOrderVO requirementOrderVO,ScheduleOrder scheduleOrder){
-        return this.scheduleOrderLogic.issue(requirementOrderVO,scheduleOrder);
+    @RequestMapping(value = "release")
+    public String releaseScheduleOrder(RequirementOrderVO requirementOrderVO,ScheduleOrder scheduleOrder){
+        return this.scheduleOrderLogic.release(requirementOrderVO,scheduleOrder);
     }
 
 }

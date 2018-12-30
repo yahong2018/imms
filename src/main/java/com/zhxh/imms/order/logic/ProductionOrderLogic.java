@@ -1,5 +1,6 @@
 package com.zhxh.imms.order.logic;
 
+import com.zhxh.core.data.DataCode.BCode;
 import com.zhxh.imms.material.entity.BomOrder;
 import com.zhxh.imms.material.entity.BomOrderType;
 import com.zhxh.imms.material.logic.BomOrderLogic;
@@ -42,7 +43,7 @@ public class ProductionOrderLogic {
         //保存尺码明细
         for (int i = 0; i < requirementOrder.getOrderSizes().length; i++) {
             ProductionOrderSize productionOrderSize = requirementOrder.getOrderSizes()[i];
-            productionOrderSize.setProductionOrderSizeProductionOrderId(productionOrder.getProductionOrderId());
+            productionOrderSize.setProductionOrderId(productionOrder.getProductionOrderId());
             productionOrderSizeDAO.insert(productionOrderSize);
         }
         //保存量体数据
@@ -54,26 +55,24 @@ public class ProductionOrderLogic {
         ProductionOrder productionOrder = new ProductionOrder();
         this.fillFromRequirementOrder(requirementOrder, productionOrder);
         this.fillFromScheduleOrder(scheduleOrder, productionOrder);
-        productionOrder.setProductionOrderStatus(ProductionOrderStatus.CREATED);
-        productionOrder.setProductionOrderBomOrderId(bomOrder.getRecordId());
+        productionOrder.setProductionOrderStatus(BCode.ORDER_STATUS_PLANNED);
+        productionOrder.setBomOrderId(bomOrder.getRecordId());
         productionOrderDAO.insert(productionOrder);
         return productionOrder;
     }
 
     private void fillFromRequirementOrder(RequirementOrder requirementOrder, ProductionOrder productionOrder) {
-        productionOrder.setProductionOrderPriority(requirementOrder.getRequirementOrderPriority());
-        productionOrder.setProductionOrderType(requirementOrder.getRequirementOrderType());
-        productionOrder.setProductionOrderRequirementOrderId(requirementOrder.getRequirementOrderId());
-        productionOrder.setProductionOrderSource(requirementOrder.getRequirementOrderSource());
-        productionOrder.setProductionOrderWorkCenterId(requirementOrder.getRequirementOrderWorkCenterId());
-        productionOrder.setProductionOrderPlantId(requirementOrder.getRequirementOrderPlantId());
-        productionOrder.setProductionOrderFgMaterialId(requirementOrder.getRequirementOrderFgMaterialId());
+        productionOrder.setPriority(requirementOrder.getPriority());
+        productionOrder.setRequirementOrderId(requirementOrder.getRecordId());
+        productionOrder.setWorkCenterId(requirementOrder.getWorkCenterId());
+        productionOrder.setPlantId(requirementOrder.getPlantId());
+        productionOrder.setFgMaterialId(requirementOrder.getFgMaterialId());
     }
 
     private void fillFromScheduleOrder(ScheduleOrder scheduleOrder, ProductionOrder productionOrder) {
-        productionOrder.setProductionOrderPlannedQty(scheduleOrder.getScheduleOrderPlannedQty());
-        productionOrder.setProductionOrderPlannedStartDate(scheduleOrder.getScheduleOrderPlannedStartDate());
-        productionOrder.setProductionOrderPlannedEndDate(scheduleOrder.getScheduleOrderPlannedEndDate());
+        productionOrder.setPlannedQty(scheduleOrder.getPlannedQty());
+        productionOrder.setPlannedStartDate(scheduleOrder.getPlannedStartDate());
+        productionOrder.setPlannedEndDate(scheduleOrder.getPlannedEndDate());
     }
 
 }

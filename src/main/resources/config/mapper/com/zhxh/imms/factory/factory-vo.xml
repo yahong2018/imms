@@ -18,8 +18,9 @@
     </resultMap>
 
     <resultMap id="OperatorVO" type="com.zhxh.imms.factory.vo.OperatorVO" extends="com.zhxh.imms.factory.entity.Operator">
+        <result property="operatorUserCode" column="operator_user_code"/>
         <result property="operatorName" column="operator_name"/>
-        <result property="supervisorUserId" column="supervisor_user_id"/>
+        <result property="supervisorUserCode" column="supervisor_user_code"/>
         <result property="supervisorName" column="supervisor_name"/>
     </resultMap>
 

@@ -24,19 +24,19 @@ public class RequirementOrderLogic {
     private RequirementOrder vo2Entity(RequirementOrderVO vo){
         RequirementOrder result = new RequirementOrder();
         BeanUtils.copy(vo,result);
-        if(StringUtils.isEmpty(vo.getRequirementOrderFgMaterialId())){
+        if(StringUtils.isEmpty(vo.getFgMaterialId())){
             //
             //设置MaterialId
             //
         }
 
-        if(StringUtils.isEmpty(vo.getRequirementOrderWorkCenterId())){
+        if(StringUtils.isEmpty(vo.getWorkCenterId())){
             //
             //设置WorkCenter
             //
         }
 
-        if(StringUtils.isEmpty(vo.getRequirementOrderPlantId())){
+        if(StringUtils.isEmpty(vo.getPlantId())){
             //
             //设置工厂
             //

@@ -106,7 +106,7 @@ CREATE TABLE `operator`  (
   `record_id`                  char(36)       NOT NULL,
   `user_id`                    char(36)       NOT NULL,
   `plant_id`                   char(36)       NOT NULL,
-  `supervisor_id`              char(20)       NOT NULL,
+  `supervisor_id`              char(36)       NOT NULL,
 
   PRIMARY KEY (`record_id`) ,
   INDEX `IDX_OPERATOR_01`(`user_id`) ,

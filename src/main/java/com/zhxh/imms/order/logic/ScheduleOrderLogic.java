@@ -25,7 +25,7 @@ public class ScheduleOrderLogic {
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public String issue(RequirementOrderVO requirementOrderVO, ScheduleOrder scheduleOrder) {
+    public String release(RequirementOrderVO requirementOrderVO, ScheduleOrder scheduleOrder) {
         //1.保存ScheduleOrder
         this.scheduleOrderDAO.insert(scheduleOrder);
         //2.保存需求订单

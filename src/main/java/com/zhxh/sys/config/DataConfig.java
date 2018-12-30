@@ -10,7 +10,6 @@ import com.zhxh.core.utils.Logger;
 import com.zhxh.imms.material.entity.BomOrder;
 import com.zhxh.imms.material.entity.Material;
 import com.zhxh.imms.material.vo.BomVO;
-import com.zhxh.imms.material.vo.MaterialMediaVO;
 import com.zhxh.imms.material.vo.MaterialVO;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.mapping.ResultMap;

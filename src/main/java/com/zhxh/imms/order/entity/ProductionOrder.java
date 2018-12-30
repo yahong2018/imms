@@ -1,224 +1,36 @@
 package com.zhxh.imms.order.entity;
 
 import com.zhxh.core.data.TraceableEntity;
+import com.zhxh.core.data.meta.annotation.DataTable;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+@DataTable("production_order")
+@Getter
+@Setter
 public class ProductionOrder extends TraceableEntity {
-    private String  productionOrderId;
-    private String  productionOrderNo;
-    private OrderType  productionOrderType;
-    private String  productionOrderBomOrderId;
-    private String  productionOrderOperationRoutingOrderId;
-    private String  productionOrderSource;
-    private String  productionOrderMaterialReady;
-    private ProductionOrderStatus  productionOrderStatus;
-    private String  productionOrderPriority;
-    private String  productionOrderRequirementOrderId;
-    private String  productionOrderPlantId;
-    private String  productionOrderWorkCenterId;
-    private String  productionOrderFgMaterialId;
-    private int  productionOrderPlannedQty;
-    private int  productionOrderFinishedQty;
-    private int  productionOrderSecondQualityQty;
-    private int  productionOrderDefectQty;
-    private int  productionOrderActualQty;
-    private LocalDateTime productionOrderRequiredDeliveryDate;
-    private LocalDateTime  productionOrderPlannedStartDate;
-    private LocalDateTime  productionOrderPlannedEndDate;
-    private LocalDateTime  productionOrderActualStartDate;
-    private LocalDateTime  productionOrderActualEndDate;
-    private String  productionOrderScheduleOrderId;
+    private String productionOrderId;
+    private String productionOrderNo;
+    private String bomOrderId;
+    private String operationRoutingOrderId;
+    private int productionOrderStatus;
+    private int priority;
+    private String requirementOrderId;
+    private String plantId;
+    private String workCenterId;
+    private String fgMaterialId;
+    private int plannedQty;
+    private int finishedQty;
+    private int secondQualityQty;
+    private int defectQty;
+    private int actualQty;
+    private LocalDateTime requiredDeliveryDate;
+    private LocalDateTime plannedStartDate;
+    private LocalDateTime plannedEndDate;
+    private LocalDateTime actualStartDate;
+    private LocalDateTime actualEndDate;
+    private String scheduleOrderId;
 
-    public String getProductionOrderId() {
-        return productionOrderId;
-    }
-
-    public void setProductionOrderId(String productionOrderId) {
-        this.productionOrderId = productionOrderId;
-    }
-
-    public String getProductionOrderNo() {
-        return productionOrderNo;
-    }
-
-    public void setProductionOrderNo(String productionOrderNo) {
-        this.productionOrderNo = productionOrderNo;
-    }
-
-    public OrderType getProductionOrderType() {
-        return productionOrderType;
-    }
-
-    public void setProductionOrderType(OrderType productionOrderType) {
-        this.productionOrderType = productionOrderType;
-    }
-
-    public String getProductionOrderBomOrderId() {
-        return productionOrderBomOrderId;
-    }
-
-    public void setProductionOrderBomOrderId(String productionOrderBomOrderId) {
-        this.productionOrderBomOrderId = productionOrderBomOrderId;
-    }
-
-    public String getProductionOrderOperationRoutingOrderId() {
-        return productionOrderOperationRoutingOrderId;
-    }
-
-    public void setProductionOrderOperationRoutingOrderId(String productionOrderOperationRoutingOrderId) {
-        this.productionOrderOperationRoutingOrderId = productionOrderOperationRoutingOrderId;
-    }
-
-    public String getProductionOrderSource() {
-        return productionOrderSource;
-    }
-
-    public void setProductionOrderSource(String productionOrderSource) {
-        this.productionOrderSource = productionOrderSource;
-    }
-
-    public String getProductionOrderMaterialReady() {
-        return productionOrderMaterialReady;
-    }
-
-    public void setProductionOrderMaterialReady(String productionOrderMaterialReady) {
-        this.productionOrderMaterialReady = productionOrderMaterialReady;
-    }
-
-    public ProductionOrderStatus getProductionOrderStatus() {
-        return productionOrderStatus;
-    }
-
-    public void setProductionOrderStatus(ProductionOrderStatus productionOrderStatus) {
-        this.productionOrderStatus = productionOrderStatus;
-    }
-
-    public String getProductionOrderPriority() {
-        return productionOrderPriority;
-    }
-
-    public void setProductionOrderPriority(String productionOrderPriority) {
-        this.productionOrderPriority = productionOrderPriority;
-    }
-
-    public String getProductionOrderRequirementOrderId() {
-        return productionOrderRequirementOrderId;
-    }
-
-    public void setProductionOrderRequirementOrderId(String productionOrderRequirementOrderId) {
-        this.productionOrderRequirementOrderId = productionOrderRequirementOrderId;
-    }
-
-    public String getProductionOrderPlantId() {
-        return productionOrderPlantId;
-    }
-
-    public void setProductionOrderPlantId(String productionOrderPlantId) {
-        this.productionOrderPlantId = productionOrderPlantId;
-    }
-
-    public String getProductionOrderWorkCenterId() {
-        return productionOrderWorkCenterId;
-    }
-
-    public void setProductionOrderWorkCenterId(String productionOrderWorkCenterId) {
-        this.productionOrderWorkCenterId = productionOrderWorkCenterId;
-    }
-
-    public String getProductionOrderFgMaterialId() {
-        return productionOrderFgMaterialId;
-    }
-
-    public void setProductionOrderFgMaterialId(String productionOrderFgMaterialId) {
-        this.productionOrderFgMaterialId = productionOrderFgMaterialId;
-    }
-
-    public int getProductionOrderPlannedQty() {
-        return productionOrderPlannedQty;
-    }
-
-    public void setProductionOrderPlannedQty(int productionOrderPlannedQty) {
-        this.productionOrderPlannedQty = productionOrderPlannedQty;
-    }
-
-    public int getProductionOrderFinishedQty() {
-        return productionOrderFinishedQty;
-    }
-
-    public void setProductionOrderFinishedQty(int productionOrderFinishedQty) {
-        this.productionOrderFinishedQty = productionOrderFinishedQty;
-    }
-
-    public int getProductionOrderSecondQualityQty() {
-        return productionOrderSecondQualityQty;
-    }
-
-    public void setProductionOrderSecondQualityQty(int productionOrderSecondQualityQty) {
-        this.productionOrderSecondQualityQty = productionOrderSecondQualityQty;
-    }
-
-    public int getProductionOrderDefectQty() {
-        return productionOrderDefectQty;
-    }
-
-    public void setProductionOrderDefectQty(int productionOrderDefectQty) {
-        this.productionOrderDefectQty = productionOrderDefectQty;
-    }
-
-    public int getProductionOrderActualQty() {
-        return productionOrderActualQty;
-    }
-
-    public void setProductionOrderActualQty(int productionOrderActualQty) {
-        this.productionOrderActualQty = productionOrderActualQty;
-    }
-
-    public LocalDateTime getProductionOrderRequiredDeliveryDate() {
-        return productionOrderRequiredDeliveryDate;
-    }
-
-    public void setProductionOrderRequiredDeliveryDate(LocalDateTime productionOrderRequiredDeliveryDate) {
-        this.productionOrderRequiredDeliveryDate = productionOrderRequiredDeliveryDate;
-    }
-
-    public LocalDateTime getProductionOrderPlannedStartDate() {
-        return productionOrderPlannedStartDate;
-    }
-
-    public void setProductionOrderPlannedStartDate(LocalDateTime productionOrderPlannedStartDate) {
-        this.productionOrderPlannedStartDate = productionOrderPlannedStartDate;
-    }
-
-    public LocalDateTime getProductionOrderPlannedEndDate() {
-        return productionOrderPlannedEndDate;
-    }
-
-    public void setProductionOrderPlannedEndDate(LocalDateTime productionOrderPlannedEndDate) {
-        this.productionOrderPlannedEndDate = productionOrderPlannedEndDate;
-    }
-
-    public LocalDateTime getProductionOrderActualStartDate() {
-        return productionOrderActualStartDate;
-    }
-
-    public void setProductionOrderActualStartDate(LocalDateTime productionOrderActualStartDate) {
-        this.productionOrderActualStartDate = productionOrderActualStartDate;
-    }
-
-    public LocalDateTime getProductionOrderActualEndDate() {
-        return productionOrderActualEndDate;
-    }
-
-    public void setProductionOrderActualEndDate(LocalDateTime productionOrderActualEndDate) {
-        this.productionOrderActualEndDate = productionOrderActualEndDate;
-    }
-
-    public String getProductionOrderScheduleOrderId() {
-        return productionOrderScheduleOrderId;
-    }
-
-    public void setProductionOrderScheduleOrderId(String productionOrderScheduleOrderId) {
-        this.productionOrderScheduleOrderId = productionOrderScheduleOrderId;
-    }
 }
