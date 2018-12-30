@@ -4,6 +4,7 @@
 <mapper namespace="com.zhxh.imms.misc.entity">
     <resultMap id="Media" type="com.zhxh.imms.misc.entity.Media" extends="com.zhxh.core.data.EntityObject">
         <result property="mediaName" column="media_name"/>
+        <result property="belongToId" column="belong_to_id"/>
         <result property="mediaType" column="media_type"/>
         <result property="mediaUrl" column="media_url"/>
         <result property="mediaSize" column="media_size"/>

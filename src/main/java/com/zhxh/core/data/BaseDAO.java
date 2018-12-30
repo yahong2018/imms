@@ -4,16 +4,13 @@ import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.DependsOn;
 
 import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.*;
 
-import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_ALREADY_EXISTS;
-import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
-import static com.zhxh.core.exception.ErrorCode.ERROR_ROOT_CANNOT_DELETE;
+import static com.zhxh.core.exception.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 public class BaseDAO {

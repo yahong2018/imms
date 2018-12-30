@@ -10,6 +10,7 @@ import lombok.Setter;
 @Setter
 public class Media extends EntityObject {
     private String mediaType;
+    private String belongToId;
     private String mediaUrl;
     private String mediaName;
     private int mediaSize;

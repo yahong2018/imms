@@ -14,7 +14,7 @@ public class MaterialType extends EntityObject {
     @CheckUnique
     private String materialTypeNo;
     private String materialTypeName;
-    private String materialTypeDescription;
+    private String description;
     @TreeTableParentKey
     private String parentMaterialTypeId;
     private String materialTypeNoPath;

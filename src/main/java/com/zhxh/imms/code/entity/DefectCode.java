@@ -14,7 +14,7 @@ public class DefectCode extends EntityObject {
     @CheckUnique
     private String defectCodeNo;
     private String defectCodeName;
-    private String defectCodeDescription;
+    private String description;
     @TreeTableParentKey
     private String parentDefectCodeId;
     private String defectCodeNoPath;

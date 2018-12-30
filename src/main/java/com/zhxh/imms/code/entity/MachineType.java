@@ -14,7 +14,7 @@ public class MachineType extends EntityObject {
     @CheckUnique
     private String machineTypeNo;
     private String machineTypeName;
-    private String machineTypeDescription;
+    private String description;
     @TreeTableParentKey
     private String parentMachineTypeId;
     private String machineTypeNoPath;

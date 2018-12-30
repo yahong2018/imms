@@ -14,7 +14,7 @@ public class Size extends EntityObject {
     @CheckUnique
     private String sizeNo;
     private String sizeName;
-    private String sizeDescription;
+    private String description;
     @TreeTableParentKey
     private String parentSizeId;
     private String sizeNoPath;

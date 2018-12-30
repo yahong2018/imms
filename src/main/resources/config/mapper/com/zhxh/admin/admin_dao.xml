@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.admin.dao">
     <sql id="SYSTEM_PROGRAM_FIELDS">
-        record_id,program_code,program_name,url,glyph,show_order,parameters,parent
+        record_id,program_code,program_name,url,glyph,show_order,parameters,parent_id
     </sql>
 
     <insert id="INSERT_ROLE_USER" parameterType="com.zhxh.admin.entity.RoleUser" useGeneratedKeys="true"
@@ -19,7 +19,7 @@
         select <include refid="SYSTEM_PROGRAM_FIELDS"/>
         from system_program pp
         where record_id =(
-	        select p.parent from system_program p
+	        select p.parent_id from system_program p
 	        where p.record_id=#{programId}
         )
     </select>
@@ -44,8 +44,8 @@
         select count(*) from role_privilege rp
         where  rp.role_privilege_id <> #{rolePrivilegeId}
           and rp.program_id in(
-            select id from system_program p
-             where parent = #{parent}
+            select record_id from system_program p
+             where parent_id = #{parentId}
         )
         ]]>
     </select>
@@ -54,8 +54,8 @@
         delete from role_privilege
          where role_id=#{roleId}
            and program_id in(
-	           select id from system_program p
-	             where p.parent = #{programId}
+	           select record_id from system_program p
+	             where p.parent_id = #{programId}
            )
     </delete>
 

@@ -35,12 +35,12 @@ CREATE TABLE `bom_order`  (
 
 CREATE TABLE `bom`  (
   `record_id`                          char(36)        NOT NULL,
-  `bom_order_id`                   char(36)        NOT NULL,
+  `bom_order_id`                       char(36)        NOT NULL,
   `component_type`                     enum('CUSTOM','DEFAULT')   NOT NULL    COMMENT '子件类型 CUSTOM: "定制", DEFAULT: "默认"',
   `component_material_id`              char(36)        NOT NULL               COMMENT '子件物料Id',
   `component_abstract_material_id`     char(36)        NULL                   COMMENT '子件抽象物料Id',
   `component_qty`                      double          NOT NULL               COMMENT '子件用量',
-  `component_material_uom_id`          char(36)        NOT NULL               COMMENT '子件单位',
+  `component_uom_id`                   char(36)        NOT NULL               COMMENT '子件单位',
   `component_material_no_path`         varchar(130)    NOT NULL,
   `component_material_name_path`       varchar(330)    NOT Null,
   `component_material_match_rule_id`   char(36)        NULL                   COMMENT '子件匹配规则',

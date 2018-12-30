@@ -27,19 +27,5 @@ public class MediaController extends SimpleCRUDController<com.zhxh.imms.misc.ent
         return this.mediaDAO;
     }
 
-    @RequestMapping("{materialId}/getCandidateMaterialMedia.handler")
-    @ResponseBody
-    public ExtJsResult getCandidateMaterialMedia(HttpServletRequest request, HttpServletResponse response, @PathVariable("materialId") String materialId) {
-        return this.listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
-            @Override
-            public List getByRequest(ListRequest listRequest) {
-                return mediaDAO.getCandidateMaterialMedia(listRequest.toMap(),materialId);
-            }
 
-            @Override
-            public int getRequestListCount(ListRequest listRequest) {
-                return mediaDAO.getCandidateMaterialMediaCount(listRequest.toMap(),materialId);
-            }
-        });
-    }
 }

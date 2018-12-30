@@ -15,10 +15,9 @@ public class Bom extends EntityObject {
     private String componentMaterialId;
     private String componentAbstractMaterialId;
     private double componentQty;
-    private String componentMaterialUomId;
+    private String componentUomId;
     private String componentMaterialNoPath;
     private String componentMaterialNamePath;
     private String componentMaterialMatchRuleId;
     private boolean ifMainFabric;
-    private String bomDataSource;
 }

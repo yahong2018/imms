@@ -15,5 +15,5 @@ public class Uom extends EntityObject {
     @CheckUnique
     private String uomNo;
     private String uomName;
-    private String uomDescription;
+    private String description;
 }

@@ -1,15 +1,12 @@
 package com.zhxh.core.data;
 
 import com.zhxh.core.exception.BusinessException;
-import com.zhxh.core.utils.BeanUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;

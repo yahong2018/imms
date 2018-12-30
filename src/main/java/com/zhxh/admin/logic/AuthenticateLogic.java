@@ -12,8 +12,7 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import static com.zhxh.admin.misc.ErrorCode.ERROR_LOGIN_ACCOUNT_DISABLED;
-import static com.zhxh.admin.misc.ErrorCode.ERROR_LOGIN_ACCOUNT;
+import static com.zhxh.admin.misc.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("authenticateLogic")

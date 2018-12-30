@@ -24,8 +24,8 @@ public class BomVO extends Bom implements ParentChildVO {
     private String componentMaterialName;
     private String componentAbstractMaterialNo;
     private String componentAbstractMaterialName;
-    private String componentMaterialUomNo;
-    private String componentMaterialUomName;
+    private String componentUomNo;
+    private String componentUomName;
     private String componentMaterialMatchRuleNo;
     private String componentMaterialMatchRuleName;
 }

@@ -2,16 +2,14 @@ package com.zhxh.admin.logic;
 
 import com.zhxh.admin.dao.RoleUserDAO;
 import com.zhxh.admin.entity.RoleUser;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
+import static com.zhxh.core.exception.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("roleUserLogic")

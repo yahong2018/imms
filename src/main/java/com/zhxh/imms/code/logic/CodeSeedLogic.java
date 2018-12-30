@@ -1,10 +1,8 @@
 package com.zhxh.imms.code.logic;
 
 
-import com.zhxh.core.exception.ErrorCode;
 import com.zhxh.imms.code.dao.CodeSeedDAO;
 import com.zhxh.imms.code.entity.CodeSeed;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -12,6 +10,7 @@ import javax.annotation.Resource;
 import java.util.Hashtable;
 import java.util.List;
 
+import static com.zhxh.core.exception.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("codeSeedLogic")
@@ -31,7 +30,7 @@ public class CodeSeedLogic {
 
     public synchronized String createCode(String seedNo) {
         if (!seedList.containsKey(seedNo)) {
-            throwException(ErrorCode.ERROR_DATA_NOT_EXISTS, String.format("指定的CodeSeedNo:{%s}不存在！", seedNo));
+            throwException(ERROR_DATA_NOT_EXISTS, String.format("指定的CodeSeedNo:{%s}不存在！", seedNo));
         }
 
         CodeSeed codeSeed = seedList.get(seedNo);

@@ -4,7 +4,7 @@ CREATE TABLE system_user
   user_code                 VARCHAR(20)                NOT NULL,
   user_name                 VARCHAR(50)                NOT NULL,
   pwd                       VARCHAR(50)                NOT NULL,
-  user_status               enum('DISABLED','ENABLED') NOT NULL,
+  user_status               TINYINT                    NOT NULL,
   email                     VARCHAR(255)               NOT NULL,
   online                    BIT                        NOT NULL DEFAULT 0, -- 0.离线  1.在线
   last_login_time           DATETIME                   NULL ,              -- 最后登录时间
@@ -22,7 +22,6 @@ CREATE TABLE system_role
   record_id                  CHAR(36)                 NOT NULL,
   role_code                  VARCHAR(20)              NOT NULL,
   role_name                  VARCHAR(50)              NOT NULL,
-
 
   PRIMARY KEY (record_id),
   index IDX_SYSTEM_ROLE_0(role_code),
@@ -65,12 +64,11 @@ CREATE TABLE system_program
   glyph                      VARCHAR(100)               NULL,
   show_order                 INT                        NOT NULL,
   parameters                 VARCHAR(255)               NOT NULL,
-  parent                     VARCHAR(50)                NOT NULL,
+  parentId                   VARCHAR(50)                NOT NULL,
 
   PRIMARY KEY (record_id),
   index IDX_SYSTEM_PROGRAM_0(program_code),
-  index IDX_SYSTEM_PROGRAM_1(parent)
-
+  index IDX_SYSTEM_PROGRAM_1(parentId)
 );
 
 CREATE TABLE program_privilege

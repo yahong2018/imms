@@ -36,7 +36,7 @@
         <result property="glyph" column="glyph"/>
         <result property="showOrder" column="show_order"/>
         <result property="parameters" column="parameters"/>
-        <result property="parentId" column="parent"/>
+        <result property="parentId" column="parent_id"/>
     </resultMap>
 
     <resultMap id="ProgramPrivilege" type="com.zhxh.admin.entity.ProgramPrivilege"  extends="com.zhxh.core.data.EntityObject">

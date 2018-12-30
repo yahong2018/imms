@@ -1,12 +1,11 @@
 package com.zhxh.admin.entity;
 
-import com.zhxh.core.data.Code;
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.data.meta.annotation.DataTable;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
+import static com.zhxh.core.data.DataCode.BCode.*;
 
 
 @DataTable("program_privilege")
@@ -18,18 +17,18 @@ public class ProgramPrivilege extends EntityObject {
     private String privilegeName;
 
     public boolean isInsertPrivilege() {
-        return Code.DATA_INSERT.equals(this.privilegeCode);
+        return PRIVILEGE_INSERT.equals(this.privilegeCode);
     }
 
     public boolean isUpdatePrivilege() {
-        return Code.DATA_UPDATE.equals(this.privilegeCode);
+        return PRIVILEGE_UPDATE.equals(this.privilegeCode);
     }
 
     public boolean isDeletePrivilege() {
-        return Code.DATA_DELETE.equals(this.privilegeCode);
+        return PRIVILEGE_DELETE.equals(this.privilegeCode);
     }
 
     public boolean isRunPrivilege() {
-        return Code.PROGRAM_RUN.equals(this.privilegeCode);
+        return PRIVILEGE_RUN == this.privilegeCode;
     }
 }

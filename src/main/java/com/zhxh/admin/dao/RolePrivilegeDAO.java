@@ -1,19 +1,16 @@
 package com.zhxh.admin.dao;
 
-import com.zhxh.admin.entity.ProgramPrivilege;
 import com.zhxh.admin.entity.RolePrivilege;
 import com.zhxh.core.data.BaseDAOWithEntity;
-import com.zhxh.core.data.Code;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Component("rolePrivilegeDAO")
 public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
-	public RolePrivilege getRolePrivilege(String roleId, String programId, Code privilegeCode) {
+	public RolePrivilege getRolePrivilege(String roleId, String programId, String privilegeCode) {
 		String where = "role_id=#{roleId} and program_id=#{programId} and privilege_code=#{privilegeCode}";
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("roleId", roleId);
@@ -46,7 +43,7 @@ public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
 //        Map parameters = new HashMap();
 //        parameters.put("rolePrivilegeId", rolePrivilege.getRolePrivilegeId());
 //        parameters.put("programId", rolePrivilege.getProgramId());
-//        parameters.put("runPrivilegeId", ProgramPrivilege.PROGRAM_RUN);
+//        parameters.put("runPrivilegeId", ProgramPrivilege.PRIVILEGE_RUN);
 //
 //        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_OTHER_GRANTED_PRIVILEGE_COUNT, parameters);
 //    }
@@ -59,10 +56,10 @@ public class RolePrivilegeDAO extends BaseDAOWithEntity<RolePrivilege> {
 //        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_BROTHER_GRANTED_PRIVILEGE_COUNT, parameters);
 //    }
 
-    public int deleteRoleSubProgramPrivilege(String roleId, String parent) {
+    public int deleteRoleSubProgramPrivilege(String roleId, String parentId) {
         Map parameters = new HashMap();
         parameters.put("roleId", roleId);
-        parameters.put("parent", parent);
+        parameters.put("parentId", parentId);
 
         return this.getSqlHelper().getSqlSession().delete(SQL_DELETE_ROLE_SUB_PROGRAM_PRIVILEGE, parameters);
     }

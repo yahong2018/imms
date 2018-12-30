@@ -2,13 +2,12 @@ package com.zhxh.admin.dao;
 
 import com.zhxh.admin.entity.ProgramPrivilege;
 import com.zhxh.core.data.BaseDAOWithEntity;
-import com.zhxh.core.data.Code;
+import com.zhxh.core.data.DataCode.BCode;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Component("programPrivilegeDAO")
 public class ProgramPrivilegeDAO extends BaseDAOWithEntity<ProgramPrivilege> {
@@ -22,7 +21,7 @@ public class ProgramPrivilegeDAO extends BaseDAOWithEntity<ProgramPrivilege> {
         String where = "program_id=#{programId} and privilege_code=#{privilegeCode}";
         Map parameters = new HashMap();
         parameters.put("programId", programId);
-        parameters.put("privilegeCode", Code.PROGRAM_RUN);
+        parameters.put("privilegeCode", BCode.PRIVILEGE_RUN);
 
         return this.getOne(where, parameters);
     }

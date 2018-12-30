@@ -5,7 +5,7 @@ import com.zhxh.admin.dao.SystemProgramDAO;
 import com.zhxh.admin.dao.SystemRoleDAO;
 import com.zhxh.admin.dao.SystemUserDAO;
 import com.zhxh.admin.entity.*;
-import com.zhxh.core.data.Code;
+import com.zhxh.core.data.DataCode.BCode;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.StringUtilsExt;
 import org.springframework.stereotype.Component;
@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import static com.zhxh.admin.misc.ErrorCode.ERROR_OLD_PASSWORD_ERROR;
-import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
+import static com.zhxh.admin.misc.ErrorCode.*;
+import static com.zhxh.core.data.DataCode.BCode.PRIVILEGE_RUN;
+import static com.zhxh.core.exception.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("systemUserLogic")
@@ -115,13 +115,13 @@ public class SystemUserLogic {
 
     public int disableUser(String userId){
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
-        dbUser.setUserStatus(Code.DISABLED);
+        dbUser.setUserStatus(BCode.STATUS_DISABLED);
         return systemUserDAO.update(dbUser);
     }
 
     public int enableUser(String userId){
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
-        dbUser.setUserStatus(Code.ENABLED);
+        dbUser.setUserStatus(BCode.STATUS_ENABLED);
         return systemUserDAO.update(dbUser);
     }
 
@@ -162,7 +162,7 @@ public class SystemUserLogic {
         List<RolePrivilege> result = new ArrayList<>();
         for(SystemRole role:roles){
             List<RolePrivilege> privileges = systemRoleLogic.getRolePrivileges(role.getRecordId());
-            privileges.removeIf(x->result.stream().anyMatch(y->y.getPrivilegeCode().equals(x.getPrivilegeCode()) && y.getProgramId().equals(x.getProgramId())));
+            privileges.removeIf(x->result.stream().anyMatch(y->y.getPrivilegeCode()==x.getPrivilegeCode() && y.getProgramId().equals(x.getProgramId())));
             result.addAll(privileges);
         }
 
@@ -186,7 +186,7 @@ public class SystemUserLogic {
 			return false;
 		}
 		for(SystemRole role : roleList) {
-			if(systemRoleLogic.hasPrivilege(role.getRecordId(),program.getRecordId(),Code.PROGRAM_RUN)) {
+			if(systemRoleLogic.hasPrivilege(role.getRecordId(),program.getRecordId(), PRIVILEGE_RUN)) {
 				return true;
 			}
 		}

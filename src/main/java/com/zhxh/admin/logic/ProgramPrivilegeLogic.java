@@ -1,5 +1,6 @@
 package com.zhxh.admin.logic;
 
+import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 import java.util.List;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zhxh.admin.dao.ProgramPrivilegeDAO;
 import com.zhxh.admin.dao.RolePrivilegeDAO;
 import com.zhxh.admin.entity.ProgramPrivilege;
-import com.zhxh.core.exception.ErrorCode;
 
 @Component("programPrivilegeLogic")
 public class ProgramPrivilegeLogic {
@@ -36,7 +36,7 @@ public class ProgramPrivilegeLogic {
 		for (Object id : ids) {
 			int result = programPrivilegeDAO.deleteById(id);
 			if (result != 1) {
-				throwException(ErrorCode.ERROR_UNKNOWN_EXCEPTION,  "数据删除失败！");
+				throwException(ERROR_UNKNOWN_EXCEPTION,  "数据删除失败！");
 			}
 		}
 		

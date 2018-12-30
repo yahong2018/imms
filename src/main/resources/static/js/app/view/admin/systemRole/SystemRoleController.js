@@ -4,9 +4,7 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
     mangeRoleUser: function () {
         alert('管理用户');
     },
-    updatePrivilege: function () {
-        debugger;
-        
+    updatePrivilege: function () {       
         var privilegeList = [];
         
         var grid = this.getView().down('SystemRoleGrid');
@@ -18,14 +16,12 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
 
         var throughTree = function (node) {
             for (var i = 0; i < node.childNodes.length; i++) {
-                debugger;
-
                 var child = node.getChildAt(i); 
                 if(!child.get('checked')){
                     continue;
                 }          
                 var dataType = child.get('dataType');
-                var privilegeCode = 'PROGRAM_RUN';
+                var privilegeCode = 'RUN';
                 if (dataType == 'app.model.admin.ProgramPrivilegeModel') {
                     privilegeCode = child.get('privilegeCode');
                 }
@@ -53,10 +49,8 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
         var tree = this.getView().down('RolePrivilegePanel');
 
         var setPrivilege = function (node) {
-            debugger;
-
             var programId = node.get('programId');
-            var privilegeCode = 'PROGRAM_RUN';
+            var privilegeCode = 'RUN';
             var dataType = node.get('dataType');
             if (dataType == 'app.model.admin.ProgramPrivilegeModel') {
                 privilegeCode = node.get('privilegeCode');
