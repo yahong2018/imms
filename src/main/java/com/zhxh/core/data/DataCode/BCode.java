@@ -7,8 +7,8 @@ public final class BCode {
     public static final int STATUS_NORMAL = 0;                       //0:正常
     public final static int STATUS_ENABLED = 0;                      //0.启用
     public final static int STATUS_DISABLED = 1;                     //1:停用
-    public final static int STATUS_OFFLINE = 0;                        //0.离线
-    public final static int STATUS_ONLINE = 1;                         //1.在线
+    public final static int STATUS_OFFLINE = 0;                      //0.离线
+    public final static int STATUS_ONLINE = 1;                       //1.在线
 
     //
     //C类编码类型
@@ -42,6 +42,14 @@ public final class BCode {
     public final static int RATION_CLOCKWISE = 0;                      //顺时针
     public final static int RATION_ANTI_CLOCKWISE = 1;                 //逆时针
 
+    //
+    //工位类型
+    //
+    public final static int WORK_STATION_TYPE_CUT = 0;                 //裁剪工位
+    public final static int WORK_STATION_TYPE_STITCH = 1;              //缝制工位
+    public final static int WORK_STATION_TYPE_HANG = 2;                //上吊挂工位
+    public final static int WORK_STATION_TYPE_QUALITY = 3;             //质检工位
+    public final static int WORK_STATION_TYPE_PRINT = 4;               //打印工位
 
     private BCode() {
     }
