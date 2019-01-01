@@ -11,7 +11,6 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ProductionOrder extends TraceableEntity {
-    private String productionOrderId;
     private String productionOrderNo;
     private String bomOrderId;
     private String operationRoutingOrderId;

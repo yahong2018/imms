@@ -264,29 +264,6 @@ CREATE TABLE `sequence`  (
   INDEX `IDX_SEQ_01`(`sequence_key`) 
 ) COMMENT = 'ID序列';
 
-CREATE TABLE `measure_body_classify`  (
-  `id`                       bigint(20)          NOT NULL AUTO_INCREMENT,
-  `classify_no`              varchar(10)         NOT NULL               COMMENT '选项编码',
-  `name`                     varchar(20)         NULL       COMMENT '选项名称',
-  `parent_id`                bigint(20)          NULL       COMMENT '上层选项主键',
-  `unit`                     varchar(10)         NULL       COMMENT '数据单位',
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_MBC_01`(`classify_no`) ,
-  INDEX `IDX_MBC_02`(`name`) ,
-  INDEX `IDX_MBC_03`(`parent_id`)
-) COMMENT = '针对服装类型 定义量体选项的内容 ';
-
-CREATE TABLE `production_order_measure_data`  (
-  `id`                          bigint(20)        NOT NULL AUTO_INCREMENT,
-  `production_order_id`         bigint(20)        NULL       COMMENT '生产订单主键',
-  `measure_body`                varchar(20)       NULL       COMMENT '量体部位',
-  `measure_data`                varchar(20)       NULL       COMMENT '量体数据',
-  `measure_body_no`             varchar(20)       NULL ,
-
-  PRIMARY KEY (`id`) ,
-  INDEX `IDX_PRO_ORDER_MD_01`(`production_order_id`)
-) COMMENT = '生产订单量体数据';
 
 
 

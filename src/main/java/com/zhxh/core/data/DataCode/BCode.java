@@ -74,11 +74,28 @@ public final class BCode {
     public final static int OPERATION_ROUTING_ORDER_TYPE_WORK_ORDER = 2;          //作业单工艺路线
 
     //
+    //工艺状态
+    //
+    public final static int OPERATION_ROUTING_STATUS_PLANNED=0;
+    public final static int OPERATION_ROUTING_STATUS_STARTED=1;
+    public final static int OPERATION_ROUTING_STATUS_FINISHED=2;
+
+    //
     //订单重复类型
     //
     public final static int REQUIREMENT_ORDER_REPEAT_TYPE_FIRST = 0;              //首单
     public final static int REQUIREMENT_ORDER_REPEAT_TYPE_REPEAT = 1;             //返单
     public final static int REQUIREMENT_ORDER_REPEAT_TYPE_SUPPLEMENT = 2;         //补单
+
+    //
+    //Bom类型
+    //
+    public final static int BOM_TYPE_PART = 0;                               //部件BOM
+    public final static int BOM_TYPE_STANDARD = 1;                           //标准BOM
+    public final static int BOM_TYPE_ORDER = 2;                              //订单BOM
+    public final static int BOM_TYPE_DESIGN = 3;                             //设计BOM
+    public final static int BOM_TYPE_MANUFACTURE = 4;                        //生产BOM
+    public final static int BOM_TYPE_WORK = 5;                               //制造BOM
 
     private BCode() {
     }

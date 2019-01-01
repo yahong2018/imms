@@ -94,8 +94,9 @@ INSERT INTO `defect_code` VALUES ('30b2c580-0b5c-11e9-a12a-d481d7fe257a', 'FT', 
 INSERT INTO `machine_type` VALUES ('3b370cbb-0b5c-11e9-a12a-d481d7fe257a', 'DT', '设备类型', NULL, '3b370cbb-0b5c-11e9-a12a-d481d7fe257a','DT','设备类型');
 INSERT INTO `material_type` VALUES ('45efcfe1-0b5c-11e9-a12a-d481d7fe257a', 'MT', '物料类型', NULL, '45efcfe1-0b5c-11e9-a12a-d481d7fe257a','MT','物料类型');
 
-insert into `code_seed` values('76abacb6-0b5d-11e9-a12a-d481d7fe257a','bomOrderId','Bom单号',1,'','',10);
-insert into `code_seed` values('7fb1c543-0b5d-11e9-a12a-d481d7fe257a','productionOrderId','生产计划单号',1,'','',10);
-insert into `code_seed` values('867d24cb-0b5d-11e9-a12a-d481d7fe257a','pickingOrderId','领料单号',1,'','',10);
-insert into `code_seed` values('8b822e3b-0b5d-11e9-a12a-d481d7fe257a','cuttingOrderId','裁剪单号',1,'','',10);
-insert into `code_seed` values('90a02fe6-0b5d-11e9-a12a-d481d7fe257a','workOrderId','作业单号',1,'','',10);
+insert into `code_seed` values('76abacb6-0b5d-11e9-a12a-d481d7fe257a','bomOrderNo','Bom单号',1,'','',10);
+insert into `code_seed` values('7fb1c543-0b5d-11e9-a12a-d481d7fe257a','productionOrderNo','生产计划单号',1,'','',10);
+insert into `code_seed` values('867d24cb-0b5d-11e9-a12a-d481d7fe257a','pickingOrderNo','领料单号',1,'','',10);
+insert into `code_seed` values('8b822e3b-0b5d-11e9-a12a-d481d7fe257a','cuttingOrderNo','裁剪单号',1,'','',10);
+insert into `code_seed` values('90a02fe6-0b5d-11e9-a12a-d481d7fe257a','workOrderNo','作业单号',1,'','',10);
+insert into `code_seed` value('de527c37-0cc3-11e9-84ee-00163e04886e','operationRoutingOrderNo','工艺路线单号',1,'','',10)

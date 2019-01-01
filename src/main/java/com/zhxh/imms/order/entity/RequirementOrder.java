@@ -24,6 +24,7 @@ public class RequirementOrder extends EntityObject {
     private String saleOrderNo;
     private int repeatType;
 
-    private ProductionOrderSize[] orderSizes;
-    private BomVO[] boms;
+    private ProductionOrderSize[] orderSizeList;
+    private BomVO[] bomList;
+    private ProductionOrderMeasureData[] measureDataList;
 }

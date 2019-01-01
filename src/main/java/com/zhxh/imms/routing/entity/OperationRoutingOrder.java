@@ -11,4 +11,5 @@ import lombok.Setter;
 public class OperationRoutingOrder extends EntityObject {
     private String operationRoutingOrderNo;
     private int operationRoutingType;
+    private String refId;
 }

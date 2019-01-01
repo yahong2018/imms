@@ -35,12 +35,14 @@ CREATE TABLE `operator_capability`  (
 
 
 CREATE TABLE `operation_routing_order`  (
-  `record_id`                     char(36)            NOT NULL,
+  `record_id`                        char(36)            NOT NULL,
   `operation_routing_order_no`       varchar(10)         NOT NULL ,
-  `operation_routing_order_type`     tinyint             NOT NULL           COMMENT '0:物料工艺路线,1:生产订单工艺路线,2:作业单工艺路线',
+  `operation_routing_order_type`     tinyint             NOT NULL     COMMENT '0:物料工艺路线,1:生产订单工艺路线,2:作业单工艺路线',
+  `ref_id`                           char(36)            NOT NULL     COMMENT '引用单号：物料号/生产订单号/作业单号',
 
   PRIMARY KEY (`record_id`) ,
-  INDEX `IDX_OPERATION_RO_01`(`operation_routing_order_no`)
+  INDEX `IDX_OPERATION_ROUTING_ORDER_01`(`operation_routing_order_no`),
+  INDEX `IDX_OPERATION_ROUTING_ORDER_02`(`ref_id`)
 ) COMMENT = '工艺路线单';
 
 
@@ -65,9 +67,9 @@ CREATE TABLE `operation_routing`  (
   `pre_routing_id`                  char(36)            NULL                 COMMENT '依赖关系-上道工序',
   `sequence_no`                     int                 NOT NULL             COMMENT '工序顺序',
   `part_type`                       varchar(40)         NULL ,
-  `if_outsource`                    tinyint(1)          NULL ,
-  `pull_in_time`                    datetime(0)         NULL                 COMMENT '进站时间',
-  `pull_out_time`                   datetime(0)         NULL                 COMMENT '出站时间',
+  `if_outsource`                    tinyint             NULL ,
+  `pull_in_time`                    datetime            NULL                 COMMENT '进站时间',
+  `pull_out_time`                   datetime            NULL                 COMMENT '出站时间',
 
   PRIMARY KEY (`record_id`) ,
   INDEX `IDX_OPERATION_ROUTING_01`(`operation_id`) ,

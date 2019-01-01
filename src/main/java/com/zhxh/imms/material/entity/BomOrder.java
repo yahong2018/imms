@@ -1,7 +1,6 @@
 package com.zhxh.imms.material.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 import com.zhxh.core.data.meta.annotation.DataTable;
 import lombok.Getter;
@@ -16,7 +15,8 @@ import java.util.Map;
 public class BomOrder extends EntityObject {
     @CheckUnique
     private String bomOrderNo;
-    private BomOrderType bomOrderTypeNo;
+    private int bomOrderTypeNo;
+    private String refId;
 
     private final static Map<String, String> bomTypeNames = new HashMap<String, String>() {
         {

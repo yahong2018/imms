@@ -1,9 +1,22 @@
 package com.zhxh.imms.order.dao;
 
 import com.zhxh.core.data.BaseDAOWithEntity;
+import com.zhxh.imms.code.logic.CodeSeedLogic;
 import com.zhxh.imms.order.entity.ProductionOrder;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+
 @Component("productionOrderDAO")
 public class ProductionOrderDAO  extends BaseDAOWithEntity<ProductionOrder> {
+    @Resource(name="codeSeedLogic")
+    private CodeSeedLogic codeSeedLogic;
+
+    @Override
+    protected int doInsert(ProductionOrder item) {
+        String productionOrderNo = codeSeedLogic.createCode("productionOrderNo");
+        item.setProductionOrderNo(productionOrderNo);
+
+        return super.doInsert(item);
+    }
 }

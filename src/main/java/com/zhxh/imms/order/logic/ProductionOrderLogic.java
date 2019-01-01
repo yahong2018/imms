@@ -1,16 +1,29 @@
 package com.zhxh.imms.order.logic;
 
 import com.zhxh.core.data.DataCode.BCode;
+import com.zhxh.imms.material.dao.BomDAO;
 import com.zhxh.imms.material.entity.BomOrder;
-import com.zhxh.imms.material.entity.BomOrderType;
 import com.zhxh.imms.material.logic.BomOrderLogic;
+import com.zhxh.imms.material.vo.BomVO;
 import com.zhxh.imms.order.dao.ProductionOrderDAO;
+import com.zhxh.imms.order.dao.ProductionOrderMeasureDataDAO;
 import com.zhxh.imms.order.dao.ProductionOrderSizeDAO;
 import com.zhxh.imms.order.entity.*;
+import com.zhxh.imms.routing.dao.OperationRoutingDAO;
+import com.zhxh.imms.routing.dao.OperationRoutingOrderDAO;
+import com.zhxh.imms.routing.entity.OperationRouting;
+import com.zhxh.imms.routing.entity.OperationRoutingOrder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
+import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("productionOrderLogic")
 public class ProductionOrderLogic {
@@ -20,43 +33,114 @@ public class ProductionOrderLogic {
     @Resource(name = "productionOrderDAO")
     private ProductionOrderDAO productionOrderDAO;
 
-    @Resource(name="productionOrderSizeDAO")
+    @Resource(name = "productionOrderSizeDAO")
     private ProductionOrderSizeDAO productionOrderSizeDAO;
+
+    @Resource(name = "productionOrderMeasureDataDAO")
+    private ProductionOrderMeasureDataDAO productionOrderMeasureDataDAO;
+
+    @Resource(name = "bomDAO")
+    private BomDAO bomDAO;
+
+    @Resource(name = "operationRoutingOrderDAO")
+    private OperationRoutingOrderDAO operationRoutingOrderDAO;
+
+    @Resource(name = "operationRoutingDAO")
+    private OperationRoutingDAO operationRoutingDAO;
 
     @Transactional(rollbackFor = RuntimeException.class)
     public ProductionOrder createProductionOrder(RequirementOrder requirementOrder, ScheduleOrder scheduleOrder) {
-        //1.创建Bom单
-        BomOrder bomOrder = this.bomOrderLogic.createBomOrder(BomOrderType.MANUFACTURE);
-        //2.创建生产订单
-        ProductionOrder productionOrder = this.internalCreateProductionOrder(requirementOrder, scheduleOrder, bomOrder);
-
-        //4.创建量体数据
-        //5.创建生产订单物料清单
-        //6.创建工艺路线
+        //1.创建单头
+        ProductionOrder productionOrder = createOrderHeader(requirementOrder, scheduleOrder);
+        //2.保存尺码明细
+        saveSize(requirementOrder.getOrderSizeList(), productionOrder);
+        //3.保存量体数据
+        saveMeasureData(requirementOrder.getMeasureDataList(), productionOrder);
+        //4.创建生产订单物料清单
+        saveBom(requirementOrder.getBomList(), productionOrder);
 
         return productionOrder;
     }
 
-    private ProductionOrder internalCreateProductionOrder(RequirementOrder requirementOrder, ScheduleOrder scheduleOrder, BomOrder bomOrder) {
-        //创建单头
-        ProductionOrder productionOrder = createOrderHeader(requirementOrder, scheduleOrder, bomOrder);
-        //保存尺码明细
-        for (int i = 0; i < requirementOrder.getOrderSizes().length; i++) {
-            ProductionOrderSize productionOrderSize = requirementOrder.getOrderSizes()[i];
-            productionOrderSize.setProductionOrderId(productionOrder.getProductionOrderId());
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void createProductionOrderRouting(ProductionOrder productionOrder) {
+        OperationRoutingOrder materialOperationRoutingOrder = createOperationRoutingOrderHeader(productionOrder);
+        List<OperationRouting> routingList = operationRoutingDAO.getByOperationRoutingOrderId(materialOperationRoutingOrder.getRecordId());
+        if (routingList.size() == 0) {
+            throwException(ERROR_UNKNOWN_EXCEPTION, String.format("工艺路线单%s还没有建工艺路线", materialOperationRoutingOrder.getRecordId()));
+        }
+
+        OperationRouting cuttingOperationRouting = operationRoutingDAO.getCuttingOperationRouting();
+        cuttingOperationRouting.setPreRoutingId(null);
+        cuttingOperationRouting.setPreOperationId(null);
+        cuttingOperationRouting.setOperationRoutingStatus(BCode.OPERATION_ROUTING_STATUS_PLANNED);
+        cuttingOperationRouting.setRecordId(UUID.randomUUID().toString());
+        routingList.add(0, cuttingOperationRouting);
+        OperationRouting nextRouting = routingList.stream().filter(x -> StringUtils.isEmpty(x.getPreRoutingId())).findFirst().get();
+        nextRouting.setPreRoutingId(cuttingOperationRouting.getRecordId());
+        nextRouting.setPreOperationId(cuttingOperationRouting.getOperationId());
+
+        for (int i = 0; i < routingList.size(); i++) {
+            OperationRouting theOperationRouting = routingList.get(i);
+            theOperationRouting.setOperationRoutingOrderId(materialOperationRoutingOrder.getRecordId());
+            theOperationRouting.setCompleteQty(0);
+            theOperationRouting.setScrapQty(0);
+            theOperationRouting.setOperationRoutingStatus(BCode.OPERATION_ROUTING_STATUS_PLANNED);
+            String recordId = UUID.randomUUID().toString();
+            Optional<OperationRouting> next = routingList.stream().filter(x -> x.getPreRoutingId().equalsIgnoreCase(theOperationRouting.getRecordId())).findAny();
+            if (next.isPresent()) {
+                next.get().setPreRoutingId(recordId);
+            }
+            theOperationRouting.setRecordId(recordId);
+
+            operationRoutingDAO.insert(theOperationRouting);
+        }
+    }
+
+    private OperationRoutingOrder createOperationRoutingOrderHeader(ProductionOrder productionOrder) {
+        OperationRoutingOrder materialOperationRoutingOrder = operationRoutingOrderDAO.getByRefId(productionOrder.getFgMaterialId());
+        if (materialOperationRoutingOrder == null) {
+            throwException(ERROR_UNKNOWN_EXCEPTION, String.format("物料%s没有建立工艺路线单", productionOrder.getFgMaterialId()));
+        }
+
+        OperationRoutingOrder theOperationRoutingOrder = new OperationRoutingOrder();
+        theOperationRoutingOrder.setRefId(productionOrder.getRecordId());
+        theOperationRoutingOrder.setOperationRoutingType(BCode.OPERATION_ROUTING_ORDER_TYPE_PRODUCTION_ORDER);
+        operationRoutingOrderDAO.insert(theOperationRoutingOrder);
+        return materialOperationRoutingOrder;
+    }
+
+    private void saveBom(BomVO[] bomList, ProductionOrder productionOrder) {
+        BomOrder bomOrder = this.bomOrderLogic.createBomOrder(BCode.BOM_TYPE_MANUFACTURE, productionOrder.getRecordId());
+        for (int i = 0; i < bomList.length; i++) {
+            BomVO bomVO = bomList[i];
+            bomVO.setRecordId(UUID.randomUUID().toString()); //指定为新的BOM
+            bomVO.setBomOrderId(bomOrder.getRecordId());
+            bomDAO.insert(bomVO);
+        }
+    }
+
+    private void saveMeasureData(ProductionOrderMeasureData[] measureDataList, ProductionOrder productionOrder) {
+        for (int i = 0; i < measureDataList.length; i++) {
+            ProductionOrderMeasureData measureData = measureDataList[i];
+            measureData.setProductionOrderId(productionOrder.getRecordId());
+            productionOrderMeasureDataDAO.insert(measureData);
+        }
+    }
+
+    private void saveSize(ProductionOrderSize[] sizes, ProductionOrder productionOrder) {
+        for (int i = 0; i < sizes.length; i++) {
+            ProductionOrderSize productionOrderSize = sizes[i];
+            productionOrderSize.setProductionOrderId(productionOrder.getRecordId());
             productionOrderSizeDAO.insert(productionOrderSize);
         }
-        //保存量体数据
-
-        return productionOrder;
     }
 
-    private ProductionOrder createOrderHeader(RequirementOrder requirementOrder, ScheduleOrder scheduleOrder, BomOrder bomOrder) {
+    private ProductionOrder createOrderHeader(RequirementOrder requirementOrder, ScheduleOrder scheduleOrder) {
         ProductionOrder productionOrder = new ProductionOrder();
         this.fillFromRequirementOrder(requirementOrder, productionOrder);
         this.fillFromScheduleOrder(scheduleOrder, productionOrder);
         productionOrder.setProductionOrderStatus(BCode.ORDER_STATUS_PLANNED);
-        productionOrder.setBomOrderId(bomOrder.getRecordId());
         productionOrderDAO.insert(productionOrder);
         return productionOrder;
     }

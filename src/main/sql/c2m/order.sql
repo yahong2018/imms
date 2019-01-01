@@ -23,8 +23,6 @@ CREATE TABLE `production_order`  (
   `record_id`                   char(36)          NOT NULL,
   `production_order_no`         varchar(64)       NOT NULL,
   `production_order_status`     int               NOT NULL default 0,
-  `bom_order_id`                char(36)          NULL ,
-  `operation_routing_order_id`  char(36)          NULL ,
   `material_ready`              varchar(10)       NULL       COMMENT '物料准备',
   `priority`                    varchar(10)       NOT NULL,
   `requirement_order_id`        char(36)          NOT NULL,
@@ -43,34 +41,45 @@ CREATE TABLE `production_order`  (
   `actual_end_date`             datetime(0)       NULL ,
   `schedule_order_id`           char(36)          NULL       COMMENT '排程编号',
 
-  `create_by`                   varchar(6)        NOT NULL,
+  `create_by`                   char(36)          NOT NULL,
   `create_date`                 datetime          NOT NULL,
-  `update_by`                   varchar(6)        NULL,
+  `update_by`                   char(36)          NULL,
   `update_date`                 datetime          NOT NULL,
   `optLock`                     int               NOT NULL DEFAULT 0,
 
   PRIMARY KEY (`record_id`)
 ) COMMENT = '生产订单';
 
-CREATE TABLE `production_order_routing`  (
-  `record_id`                  char(36)         NOT NULL       AUTO_INCREMENT,
-  `production_order_id`        char(36)         NULL ,
-  `operation_id`               char(36)         NOT NULL,
-  `qa_procedure`               varchar(200)     NULL ,
-  `machine_type_id`            char(36)         NULL ,
-  `standard_time`              float(10,4)      NULL ,
-  `standard_price`             float(8,4)       NULL ,
-  `section_type`               varchar(20)      NULL ,
-  `pre_operation_id`           char(36)         NULL       COMMENT '依赖关系-上道工序',
-  `sop_file_path`              varchar(255)     NULL ,
 
-  PRIMARY KEY (`record_id`)
-) COMMENT = '生产订单工序信息';
+CREATE TABLE `production_order_measure_data`  (
+  `record_id`                   char(36)          NOT NULL,
+  `production_order_id`         char(36)          NULL       COMMENT '生产订单主键',
+  `measure_body`                varchar(20)       NULL       COMMENT '量体部位',
+  `measure_data`                varchar(20)       NULL       COMMENT '量体数据',
+  `measure_body_no`             varchar(20)       NULL ,
+
+  PRIMARY KEY (`record_id`) ,
+  INDEX `IDX_PRO_ORDER_MD_01`(`production_order_id`)
+) COMMENT = '生产订单量体数据';
+
+
+CREATE TABLE `measure_body_classify`  (
+  `record_id`                char(36)            NOT NULL,
+  `classify_no`              varchar(10)         NOT NULL   COMMENT '选项编码',
+  `classify_name`            varchar(20)         NULL       COMMENT '选项名称',
+  `parent_id`                bigint(20)          NULL       COMMENT '上层选项主键',
+  `unit`                     varchar(10)         NULL       COMMENT '数据单位',
+
+  PRIMARY KEY (`record_id`) ,
+  INDEX `IDX_MBC_01`(`classify_no`) ,
+  INDEX `IDX_MBC_02`(`classify_name`) ,
+  INDEX `IDX_MBC_03`(`parent_id`)
+) COMMENT = '针对服装类型 定义量体选项的内容 ';
+
 
 CREATE TABLE `production_order_size`  (
   `record_id`                         char(36)         NOT NULL AUTO_INCREMENT,
   `production_order_id`        char(36)         NOT NULL,
-  -- `line_no`                    int(11)            NULL       COMMENT '行项目',
   `size`                       varchar(10)      NULL ,
   `planned_qty`                int              NULL ,
   `actual_qty`                 int              NULL ,
@@ -81,21 +90,22 @@ CREATE TABLE `production_order_size`  (
 
 
 CREATE TABLE `material_picking_order`  (
-  `id`                        bigint(20)         NOT NULL AUTO_INCREMENT,
-  `material_picking_order_no` varchar(64)        NOT NULL,
-  `production_order_id`       bigint(20)         NOT NULL,
-  `status`                    varchar(10)        NULL ,
-  `type`                      varchar(10)        NULL ,
-  `planned_picking_date`      datetime(0)        NULL ,
-  `actual_picking_date`       datetime(0)        NULL ,
-  `operator`                  varchar(10)        NULL ,
+  `record_id`                            char(36)           NOT NULL,
+  `material_picking_order_no`            varchar(64)        NOT NULL,
+  `production_order_id`                  char(36)           NOT NULL,
+  `material_picking_order_status`        tinyint            NOT NULL ,
+  `material_picking_order_type`          tinyint            NOT NULL ,
+  `planned_picking_date`                 datetime           NULL ,
+  `actual_picking_date`                  datetime           NULL ,
+  `operator_id`                          char(36)           NULL ,
 
-  `created_date` datetime(0) NOT NULL,
-  `created_by` varchar(10) NOT NULL,
-  `last_modified_date` datetime(0) NULL ,
-  `last_modified_by` varchar(10) NULL ,
+  `create_by`                   char(36)          NOT NULL,
+  `create_date`                 datetime          NOT NULL,
+  `update_by`                   char(36)          NULL,
+  `update_date`                 datetime          NOT NULL,
+  `optLock`                     int               NOT NULL DEFAULT 0,
 
-  PRIMARY KEY (`id`) ,
+  PRIMARY KEY (`record_id`) ,
   INDEX `IDX_MATERIAL_PO_01`(`material_picking_order_no`) ,
   INDEX `IDX_MATERIAL_PO_02`(`production_order_id`)
 ) COMMENT = '领料单';

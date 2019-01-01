@@ -23,7 +23,7 @@ public class OperationRouting extends EntityObject {
     private float         actualTime;
     private String        preOperationId;
     private String        sopFilePath;
-    private String        operationRoutingStatus;
+    private int           operationRoutingStatus;
     private String        requiredLevel;
     private int           scrapQty;
     private int           completeQty;
