@@ -11,7 +11,7 @@ import java.util.Map;
 import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
-public class BaseDAOWithEntity<T extends EntityObject> extends BaseDAO implements Generic<T> {
+public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO implements Generic<T> {
     protected Class clazz;
 
     public BaseDAOWithEntity() {

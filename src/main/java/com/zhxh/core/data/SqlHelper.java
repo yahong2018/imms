@@ -1,5 +1,6 @@
 package com.zhxh.core.data;
 
+import com.zhxh.core.data.meta.annotation.AutoGenerationType;
 import com.zhxh.core.utils.BeanUtils;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Component;
@@ -29,7 +30,12 @@ public class SqlHelper {
 
     public int executeNoneQuery(String sql, Map parameters) {
         Map map = this.WrapParameterMap(sql, parameters, Integer.class);
-        return sqlSession.update(SQL_EXECUTE_COMMAND, map);
+        int result = sqlSession.update(SQL_EXECUTE_COMMAND, map);
+        if(map.containsKey("useGeneratedKeys")){
+            String keyProperty = map.get("keyProperty").toString();
+            parameters.put(keyProperty,map.get(keyProperty));
+        }
+        return result;
     }
 
     public <T> T executeScalar(Class<?> clazz, String sql, Map parameters) {
@@ -81,8 +87,18 @@ public class SqlHelper {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         Map<String, Object> itemMap = BeanUtils.getValues(item);
         String insertSql = meta.getSqlInsert();
+        if(meta.getDataTableConfigurationConfig().keyCreateType()== AutoGenerationType.AUTO_INCREMENT) {
+            itemMap.put("itemClass",item.getClass());
+            itemMap.put("useGeneratedKeys", true);
+            itemMap.put("keyProperty", meta.getKeyProperty());
+        }
+        int result = this.executeNoneQuery(insertSql, itemMap);
+        if(meta.getDataTableConfigurationConfig().keyCreateType()== AutoGenerationType.AUTO_INCREMENT) {
+            Object keyValue = itemMap.get(meta.getKeyProperty());
+            BeanUtils.setValue(item,meta.getKeyProperty(),keyValue);
+        }
 
-        return this.executeNoneQuery(insertSql, itemMap);
+        return result;
     }
 
     public int insert(Object item, String sqlId) {

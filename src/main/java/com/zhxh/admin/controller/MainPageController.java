@@ -2,14 +2,13 @@ package com.zhxh.admin.controller;
 
 import com.zhxh.admin.entity.RolePrivilege;
 import com.zhxh.admin.entity.SystemUser;
-import com.zhxh.admin.logic.AuthenticateLogic;
-import com.zhxh.admin.logic.MainPageLogic;
-import com.zhxh.admin.logic.SystemProgramLogic;
-import com.zhxh.admin.logic.SystemUserLogic;
+import com.zhxh.admin.service.AuthenticateService;
+import com.zhxh.admin.service.MainPageService;
+import com.zhxh.admin.service.SystemProgramService;
+import com.zhxh.admin.service.SystemUserService;
 import com.zhxh.admin.vo.SystemMenu;
 import com.zhxh.admin.vo.SystemProgramWithChildren;
 import com.zhxh.admin.vo.SystemUserWithPrivilege;
-import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.utils.BeanUtils;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
@@ -28,33 +27,33 @@ import java.util.List;
 @RequestMapping("/mainPage")
 public class MainPageController {
 	private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
-    @Resource(name = "mainPageLogic")
-    private MainPageLogic mainPageLogic;
+    @Resource(name = "mainPageService")
+    private MainPageService mainPageService;
 
-    @Resource(name = "authenticateLogic")
-    private AuthenticateLogic authenticateLogic;
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
 
-    @Resource(name = "systemUserLogic")
-    private SystemUserLogic systemUserLogic;
+    @Resource(name = "systemUserService")
+    private SystemUserService systemUserService;
     
-    @Resource(name = "systemProgramLogic")
-    private SystemProgramLogic systemProgramLogic;
+    @Resource(name = "systemProgramService")
+    private SystemProgramService systemProgramService;
 
     @RequestMapping("getUserMenu.handler")
     @ResponseBody
     public List<SystemMenu> getUserMenu() {
-        return mainPageLogic.getCurrentUserMenu();
+        return mainPageService.getCurrentUserMenu();
     }
 
     @RequestMapping("getCurrentLogin.handler")
     @ResponseBody
     public SystemUserWithPrivilege getCurrentUser() {
-        SystemUser result = authenticateLogic.getCurrentLogin();
+        SystemUser result = authenticateService.getCurrentLogin();
         if(result==null){
             return null;
         }
         result.setPassword("");
-        List<RolePrivilege> privileges = systemUserLogic.getUserAllPrivileges(result.getRecordId());
+        List<RolePrivilege> privileges = systemUserService.getUserAllPrivileges(result.getRecordId());
         SystemUserWithPrivilege systemUserWithPrivilege = new SystemUserWithPrivilege();
         BeanUtils.copy(result,systemUserWithPrivilege);
         systemUserWithPrivilege.setPrivilegeList(privileges);
@@ -65,7 +64,7 @@ public class MainPageController {
     @RequestMapping("getAllMenu.handler")
 	@ResponseBody
 	public List<SystemProgramWithChildren> getAll(){
-        return  systemProgramLogic.getAllWithChildren();
+        return  systemProgramService.getAllWithChildren();
     }
 
     @RequestMapping("getAllByPage.handler")
@@ -74,12 +73,12 @@ public class MainPageController {
         return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {
-                return systemProgramLogic.getPageList(listRequest.toMap(), null);
+                return systemProgramService.getPageList(listRequest.toMap(), null);
             }
 
             @Override
             public int getRequestListCount(ListRequest listRequest) {
-                return systemProgramLogic.getPageListCount(listRequest.toMap(), null);
+                return systemProgramService.getPageListCount(listRequest.toMap(), null);
             }
         });
     }

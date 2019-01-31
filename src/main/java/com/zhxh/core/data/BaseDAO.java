@@ -55,7 +55,7 @@ public class BaseDAO {
     public final int insert(Object item) throws BusinessException {
         if (item instanceof EntityObject) {
             EntityObject theItem = (EntityObject) item;
-            if (EMPTY_UUID.equals(theItem.getRecordId())||StringUtils.isEmpty(theItem.getRecordId())) {
+            if (EMPTY_UUID.equals(theItem.getRecordId())||StringUtils.isEmpty(theItem.getRecordId().toString())) {
                 theItem.setRecordId(UUID.randomUUID().toString());
             }
         }

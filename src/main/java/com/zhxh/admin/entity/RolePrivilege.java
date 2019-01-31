@@ -1,23 +1,21 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
-@DataTable("role_privilege")
+@DataTableConfiguration("role_privilege")
 @Getter
 @Setter
-public class RolePrivilege extends EntityObject {
-    private String programPrivilegeId;
-    private String roleId;
-    private String programId;
+public class RolePrivilege extends EntityObject<Long> {
+    private Long programPrivilegeId;
+    private Long roleId;
+    private Long programId;
     private String privilegeCode;
 
     public RolePrivilege(){}
-    public RolePrivilege(String roleId, ProgramPrivilege programPrivilege){
+    public RolePrivilege(Long roleId, ProgramPrivilege programPrivilege){
         this.setRoleId(roleId);
         this.setPrivilegeCode(programPrivilege.getPrivilegeCode());
         this.setProgramId(programPrivilege.getProgramId());

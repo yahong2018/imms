@@ -1,18 +1,18 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
 import static com.zhxh.core.data.DataCode.BCode.*;
 
 
-@DataTable("program_privilege")
+@DataTableConfiguration("program_privilege")
 @Getter
 @Setter
-public class ProgramPrivilege extends EntityObject {
-    private String programId;
+public class ProgramPrivilege extends EntityObject<Long> {
+    private Long programId;
     private String privilegeCode;
     private String privilegeName;
 

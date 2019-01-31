@@ -1,11 +1,7 @@
 package com.zhxh.core.data;
 
-import com.zhxh.core.data.meta.annotation.AutoGeneration;
-import com.zhxh.core.data.meta.annotation.CheckUnique;
-import com.zhxh.core.data.meta.annotation.TreeTableParentKey;
-import com.zhxh.core.data.meta.annotation.TreeTable;
+import com.zhxh.core.data.meta.annotation.*;
 import com.zhxh.core.utils.ClassUtils;
-import com.zhxh.core.utils.Logger;
 import com.zhxh.core.utils.StringUtilsExt;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.mapping.ResultMap;
@@ -27,14 +23,27 @@ public abstract class EntitySqlMeta {
     }
 
     private void initDefaultInsertSql() {
-        StringBuffer buffer = new StringBuffer("insert into ").append(tableName)
+        Object[] columns = this.columns.toArray();
+        Object[] properties = this.properties.toArray();
+        if(this.dataTableConfigurationConfig!=null && dataTableConfigurationConfig.keyCreateType()==AutoGenerationType.AUTO_INCREMENT) {
+            List<String> tmpColumns = new ArrayList<String>();
+            tmpColumns.addAll(this.columns);
+            tmpColumns.remove(this.keyColumn);
+            columns = tmpColumns.toArray();
+
+            List<String> tmpProperties = new ArrayList<>();
+            tmpProperties.addAll(this.properties);
+            tmpProperties.remove(this.keyProperty);
+            properties = tmpProperties.toArray();
+        }
+        String sql = new StringBuffer("insert into ").append(tableName)
                 .append(" (")
-                .append(StringUtils.join(columns.toArray(), ","))
+                .append(StringUtils.join(columns, ","))
                 .append(") ")
                 .append("values (")
-                .append(StringUtilsExt.joinWrap(properties.toArray(), ",", "#{", "}"))
-                .append(")");
-        this.sqlInsert = buffer.toString();
+                .append(StringUtilsExt.joinWrap(properties, ",", "#{", "}"))
+                .append(")").toString();
+        this.sqlInsert = sql;
     }
 
     private void initDefaultDeleteSql() {
@@ -139,7 +148,7 @@ public abstract class EntitySqlMeta {
     private ResultMap resultMap;
     private boolean treeTable;
     private String parentKeyField;
-    private boolean autoGenerationKey;
+    private DataTableConfiguration dataTableConfigurationConfig;
 
     private List<String> columns = new ArrayList<>();
     private List<String> properties = new ArrayList<>();
@@ -147,6 +156,10 @@ public abstract class EntitySqlMeta {
     private Map<String, String> propertyColumns = new HashMap<>();
     private Map<String, String> fieldsAssigns = new HashMap<>();
     private Map<String, String> propertyExprs = new HashMap<>();
+
+    public DataTableConfiguration getDataTableConfigurationConfig() {
+        return dataTableConfigurationConfig;
+    }
 
     public String getSqlDeleteAll() {
         return sqlDeleteAll;
@@ -260,13 +273,6 @@ public abstract class EntitySqlMeta {
         this.checkUniqueSql = checkUniqueSql;
     }
 
-    public boolean isAutoGenerationKey() {
-        return autoGenerationKey;
-    }
-
-    public void setAutoGenerationKey(boolean autoGenerationKey) {
-        this.autoGenerationKey = autoGenerationKey;
-    }
 
     public void setResultMap(ResultMap resultMap) {
         this.propertyColumns.clear();
@@ -306,12 +312,10 @@ public abstract class EntitySqlMeta {
             if (resultMap.getIdResultMappings().size() > 0) {
                 this.keyColumn = resultMap.getIdResultMappings().get(0).getColumn();
                 this.keyProperty = resultMap.getIdResultMappings().get(0).getProperty();
+                this.dataTableConfigurationConfig = (DataTableConfiguration) clazz.getAnnotation(DataTableConfiguration.class);
 
-                try {
-                    this.autoGenerationKey = (clazz.getDeclaredField(this.keyProperty).getAnnotation(AutoGeneration.class) != null);
-                } catch (NoSuchFieldException e) {
-                    Logger.error(e.getMessage());
-                }
+                this.propertyExprs.remove(this.keyProperty);
+                this.fieldsAssigns.remove(this.keyColumn);
             }
         }
     }
@@ -341,7 +345,7 @@ public abstract class EntitySqlMeta {
         this.resultMap = meta.resultMap;
         this.treeTable = meta.treeTable;
         this.parentKeyField = meta.parentKeyField;
-        this.autoGenerationKey = meta.autoGenerationKey;
+        this.dataTableConfigurationConfig = meta.dataTableConfigurationConfig;
         this.columns.addAll(meta.columns);
         this.properties.addAll(meta.properties);
         this.uniqueFields.addAll(meta.uniqueFields);

@@ -10,10 +10,10 @@ import java.util.Map;
 
 @Component("operationRoutingDAO")
 public class OperationRoutingDAO extends BaseDAOWithEntity<OperationRouting> {
-    public List<OperationRouting> getByOperationRoutingOrderId(String operationRoutingOrderId) {
+    public List<OperationRouting> getByOperationRoutingOrderId(Long operationRoutingOrderId) {
         Map<String, String> listMap = new HashMap<>();
         listMap.put("where", "operation_routing_order_id=#{operationRoutingOrderId}");
-        Map<String, String> parameters = new HashMap<>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("operationRoutingOrderId", operationRoutingOrderId);
 
         return this.getList(listMap, parameters);

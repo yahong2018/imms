@@ -17,7 +17,7 @@ public class ProgramPrivilegeDAO extends BaseDAOWithEntity<ProgramPrivilege> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_USER_PROGRAM_PRIVILEGE, parameters);
     }
 
-    public ProgramPrivilege getProgramRunPrivilege(String programId) {
+    public ProgramPrivilege getProgramRunPrivilege(Long programId) {
         String where = "program_id=#{programId} and privilege_code=#{privilegeCode}";
         Map parameters = new HashMap();
         parameters.put("programId", programId);

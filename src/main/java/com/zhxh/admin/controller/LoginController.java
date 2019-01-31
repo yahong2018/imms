@@ -1,7 +1,6 @@
 package com.zhxh.admin.controller;
 
-import com.zhxh.admin.entity.SystemUser;
-import com.zhxh.admin.logic.AuthenticateLogic;
+import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.Logger;
 import org.apache.commons.lang3.StringUtils;
@@ -14,18 +13,21 @@ import javax.annotation.Resource;
 
 @Controller
 public class LoginController {
-    @Resource(name = "authenticateLogic")
-    AuthenticateLogic authenticateLogic;
+    private final static String LOGIN_URL="admin/login";
+
+    @Resource(name = "authenticateService")
+    private AuthenticateService authenticateService;
 
     @RequestMapping("/login")
     public String login() {
-        return "admin/login";
+        return LOGIN_URL;
     }
+
 
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
     public String doLogin(Model model, String userCode, String password) {
         try {
-            authenticateLogic.authenticate(userCode,password);
+            authenticateService.authenticate(userCode,password);
             String url = SysEnv.getAppRoot() + SysEnv.getUrlAppIndex();
             if (StringUtils.isEmpty(url)) {
                 url = "/";
@@ -37,17 +39,17 @@ public class LoginController {
             Logger.info(errorMessage);
         }
 
-        return "admin/login";
+        return LOGIN_URL;
     }
 
     @RequestMapping("/login/logout")
     public String logout(){
         try {
-            authenticateLogic.kickOffUser();
+            authenticateService.kickOffUser();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "admin/login";
+        return LOGIN_URL;
     }
 }

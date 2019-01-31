@@ -1,8 +1,7 @@
 package com.zhxh.admin.misc;
 
 import com.zhxh.admin.entity.SystemUser;
-import com.zhxh.admin.logic.AuthenticateLogic;
-import com.zhxh.core.env.SysEnv;
+import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.utils.Logger;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -17,8 +16,8 @@ import java.util.HashSet;
 
 @Component
 public class SessionManager implements HttpSessionListener {
-    @Resource(name="authenticateLogic")
-    private AuthenticateLogic authenticateLogic;
+    @Resource(name="authenticateService")
+    private AuthenticateService authenticateService;
 
     public SessionManager(){
     }
@@ -67,11 +66,11 @@ public class SessionManager implements HttpSessionListener {
         HttpSession session = event.getSession();
         synchronized (sessions) {
             if (sessions.contains(session)) {
-                SystemUser user = this.authenticateLogic.getSessionLogin(session);
+                SystemUser user = this.authenticateService.getSessionLogin(session);
                 if (user != null) {
                     Logger.debug("用户" + user.getUserCode() + "退出");
                     try {
-                        authenticateLogic.kickOffUser(user);
+                        authenticateService.kickOffUser(user);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

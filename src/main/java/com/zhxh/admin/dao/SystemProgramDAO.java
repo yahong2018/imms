@@ -19,13 +19,13 @@ public class SystemProgramDAO extends BaseDAOWithEntity<SystemProgram> {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PROGRAM_PRIVILEGES, parameters);
     }
 
-    public List<SystemProgram> getUserProgramMenu(String userId) {
+    public List<SystemProgram> getUserProgramMenu(Long userId) {
         Map parameters = new HashMap();
         parameters.put("userId", userId);
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_USER_PROGRAM_MENU, parameters);
     }
 
-    public SystemProgram getParent(String programId) {
+    public SystemProgram getParent(Long programId) {
         Map parameters = new HashMap();
         parameters.put("programId", programId);
         return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_PARENT_PROGRAM, parameters);

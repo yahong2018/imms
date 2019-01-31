@@ -1,14 +1,14 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTable("code_seed")
+@DataTableConfiguration("code_seed")
 @Getter
 @Setter
-public class CodeSeed extends EntityObject {
+public class CodeSeed extends EntityObject<Long> {
     private String seedNo;
     private String seedName;
     private int initialValue;

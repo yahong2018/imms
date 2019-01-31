@@ -5,12 +5,11 @@ import com.zhxh.core.data.meta.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-@DataTable("material_type")
+@DataTableConfiguration("material_type")
 @TreeTable
 @Getter
 @Setter
-public class MaterialType extends EntityObject {
+public class MaterialType extends EntityObject<Long> {
     @CheckUnique
     private String materialTypeNo;
     private String materialTypeName;

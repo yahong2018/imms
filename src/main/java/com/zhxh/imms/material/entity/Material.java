@@ -1,24 +1,23 @@
 package com.zhxh.imms.material.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTable("material")
+@DataTableConfiguration("material")
 @Getter
 @Setter
-public class Material extends EntityObject {
+public class Material extends EntityObject<Long> {
     @CheckUnique
     private String materialNo;
-    private String materialTypeId;
+    private Long materialTypeId;
     private String materialName;
-    private String materialUomId;
+    private Long materialUomId;
     private double materialWidth;
     private double materialWeight;
-    private String materialSizeId;
+    private Long materialSizeId;
     private double materialPrice;
     private String materialColor;
     private String materialDescription;

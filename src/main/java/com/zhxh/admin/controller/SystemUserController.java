@@ -3,8 +3,8 @@ package com.zhxh.admin.controller;
 import com.zhxh.admin.entity.RoleUser;
 import com.zhxh.admin.entity.SystemRole;
 import com.zhxh.admin.entity.SystemUser;
-import com.zhxh.admin.logic.RoleUserLogic;
-import com.zhxh.admin.logic.SystemUserLogic;
+import com.zhxh.admin.service.RoleUserService;
+import com.zhxh.admin.service.SystemUserService;
 import com.zhxh.core.web.ExtJsResult;
 import com.zhxh.core.web.ListRequest;
 import com.zhxh.core.web.ListRequestBaseHandler;
@@ -19,16 +19,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-import static com.zhxh.core.data.DataCode.BCode.*;
-
 @Controller
 @RequestMapping("/admin/systemUsers")
 public class SystemUserController {
-    @Resource(name = "systemUserLogic")
-    private SystemUserLogic systemUserLogic;
+    @Resource(name = "systemUserService")
+    private SystemUserService systemUserService;
 
-    @Resource(name = "roleUserLogic")
-    private RoleUserLogic roleUserLogic;
+    @Resource(name = "roleUserService")
+    private RoleUserService roleUserService;
 
     private final ListRequestProcessHandler listRequestProcessHandler = new ListRequestProcessHandler();
 
@@ -38,12 +36,12 @@ public class SystemUserController {
         return listRequestProcessHandler.getListFromHttpRequest(request, new ListRequestBaseHandler() {
             @Override
             public List getByRequest(ListRequest listRequest) {
-                return systemUserLogic.getSystemUserDAO().getPageList(listRequest.toMap(), null);
+                return systemUserService.getSystemUserDAO().getPageList(listRequest.toMap(), null);
             }
 
             @Override
             public int getRequestListCount(ListRequest listRequest) {
-                return systemUserLogic.getSystemUserDAO().getPageListCount(listRequest.toMap(), null);
+                return systemUserService.getSystemUserDAO().getPageListCount(listRequest.toMap(), null);
             }
         });
     }
@@ -51,62 +49,62 @@ public class SystemUserController {
     @RequestMapping("openLoginAccount.handler")
     @ResponseBody
     public SystemUser openLoginAccount(SystemUser user) {
-        systemUserLogic.openLoginAccount(user);
+        systemUserService.openLoginAccount(user);
         return user;
     }
 
     @RequestMapping("update.handler")
     @ResponseBody
     public SystemUser update(SystemUser user) {
-        systemUserLogic.update(user);
+        systemUserService.update(user);
         return user;
     }
 
     @RequestMapping("delete.handler")
     @ResponseBody
     public int delete(@RequestBody String[] userIdList) {
-        return systemUserLogic.delete(userIdList);
+        return systemUserService.delete(userIdList);
     }
 
     @RequestMapping("disableUser.handler")
     @ResponseBody
     public int disableUser(String userId) {
-        return systemUserLogic.disableUser(userId);
+        return systemUserService.disableUser(userId);
     }
 
     @RequestMapping("enableUser.handler")
     @ResponseBody
     public int enableUser(String userId) {
-        return systemUserLogic.enableUser(userId);
+        return systemUserService.enableUser(userId);
     }
 
     @RequestMapping("resetPassword.handler")
     @ResponseBody
     public int resetPassword(String userId) {
-        return systemUserLogic.resetPassword(userId);
+        return systemUserService.resetPassword(userId);
     }
 
     @RequestMapping("getUserRoles.handler")
     @ResponseBody
-    public List<SystemRole> getUserRoles(String userId) {
-        return systemUserLogic.getUserRoles(userId);
+    public List<SystemRole> getUserRoles(Long userId) {
+        return systemUserService.getUserRoles(userId);
     }
 
     @RequestMapping("updateUserRoles.handler")
     @ResponseBody
     public int updateRoles(String userId, @RequestBody RoleUser[] roleUsers) {
-        return roleUserLogic.updateUserRoles(userId, roleUsers);
+        return roleUserService.updateUserRoles(userId, roleUsers);
     }
 
     @RequestMapping("addRole.handler")
     @ResponseBody
     public int addRole(String userId, String roleId) {
-        return systemUserLogic.addRole(userId, roleId);
+        return systemUserService.addRole(userId, roleId);
     }
 
     @RequestMapping("removeRole.handler")
     @ResponseBody
     public int removeRole(String userId, String roleId) {
-        return systemUserLogic.removeRole(userId, roleId);
+        return systemUserService.removeRole(userId, roleId);
     }
 }

@@ -53,14 +53,14 @@ public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
         return this.getOne(where, parameters);
     }
 
-    public List<SystemRole> getUserRoles(String userId) {
+    public List<SystemRole> getUserRoles(Long userId) {
         Map map = new HashMap();
         map.put("userId", userId);
 
         return this.sqlHelper.getSqlSession().selectList(SQL_GET_USER_ROLES, map);
     }
 
-    public List<SystemUser> getRoleUsers(String roleId) {
+    public List<SystemUser> getRoleUsers(Long roleId) {
         Map map = new HashMap();
         map.put("roleId", roleId);
 

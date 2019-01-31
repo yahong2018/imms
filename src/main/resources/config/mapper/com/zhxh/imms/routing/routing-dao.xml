@@ -2,11 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.routing.dao">
-    <select id="SQL_GET_OPERATION_MEDIA_VO" parameterType="java.util.Map"  resultMap="com.zhxh.imms.routing.vo.OperationMediaVO">
-        select operation_media_id,operation_media_operation_id,operation_media_media_id,
-               media_type,media_url,media_name,media_size,media_description,media_data_source
-        from operation_media join media on operation_media_media_id = media_id
-    </select>
+    <!--<select id="SQL_GET_OPERATION_MEDIA_VO" parameterType="java.util.Map"  resultMap="com.zhxh.imms.routing.vo.OperationMediaVO">-->
+        <!--select operation_media_id,operation_media_operation_id,operation_media_media_id,-->
+               <!--media_type,media_url,media_name,media_size,media_description,media_data_source-->
+        <!--from operation_media join media on operation_media_media_id = media_id-->
+    <!--</select>-->
 
     <select id="SQL_GET_OPERATION_VO" parameterType="java.util.Map" resultMap="com.zhxh.imms.routing.vo.OperationVO">
         select  operation_id,                         

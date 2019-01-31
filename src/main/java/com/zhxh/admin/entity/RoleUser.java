@@ -1,17 +1,14 @@
 package com.zhxh.admin.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-import java.util.UUID;
-
-@DataTable("role_user")
+@DataTableConfiguration("role_user")
 @Getter
 @Setter
-public class RoleUser extends EntityObject {
+public class RoleUser extends EntityObject<Long> {
     private String roleId;
     private String userId;
 }

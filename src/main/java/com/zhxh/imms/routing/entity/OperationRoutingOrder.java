@@ -1,15 +1,15 @@
 package com.zhxh.imms.routing.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTable("operation_routing_order")
+@DataTableConfiguration("operation_routing_order")
 @Getter
 @Setter
-public class OperationRoutingOrder extends EntityObject {
+public class OperationRoutingOrder extends EntityObject<Long> {
     private String operationRoutingOrderNo;
     private int operationRoutingType;
-    private String refId;
+    private Long refId;
 }

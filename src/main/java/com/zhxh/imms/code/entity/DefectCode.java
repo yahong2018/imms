@@ -4,13 +4,11 @@ import com.zhxh.core.data.meta.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
-@DataTable("defect_code")
+@DataTableConfiguration("defect_code")
 @TreeTable
 @Getter
 @Setter
-public class DefectCode extends EntityObject {
+public class DefectCode extends EntityObject<Long> {
     @CheckUnique
     private String defectCodeNo;
     private String defectCodeName;

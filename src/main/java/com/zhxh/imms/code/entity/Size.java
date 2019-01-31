@@ -5,12 +5,11 @@ import com.zhxh.core.data.meta.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-@DataTable("size")
+@DataTableConfiguration("size")
 @TreeTable
 @Getter
 @Setter
-public class Size extends EntityObject {
+public class Size extends EntityObject<Long> {
     @CheckUnique
     private String sizeNo;
     private String sizeName;

@@ -2,21 +2,21 @@ package com.zhxh.imms.material.entity;
 
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@DataTable("bom_order")
+@DataTableConfiguration("bom_order")
 @Getter
 @Setter
-public class BomOrder extends EntityObject {
+public class BomOrder extends EntityObject<Long>{
     @CheckUnique
     private String bomOrderNo;
     private int bomOrderTypeNo;
-    private String refId;
+    private Long refId;
 
     private final static Map<String, String> bomTypeNames = new HashMap<String, String>() {
         {

@@ -22,11 +22,11 @@
         <result property="operationPartCode" column="operation_part_code"/>
     </resultMap>
 
-    <resultMap id="OperationMedia" type="com.zhxh.imms.routing.entity.OperationMedia">
-        <id property="operationMediaId" column="operation_media_id"/>
-        <result property="operationMediaOperationId" column="operation_media_operation_id"/>
-        <result property="operationMediaMediaId" column="operation_media_media_id"/>
-    </resultMap>
+    <!--<resultMap id="OperationMedia" type="com.zhxh.imms.routing.entity.OperationMedia">-->
+        <!--<id property="operationMediaId" column="operation_media_id"/>-->
+        <!--<result property="operationMediaOperationId" column="operation_media_operation_id"/>-->
+        <!--<result property="operationMediaMediaId" column="operation_media_media_id"/>-->
+    <!--</resultMap>-->
 
     <resultMap id="OperationRouting" type="com.zhxh.imms.routing.entity.OperationRouting">
         <id property="operationRoutingId" column="operation_routing_id"/>

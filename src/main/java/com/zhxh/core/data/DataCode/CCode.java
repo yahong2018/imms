@@ -1,11 +1,11 @@
 package com.zhxh.core.data.DataCode;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTable("data_code_type_c")
+@DataTableConfiguration("data_code_type_c")
 @Getter
 @Setter
 public class CCode extends EntityObject {

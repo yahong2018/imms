@@ -5,12 +5,11 @@ import com.zhxh.core.data.meta.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-@DataTable("machine_type")
+@DataTableConfiguration("machine_type")
 @TreeTable
 @Getter
 @Setter
-public class MachineType extends EntityObject {
+public class MachineType extends EntityObject<Long> {
     @CheckUnique
     private String machineTypeNo;
     private String machineTypeName;

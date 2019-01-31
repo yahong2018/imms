@@ -1,16 +1,16 @@
 package com.zhxh.imms.factory.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTable("work_center")
+@DataTableConfiguration("work_center")
 @Getter
 @Setter
-public class WorkCenter extends EntityObject {
+public class WorkCenter extends EntityObject<Long> {
     private String workCenterNo;
     private String workCenterName;
     private String description;
-    private String plantId;
+    private Long plantId;
 }

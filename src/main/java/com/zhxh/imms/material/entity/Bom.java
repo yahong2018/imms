@@ -1,23 +1,22 @@
 package com.zhxh.imms.material.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.AutoGeneration;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTable("bom")
+@DataTableConfiguration("bom")
 @Getter
 @Setter
-public class Bom extends EntityObject {
-    private String bomOrderId;
+public class Bom extends EntityObject<Long> {
+    private Long bomOrderId;
     private String componentTypeNo;
-    private String componentMaterialId;
-    private String componentAbstractMaterialId;
+    private Long componentMaterialId;
+    private Long componentAbstractMaterialId;
     private double componentQty;
     private String componentUomId;
     private String componentMaterialNoPath;
     private String componentMaterialNamePath;
-    private String componentMaterialMatchRuleId;
+    private Long componentMaterialMatchRuleId;
     private boolean ifMainFabric;
 }

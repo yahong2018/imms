@@ -1,17 +1,15 @@
 package com.zhxh.imms.code.entity;
 
 import com.zhxh.core.data.EntityObject;
-import com.zhxh.core.data.meta.annotation.AutoGeneration;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-@DataTable("uom")
+@DataTableConfiguration("uom")
 @Getter
 @Setter
-public class Uom extends EntityObject {
+public class Uom extends EntityObject<Long> {
     @CheckUnique
     private String uomNo;
     private String uomName;

@@ -10,7 +10,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public class SystemMenu {
-    private String programId;
+    private Long programId;
     private String programCode;
     private String programName;
     private String url;

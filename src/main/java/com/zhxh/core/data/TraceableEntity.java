@@ -1,32 +1,31 @@
 package com.zhxh.core.data;
 
 
-import com.zhxh.admin.logic.AuthenticateLogic;
+import com.zhxh.admin.service.AuthenticateService;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
-public class TraceableEntity extends EntityObject {
+public class TraceableEntity<T> extends EntityObject<T> {
     public static void fillCreateInfo(TraceableEntity entity){
-        entity.setCreateBy(AuthenticateLogic.getCurrentLogin().getRecordId());
+        entity.setCreateBy(AuthenticateService.getCurrentLogin().getRecordId());
         entity.setCreateDate(new Date());
     }
 
     public static void fillUpdateInfo(TraceableEntity entity){
-        entity.setUpdateBy(AuthenticateLogic.getCurrentLogin().getRecordId());
+        entity.setUpdateBy(AuthenticateService.getCurrentLogin().getRecordId());
         entity.setUpdateDate(new Date());
     }
 
     private Date createDate;
     private Date updateDate;
-    private String createBy;
-    private String updateBy;
+    private Long createBy;
+    private Long updateBy;
     private int optLock;
 
     static final List<String> internal_fields = new ArrayList<>();

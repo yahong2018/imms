@@ -1,11 +1,10 @@
 package com.zhxh.core.data;
 
-import com.zhxh.core.data.meta.annotation.DataTable;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import com.zhxh.core.env.SysEnv;
 import org.apache.ibatis.mapping.ResultMap;
 import org.mybatis.spring.SqlSessionTemplate;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,11 +39,11 @@ public class EntitySqlMetaFactory {
                 return selfMeta;
             }
 
-            DataTable dataTable = clazz.getAnnotation(DataTable.class);
-            if (dataTable == null) {
+            DataTableConfiguration dataTableConfiguration = clazz.getAnnotation(DataTableConfiguration.class);
+            if (dataTableConfiguration == null) {
                 return null;
             }
-            String tableName = dataTable.value();
+            String tableName = dataTableConfiguration.value();
 
             return initMeta(clazz, tableName);
         }

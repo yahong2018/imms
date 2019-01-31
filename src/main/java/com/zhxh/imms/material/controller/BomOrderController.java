@@ -4,14 +4,10 @@ import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.web.SimpleCRUDController;
 import com.zhxh.imms.material.dao.BomOrderDAO;
 import com.zhxh.imms.material.entity.BomOrder;
-import com.zhxh.imms.material.logic.BomOrderLogic;
-import com.zhxh.imms.material.vo.BomVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 @Controller
 @RequestMapping("/imms/material/bomOrder")

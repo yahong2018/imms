@@ -1,10 +1,7 @@
 package com.zhxh.sys.config;
 
 import com.github.miemiedev.mybatis.callable.CallableConvertInterceptor;
-import com.zhxh.core.data.EntitySqlMeta;
-import com.zhxh.core.data.EntitySqlMetaFactory;
-import com.zhxh.core.data.ResultTypeInterceptor;
-import com.zhxh.core.data.SqlMetaCreator;
+import com.zhxh.core.data.*;
 import com.zhxh.core.data.meta.MySqlMetaCreator;
 import com.zhxh.core.utils.Logger;
 import com.zhxh.imms.material.entity.BomOrder;
@@ -37,6 +34,9 @@ public class DataConfig {
     private ResultTypeInterceptor resultTypeInterceptor;
 
     @Autowired
+    private UpdateInterceptor updateInterceptor;
+
+    @Autowired
     private CallableConvertInterceptor callableConvertInterceptor;
 
     @Bean
@@ -48,6 +48,9 @@ public class DataConfig {
     public ResultTypeInterceptor createResultTypeInterceptor(){
         return new ResultTypeInterceptor();
     }
+
+    @Bean
+    public UpdateInterceptor createUpdateInterceptor(){return new UpdateInterceptor();}
 
     @Bean
     public CallableConvertInterceptor createCallableConvertInterceptor() {
@@ -75,7 +78,7 @@ public class DataConfig {
         }
 
         sqlSessionFactoryBean.setDataSource(dataSource);
-        Interceptor[] interceptors = new Interceptor[]{this.resultTypeInterceptor, this.callableConvertInterceptor};
+        Interceptor[] interceptors = new Interceptor[]{this.resultTypeInterceptor, this.callableConvertInterceptor,this.updateInterceptor};
         sqlSessionFactoryBean.setPlugins(interceptors);
         sqlSessionFactoryBean.setTypeAliasesPackage(dataSource.getMyBatisTypeAliasesPackage());
 
