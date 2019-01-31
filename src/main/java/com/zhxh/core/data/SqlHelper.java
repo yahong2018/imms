@@ -46,22 +46,13 @@ public class SqlHelper {
     public int getPageListCount(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.buildSelectByPageSql(listMap,true);
-        Map<String, Object> map = new HashMap<>();
-
-        map.put("start", listMap.get("start"));
-        map.put("limit", listMap.get("limit"));
-
-        if (parameters != null && parameters.size() > 0) {
-            map.putAll(parameters);
-        }
+        Map<String, Object> map = fillPageParameters(listMap, parameters);
         map.put("resultType",Integer.class);
 
         return this.executeScalar(clazz, sql, map);
     }
 
-    public List getPageList(Class<?> clazz, Map listMap, Map parameters) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String sql = meta.buildSelectByPageSql(listMap,false);
+    public Map<String, Object> fillPageParameters(Map listMap, Map parameters) {
         Map<String, Object> map = new HashMap<>();
         map.put("start", listMap.get("start"));
         map.put("limit", listMap.get("limit"));
@@ -69,6 +60,13 @@ public class SqlHelper {
         if (parameters != null && parameters.size() > 0) {
             map.putAll(parameters);
         }
+        return map;
+    }
+
+    public List getPageList(Class<?> clazz, Map listMap, Map parameters) {
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        String sql = meta.buildSelectByPageSql(listMap,false);
+        Map<String, Object> map = fillPageParameters(listMap, parameters);
 
         return this.executeList(clazz, sql, map);
     }
@@ -80,12 +78,9 @@ public class SqlHelper {
     }
 
     public int insert(Object item) {
-        if (item == null) {
-            return -1;
-        }
-
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         Map<String, Object> itemMap = BeanUtils.getValues(item);
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+
         String insertSql = meta.getSqlInsert();
         if(meta.getDataTableConfigurationConfig().keyCreateType()== AutoGenerationType.AUTO_INCREMENT) {
             itemMap.put("itemClass",item.getClass());
@@ -106,12 +101,8 @@ public class SqlHelper {
     }
 
     public int update(Object item) {
-        if (item == null) {
-            return -1;
-        }
-
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         Map<String, Object> itemMap = BeanUtils.getValues(item);
+        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         String updateSql = meta.getSqlUpdate();
 
         return this.executeNoneQuery(updateSql, itemMap);
@@ -122,10 +113,6 @@ public class SqlHelper {
     }
 
     public int delete(Object item) {
-        if (item == null) {
-            return -1;
-        }
-
         EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         Object keyValue = BeanUtils.getValue(item, meta.getKeyProperty());
         Map<String, Object> itemMap = new HashMap<>();

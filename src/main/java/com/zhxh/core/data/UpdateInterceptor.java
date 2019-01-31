@@ -26,23 +26,26 @@ public class UpdateInterceptor extends MyBatisAbstractInterceptor {
         final Object[] args = invocation.getArgs();
         MappedStatement ms = (MappedStatement) args[0];
         Map<String, Object> parameterObject = (Map<String, Object>) args[1];
+
         Class itemClass = (Class) parameterObject.get("itemClass");
-        if (!this.useGeneratedKeys) {
-            this.useGeneratedKeys = (boolean) parameterObject.get("useGeneratedKeys");
-        }
-        if (this.useGeneratedKeys) {
-            String keyProperty = parameterObject.get("keyProperty").toString();
-            args[0] =  newMappedStatement(ms,itemClass,keyProperty);
+        if (itemClass != null) {
+            if (!this.useGeneratedKeys) {
+                this.useGeneratedKeys = (boolean) parameterObject.get("useGeneratedKeys");
+            }
+            if (this.useGeneratedKeys) {
+                String keyProperty = parameterObject.get("keyProperty").toString();
+                args[0] = newMappedStatement(ms, itemClass, keyProperty);
+            }
         }
 
         return invocation.proceed();
     }
 
 
-    public MappedStatement newMappedStatement(MappedStatement ms, Class itemClass,String keyProperty) {
-        String id = ms.getId() + "_" + itemClass.getCanonicalName().replace(".","_")+"_Insert";
+    public MappedStatement newMappedStatement(MappedStatement ms, Class itemClass, String keyProperty) {
+        String id = ms.getId() + "_" + itemClass.getCanonicalName().replace(".", "_") + "_Insert";
         Configuration configuration = new Configuration();
-        BeanUtils.copy(ms.getConfiguration(),configuration);
+        BeanUtils.copy(ms.getConfiguration(), configuration);
         configuration.setUseGeneratedKeys(true);
         MappedStatement.Builder builder = new MappedStatement.Builder(configuration, id, ms.getSqlSource(), SqlCommandType.INSERT);
 
@@ -61,8 +64,4 @@ public class UpdateInterceptor extends MyBatisAbstractInterceptor {
 
         return result;
     }
-
-
-
-
 }
