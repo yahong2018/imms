@@ -1,6 +1,6 @@
 CREATE TABLE system_user
 (
-  record_id                 CHAR(36)                   NOT NULL,
+  record_id                 BIGINT AUTO_INCREMENT      NOT NULL,
   user_code                 VARCHAR(20)                NOT NULL,
   user_name                 VARCHAR(50)                NOT NULL,
   pwd                       VARCHAR(50)                NOT NULL,
@@ -19,7 +19,7 @@ CREATE TABLE system_user
 
 CREATE TABLE system_role
 (
-  record_id                  CHAR(36)                 NOT NULL,
+  record_id                  BIGINT AUTO_INCREMENT    NOT NULL,
   role_code                  VARCHAR(20)              NOT NULL,
   role_name                  VARCHAR(50)              NOT NULL,
 
@@ -31,9 +31,9 @@ CREATE TABLE system_role
 
 CREATE TABLE role_user
 (
-  record_id                 CHAR(36)                  NOT NULL,
-  role_id                   CHAR(36)                  NOT NULL,
-  user_id                   CHAR(36)                  NOT NULL,
+  record_id                 BIGINT AUTO_INCREMENT     NOT NULL,
+  role_id                   BIGINT                    NOT NULL,
+  user_id                   BIGINT                    NOT NULL,
 
   PRIMARY KEY (record_id),
   index IDX_ROLE_USER_0(role_id),
@@ -43,10 +43,10 @@ CREATE TABLE role_user
 
 CREATE TABLE role_privilege
 (
-  record_id                 CHAR(36)                   NOT NULL,
-  program_privilege_id      CHAR(36)                   NOT NULL,
-  role_id                   CHAR(36)                   NOT NULL,
-  program_id                CHAR(36)                   NOT NULL,
+  record_id                 BIGINT AUTO_INCREMENT      NOT NULL,
+  program_privilege_id      BIGINT                     NOT NULL,
+  role_id                   BIGINT                     NOT NULL,
+  program_id                VARCHAR(50)                NOT NULL,
   privilege_code            VARCHAR(50)                NOT NULL,
 
   PRIMARY KEY (record_id),
@@ -57,24 +57,24 @@ CREATE TABLE role_privilege
 
 CREATE TABLE system_program
 (
-  record_id                  CHAR(36)                   NOT NULL,
+  record_id                  VARCHAR(50)                NOT NULL,
   program_code               VARCHAR(50)                NOT NULL,
   program_name               VARCHAR(120)               NOT NULL,
   url                        VARCHAR(255)               NOT NULL,
   glyph                      VARCHAR(100)               NULL,
   show_order                 INT                        NOT NULL,
   parameters                 VARCHAR(255)               NOT NULL,
-  parentId                   VARCHAR(50)                NOT NULL,
+  parent_id                  VARCHAR(50)                NOT NULL,
 
   PRIMARY KEY (record_id),
   index IDX_SYSTEM_PROGRAM_0(program_code),
-  index IDX_SYSTEM_PROGRAM_1(parentId)
+  index IDX_SYSTEM_PROGRAM_1(parent_id)
 );
 
 CREATE TABLE program_privilege
 (
-  record_id                  CHAR(36)                   NOT NULL,
-  program_id                 CHAR(50)                   NOT NULL,
+  record_id                  BIGINT AUTO_INCREMENT      NOT NULL,
+  program_id                 VARCHAR(50)                   NOT NULL,
   privilege_code             VARCHAR(50)                NOT NULL,
   privilege_name             VARCHAR(120)               NOT NULL,
 

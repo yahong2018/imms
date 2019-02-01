@@ -12,7 +12,7 @@ import static com.zhxh.core.data.DataCode.BCode.*;
 @Getter
 @Setter
 public class ProgramPrivilege extends EntityObject<Long> {
-    private Long programId;
+    private String programId;
     private String privilegeCode;
     private String privilegeName;
 

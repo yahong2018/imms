@@ -314,8 +314,8 @@ public abstract class EntitySqlMeta {
                 this.keyProperty = resultMap.getIdResultMappings().get(0).getProperty();
                 this.dataTableConfigurationConfig = (DataTableConfiguration) clazz.getAnnotation(DataTableConfiguration.class);
 
-                this.propertyExprs.remove(this.keyProperty);
-                this.fieldsAssigns.remove(this.keyColumn);
+//                this.propertyExprs.remove(this.keyProperty);
+//                this.fieldsAssigns.remove(this.keyColumn);
             }
         }
     }

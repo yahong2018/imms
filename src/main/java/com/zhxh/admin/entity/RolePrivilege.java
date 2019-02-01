@@ -11,7 +11,7 @@ import lombok.Setter;
 public class RolePrivilege extends EntityObject<Long> {
     private Long programPrivilegeId;
     private Long roleId;
-    private Long programId;
+    private String programId;
     private String privilegeCode;
 
     public RolePrivilege(){}

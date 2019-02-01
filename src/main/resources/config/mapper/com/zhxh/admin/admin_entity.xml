@@ -44,10 +44,4 @@
         <result property="privilegeCode" column="privilege_Code"/>
         <result property="privilegeName" column="privilege_name"/>
     </resultMap>
-
-    <resultMap id="TestItem" type="com.zhxh.admin.entity.TestItem">
-        <result property="itemId" column="item_id"/>
-        <result property="itemCode" column="item_code"/>
-        <result property="itemValue" column="item_value"/>
-    </resultMap>
 </mapper>

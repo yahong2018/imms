@@ -87,7 +87,7 @@ Ext.define('app.view.main.MainController', {
 				app.ux.GlobalVars.jsRoot = jsRoot;
 				app.ux.GlobalVars.systemTitle = systemTitle;
 
-				me.getView().getViewModel().set('user.name', result.userName + '(' + result.userId + ')');
+				me.getView().getViewModel().set('user.name', result.userName + '(' + result.userCode + ')');
 			}
 		});
 	}

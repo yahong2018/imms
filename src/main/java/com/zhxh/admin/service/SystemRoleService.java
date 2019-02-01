@@ -33,7 +33,7 @@ public class SystemRoleService {
     @Resource(name="systemRoleDAO")
     private SystemRoleDAO systemRoleDAO;
 
-    public boolean hasPrivilege(Long roleId, Long programId, String privilegeCode) {
+    public boolean hasPrivilege(Long roleId, String programId, String privilegeCode) {
         RolePrivilege rolePrivilege = rolePrivilegeDAO.getRolePrivilege(roleId, programId, privilegeCode);
         return rolePrivilege!=null;
     }
@@ -179,7 +179,7 @@ public class SystemRoleService {
         if (rolePrivilege == null) {
             return;
         }
-        Long programId = rolePrivilege.getProgramId();
+        String programId = rolePrivilege.getProgramId();
         //1.撤销自身的授权
         if (rolePrivilegeDAO.delete(rolePrivilege) != 1) {
             throwException(ERROR_REVOKE_PRIVILEGE_FAILED,"撤销权限失败!");
