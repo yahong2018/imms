@@ -15,6 +15,9 @@ public class SqlHelper {
     @Resource(name="sqlSession")
     private SqlSessionTemplate sqlSession;
 
+    @Resource(name="entitySqlMetaFactory")
+    private EntitySqlMetaFactory entitySqlMetaFactory;
+
     public SqlSessionTemplate getSqlSession() {
         return sqlSession;
     }
@@ -44,7 +47,7 @@ public class SqlHelper {
     }
 
     public int getPageListCount(Class<?> clazz, Map listMap, Map parameters) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.buildSelectByPageSql(listMap,true);
         Map<String, Object> map = fillPageParameters(listMap, parameters);
         map.put("resultType",Integer.class);
@@ -64,7 +67,7 @@ public class SqlHelper {
     }
 
     public List getPageList(Class<?> clazz, Map listMap, Map parameters) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.buildSelectByPageSql(listMap,false);
         Map<String, Object> map = fillPageParameters(listMap, parameters);
 
@@ -72,14 +75,14 @@ public class SqlHelper {
     }
 
     public List getList(Class<?> clazz,Map listMap, Map parameters) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.buildSelectSql(listMap);
         return this.executeList(clazz, sql, parameters);
     }
 
     public int insert(Object item) {
         Map<String, Object> itemMap = BeanUtils.getValues(item);
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
 
         String insertSql = meta.getSqlInsert();
         if(meta.getDataTableConfigurationConfig().keyCreateType()== AutoGenerationType.AUTO_INCREMENT) {
@@ -102,7 +105,7 @@ public class SqlHelper {
 
     public int update(Object item) {
         Map<String, Object> itemMap = BeanUtils.getValues(item);
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         String updateSql = meta.getSqlUpdate();
 
         return this.executeNoneQuery(updateSql, itemMap);
@@ -113,7 +116,7 @@ public class SqlHelper {
     }
 
     public int delete(Object item) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         Object keyValue = BeanUtils.getValue(item, meta.getKeyProperty());
         Map<String, Object> itemMap = new HashMap<>();
         itemMap.put(meta.getKeyProperty(), keyValue);

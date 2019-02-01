@@ -23,6 +23,9 @@ public class BaseDAO {
     @Resource(name = "validator")
     private Validator validator;
 
+    @Resource(name="entitySqlMetaFactory")
+    private EntitySqlMetaFactory entitySqlMetaFactory;
+
     public BaseDAO() {
     }
 
@@ -47,7 +50,7 @@ public class BaseDAO {
     }
 
     public String getIdLabel(Class clazz) {
-        return this.getPropertyLabel(this.getPropertyFullName(clazz, EntitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
+        return this.getPropertyLabel(this.getPropertyFullName(clazz, this.entitySqlMetaFactory.getEntitySqlMeta(clazz).getKeyProperty()));
     }
 
     private final static String EMPTY_UUID = new UUID(0, 0).toString();
@@ -97,19 +100,19 @@ public class BaseDAO {
     }
 
     public boolean exists(Object item) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         Object id = BeanUtils.getValue(item, meta.getKeyProperty());
         Object dbItem = this.getById(item.getClass(), id);
         return dbItem != null;
     }
 
     protected String getKeyProperty(Class clazz) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         return meta.getKeyProperty();
     }
 
     public final Object getById(Class clazz, Object id) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         String keyAssign = meta.getFieldsAssigns().get(meta.getKeyColumn());
         Map listMap = new HashMap();
         listMap.put("where", keyAssign);
@@ -157,7 +160,7 @@ public class BaseDAO {
         if (operationCode == DATA_OPERATION_INSERT || operationCode == DATA_OPERATION_UPDATE) {
             this.verifyBean(item, operationCode);
 
-            EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+            EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
             if (meta.getUniqueFields().size() > 0) {
                 if (!this.checkUnique(item)) {
                     StringBuffer buffer = new StringBuffer();
@@ -201,7 +204,7 @@ public class BaseDAO {
 
     private boolean isTreeRoot(Object item) {
         Class clazz = item.getClass();
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         if (!meta.isTreeTable()) {
             return false;
         }
@@ -215,7 +218,7 @@ public class BaseDAO {
 
     public boolean checkUnique(Object item) {
         Class clazz = item.getClass();
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.getCheckUniqueSql();
         Map parameters = new HashMap();
         String key = meta.getKeyProperty();

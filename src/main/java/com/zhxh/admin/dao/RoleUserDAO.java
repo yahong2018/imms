@@ -8,6 +8,7 @@ import com.zhxh.core.data.EntitySqlMeta;
 import com.zhxh.core.data.EntitySqlMetaFactory;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +18,11 @@ import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("roleUserDAO")
 public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
+    @Resource(name="entitySqlMetaFactory")
+    private EntitySqlMetaFactory entitySqlMetaFactory;
+
     public int revokeUserAllRoles(String userId){
-        EntitySqlMeta sqlMeta = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz);        	
+        EntitySqlMeta sqlMeta = this.entitySqlMetaFactory.getEntitySqlMeta(this.clazz);
         String sql = sqlMeta.buildDeleteByWhereSql("  where user_id = #{userId}");
         Map parameters = new HashMap();
         parameters.put("userId",userId);

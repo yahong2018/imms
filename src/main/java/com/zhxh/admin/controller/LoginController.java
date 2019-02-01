@@ -23,7 +23,6 @@ public class LoginController {
         return LOGIN_URL;
     }
 
-
     @RequestMapping(value = "/login/doLogin", method = RequestMethod.POST)
     public String doLogin(Model model, String userCode, String password) {
         try {

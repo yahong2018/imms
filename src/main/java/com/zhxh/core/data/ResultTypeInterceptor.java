@@ -76,8 +76,4 @@ public class ResultTypeInterceptor extends MyBatisAbstractInterceptor {
         String className = clazz.getCanonicalName();
         return className.substring(className.lastIndexOf(".") + 1);
     }
-
-
-
-
 }

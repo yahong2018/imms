@@ -4,10 +4,14 @@ import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import com.zhxh.core.env.SysEnv;
 import org.apache.ibatis.mapping.ResultMap;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+@Component("entitySqlMetaFactory")
 public class EntitySqlMetaFactory {
     public void init() {
 //        for (Map.Entry<String, String> entry : SysEnv.getEntityTableMappingHolder().entrySet()) {
@@ -22,7 +26,7 @@ public class EntitySqlMetaFactory {
 //        }
     }
 
-    public static EntitySqlMeta getEntitySqlMeta(Class<?> clazz) {
+    public EntitySqlMeta getEntitySqlMeta(Class<?> clazz) {
         if (clazz == null) {
             return null;
         }
@@ -32,7 +36,7 @@ public class EntitySqlMetaFactory {
             Class supperClass = clazz.getSuperclass();
             EntitySqlMeta parentMeta = getEntitySqlMeta(supperClass);
             if (parentMeta != null) {
-                EntitySqlMeta selfMeta = EntitySqlMetaFactory.getSqlMetaCreator().createSqlMeta(clazz);
+                EntitySqlMeta selfMeta = this.getSqlMetaCreator().createSqlMeta(clazz);
                 selfMeta.copyFrom(parentMeta);
                 metaMap.put(key, selfMeta);
 
@@ -50,11 +54,11 @@ public class EntitySqlMetaFactory {
         return metaMap.get(key);
     }
 
-    public synchronized static EntitySqlMeta initMeta(Class<?> clazz, String tableName) {
+    public synchronized  EntitySqlMeta initMeta(Class<?> clazz, String tableName) {
         String key = clazz.getCanonicalName();
-        EntitySqlMeta meta = EntitySqlMetaFactory.getSqlMetaCreator().createSqlMeta(clazz);
+        EntitySqlMeta meta = this.getSqlMetaCreator().createSqlMeta(clazz);
         meta.setTableName(tableName);
-        ResultMap resultMap = EntitySqlMetaFactory.getSqlSession().getConfiguration().getResultMap(key);
+        ResultMap resultMap = this.getSqlSession().getConfiguration().getResultMap(key);
         meta.setResultMap(resultMap);
         meta.initSql();
 
@@ -68,21 +72,18 @@ public class EntitySqlMetaFactory {
         metaMap.put(key, meta);
     }
 
-    private static SqlSessionTemplate sqlSession;
-    private static SqlMetaCreator sqlMetaCreator;
+    @Resource(name="sqlSession")
+    private  SqlSessionTemplate sqlSession;
+    @Resource(name="sqlMetaCreator")
+    private  SqlMetaCreator sqlMetaCreator;
     protected final static Map<String, EntitySqlMeta> metaMap = new HashMap<>();
 
-    public synchronized static SqlSessionTemplate getSqlSession() {
-        if (sqlSession == null) {
-            sqlSession = (SqlSessionTemplate) SysEnv.getBean("sqlSession");
-        }
+    public  SqlMetaCreator getSqlMetaCreator() {
+        return sqlMetaCreator;
+    }
+
+    public  SqlSessionTemplate getSqlSession() {
         return sqlSession;
     }
 
-    public synchronized static SqlMetaCreator getSqlMetaCreator() {
-        if (sqlMetaCreator == null) {
-            sqlMetaCreator = (SqlMetaCreator) SysEnv.getBean("sqlMetaCreator");
-        }
-        return sqlMetaCreator;
-    }
 }

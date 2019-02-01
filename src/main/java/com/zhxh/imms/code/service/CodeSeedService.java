@@ -14,7 +14,6 @@ import static com.zhxh.core.exception.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("codeSeedService")
-
 public class CodeSeedService {
     @Resource(name = "codeSeedDAO")
     private CodeSeedDAO codeSeedDAO;

@@ -2,6 +2,7 @@ package com.zhxh.core.data;
 
 import com.zhxh.core.exception.BusinessException;
 
+import javax.annotation.Resource;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -12,6 +13,10 @@ import static com.zhxh.core.exception.ErrorCode.ERROR_DATA_NOT_EXISTS;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO implements Generic<T> {
+
+    @Resource(name="entitySqlMetaFactory")
+    private EntitySqlMetaFactory entitySqlMetaFactory;
+
     protected Class clazz;
 
     public BaseDAOWithEntity() {
@@ -48,7 +53,7 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
     }
 
     public T getOne(String where, Map parameters) {
-        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         Map listMap = new HashMap();
         listMap.put("where",where);
         String sql = meta.buildSelectSql(listMap);
@@ -70,7 +75,7 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
     }
     
     public final int deleteByWhere(String where,Map parameters) {
-    	EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(this.clazz);
+    	EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(this.clazz);
     	String deleteSql = meta.buildDeleteByWhereSql(where);
     	
     	return super.executeNoneQuery(deleteSql, parameters);

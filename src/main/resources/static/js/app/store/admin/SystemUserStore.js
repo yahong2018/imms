@@ -50,8 +50,7 @@ Ext.define('app.store.admin.SystemUserStore', {
         if (user.userRoles != null) {
             return;
         }
-        debugger;
-
+        
         app.ux.Utils.ajaxRequest({
             url: webRoot + '/admin/systemUsers/getUserRoles.handler?userId=' + user.get('recordId'),
             successCallback: function (result, response, opts) {
