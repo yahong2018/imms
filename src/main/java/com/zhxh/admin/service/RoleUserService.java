@@ -18,9 +18,9 @@ public class RoleUserService {
 	private RoleUserDAO roleUserDAO;
 
 	@Transactional(rollbackFor = Exception.class)
-	public int updateUserRoles(String userId, RoleUser[] roleUserList){
+	public int updateUserRoles(Long userId, RoleUser[] roleUserList){
 		for (RoleUser roleUser : roleUserList) {
-			if (roleUser.getUserId().equals(userId)) {
+			if (!roleUser.getUserId().equals(userId)) {
 				throwException(ERROR_UNKNOWN_EXCEPTION, "userId必须一致！");
 			}
 		}

@@ -7,8 +7,8 @@
     </sql>
 
     <insert id="INSERT_ROLE_USER" parameterType="com.zhxh.admin.entity.RoleUser" useGeneratedKeys="true"
-            keyColumn="role_user_id" keyProperty="roleUserId">
-        insert into role_user(record_id,role_id,user_id) values(#{recordId}, #{roleId},#{userId})
+            keyColumn="record_id" keyProperty="recordId">
+        insert into role_user(role_id,user_id) values(#{roleId},#{userId})
     </insert>
 
     <delete id="DELETE_ROLE_USER" parameterType="java.util.Map">
@@ -26,8 +26,8 @@
 
     <insert id="INSERT_ROLE_PRIVILEGE" parameterType="com.zhxh.admin.entity.RolePrivilege" useGeneratedKeys="true"
             keyProperty="recordId" keyColumn="record_id">
-        insert into role_privilege(record_id,program_privilege_id,role_id,program_id,privilege_code)
-        values(#{recordId}, #{programPrivilegeId},#{roleId},#{programId},#{privilegeCode})
+        insert into role_privilege(program_privilege_id,role_id,program_id,privilege_code)
+        values(#{programPrivilegeId},#{roleId},#{programId},#{privilegeCode})
     </insert>
 
     <select id="GET_OTHER_GRANTED_PRIVILEGE_COUNT" parameterType="java.util.Map" resultType="java.lang.Integer">

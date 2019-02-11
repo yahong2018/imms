@@ -9,6 +9,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RoleUser extends EntityObject<Long> {
-    private String roleId;
-    private String userId;
+    private Long roleId;
+    private Long userId;
 }

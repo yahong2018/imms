@@ -21,7 +21,7 @@ public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
     @Resource(name="entitySqlMetaFactory")
     private EntitySqlMetaFactory entitySqlMetaFactory;
 
-    public int revokeUserAllRoles(String userId){
+    public int revokeUserAllRoles(Long userId){
         EntitySqlMeta sqlMeta = this.entitySqlMetaFactory.getEntitySqlMeta(this.clazz);
         String sql = sqlMeta.buildDeleteByWhereSql("  where user_id = #{userId}");
         Map parameters = new HashMap();
@@ -47,7 +47,7 @@ public class RoleUserDAO extends BaseDAOWithEntity<RoleUser> {
         return this.getSqlHelper().getSqlSession().delete(SQL_DELETE_ROLE_USER, parameters);
     }
 
-    public RoleUser getByUserIdAndRoleId(String userId, String roleId) {
+    public RoleUser getByUserIdAndRoleId(Long userId, Long roleId) {
         Map parameters = new HashMap();
         parameters.put("userId", userId);
         parameters.put("roleId", roleId);

@@ -15,7 +15,7 @@ Ext.define('app.view.admin.systemUser.SystemUser', {
         {
             dataIndex: 'userStatus', text: '启用状态', width: 100, renderer: function (value) {
                 {
-                    if (value == 'ENABLED') {
+                    if (value == 0) {
                         return "启用";
                     }
                     return "停用";

@@ -25,16 +25,18 @@ public class UpdateInterceptor extends MyBatisAbstractInterceptor {
     public Object intercept(Invocation invocation) throws Throwable {
         final Object[] args = invocation.getArgs();
         MappedStatement ms = (MappedStatement) args[0];
-        Map<String, Object> parameterObject = (Map<String, Object>) args[1];
+        if (args[1] instanceof Map) {
+            Map parameterObject = (Map) args[1];
 
-        Class itemClass = (Class) parameterObject.get("itemClass");
-        if (itemClass != null) {
-            if (!this.useGeneratedKeys) {
-                this.useGeneratedKeys = (boolean) parameterObject.get("useGeneratedKeys");
-            }
-            if (this.useGeneratedKeys) {
-                String keyProperty = parameterObject.get("keyProperty").toString();
-                args[0] = newMappedStatement(ms, itemClass, keyProperty);
+            Class itemClass = (Class) parameterObject.get("itemClass");
+            if (itemClass != null) {
+                if (!this.useGeneratedKeys) {
+                    this.useGeneratedKeys = (boolean) parameterObject.get("useGeneratedKeys");
+                }
+                if (this.useGeneratedKeys) {
+                    String keyProperty = parameterObject.get("keyProperty").toString();
+                    args[0] = newMappedStatement(ms, itemClass, keyProperty);
+                }
             }
         }
 

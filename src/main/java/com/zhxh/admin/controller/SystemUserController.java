@@ -62,25 +62,25 @@ public class SystemUserController {
 
     @RequestMapping("delete.handler")
     @ResponseBody
-    public int delete(@RequestBody String[] userIdList) {
+    public int delete(@RequestBody Long[] userIdList) {
         return systemUserService.delete(userIdList);
     }
 
     @RequestMapping("disableUser.handler")
     @ResponseBody
-    public int disableUser(String userId) {
+    public int disableUser(Long userId) {
         return systemUserService.disableUser(userId);
     }
 
     @RequestMapping("enableUser.handler")
     @ResponseBody
-    public int enableUser(String userId) {
+    public int enableUser(Long userId) {
         return systemUserService.enableUser(userId);
     }
 
     @RequestMapping("resetPassword.handler")
     @ResponseBody
-    public int resetPassword(String userId) {
+    public int resetPassword(Long userId) {
         return systemUserService.resetPassword(userId);
     }
 
@@ -92,19 +92,19 @@ public class SystemUserController {
 
     @RequestMapping("updateUserRoles.handler")
     @ResponseBody
-    public int updateRoles(String userId, @RequestBody RoleUser[] roleUsers) {
+    public int updateRoles(Long userId, @RequestBody RoleUser[] roleUsers) {
         return roleUserService.updateUserRoles(userId, roleUsers);
     }
 
     @RequestMapping("addRole.handler")
     @ResponseBody
-    public int addRole(String userId, String roleId) {
+    public int addRole(Long userId, Long roleId) {
         return systemUserService.addRole(userId, roleId);
     }
 
     @RequestMapping("removeRole.handler")
     @ResponseBody
-    public int removeRole(String userId, String roleId) {
+    public int removeRole(Long userId, Long roleId) {
         return systemUserService.removeRole(userId, roleId);
     }
 }

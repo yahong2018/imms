@@ -2,7 +2,7 @@ Ext.define('app.store.admin.SystemUserStore', {
     extend: 'app.store.BaseStore',
     model: 'app.model.admin.SystemUserModel',
     alias: 'widget.app_store_admin_SystemUserStore',
-    uses: ['app.model.admin.UserRoleModel', 'app.ux.Utils'],
+    uses: ['app.model.admin.UserRoleModel', 'app.ux.Utils','Ext.window.Toast'],
     dao: {
         deleteUrl: '/admin/systemUsers/delete.handler',
         insertUrl: '/admin/systemUsers/openLoginAccount.handler',
@@ -79,6 +79,13 @@ Ext.define('app.store.admin.SystemUserStore', {
                 user.userRoles = roles;
                 win.close();
                 win.destroy();
+
+                Ext.toast({
+                    html: '数据已保存',
+                    title: '系统提示',
+                    width: 200,
+                    align: 't'
+                });
             }
         });
     }

@@ -4,9 +4,9 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
     mangeRoleUser: function () {
         alert('管理用户');
     },
-    updatePrivilege: function () {       
+    updatePrivilege: function () {
         var privilegeList = [];
-        
+
         var grid = this.getView().down('SystemRoleGrid');
         var role = grid.getSelectedRecord();
         if (role == null) {
@@ -16,19 +16,19 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
 
         var throughTree = function (node) {
             for (var i = 0; i < node.childNodes.length; i++) {
-                var child = node.getChildAt(i); 
-                if(!child.get('checked')){
+                var child = node.getChildAt(i);
+                if (!child.get('checked')) {
                     continue;
-                }          
+                }
                 var dataType = child.get('dataType');
                 var privilegeCode = 'RUN';
                 if (dataType == 'app.model.admin.ProgramPrivilegeModel') {
                     privilegeCode = child.get('privilegeCode');
                 }
                 privilegeList.push({
-                    privilegeCode:privilegeCode,
-                    programId:child.get('programId'),       
-                    recordId:child.get("recordId")             
+                    privilegeCode: privilegeCode,
+                    programId: child.get('programId'),
+                    recordId: child.get("recordId")
                 });
                 throughTree(child);
             }
@@ -36,9 +36,9 @@ Ext.define('app.view.admin.systemRole.SystemRoleController', {
         var node = this.getView().down('RolePrivilegePanel').getRootNode();
         throughTree(node);
 
-        this.getView().down('SystemRoleGrid').getStore().updateRolePrivilege.apply(this, [role, privilegeList,function(){
-            Ext.Msg.alert('系统提示','权限更新成功');
-        }]);        
+        this.getView().down('SystemRoleGrid').getStore().updateRolePrivilege.apply(this, [role, privilegeList, function () {
+            Ext.Msg.alert('系统提示', '权限更新成功');
+        }]);
     },
     gridSelectionChanged: function (model, selected, index) {
         this.getView().down('SystemRoleGrid').getStore().loadRolePrivileges.apply(this, [selected, this.showPrivilege]);

@@ -18,7 +18,7 @@ Ext.define('app.view.admin.systemUser.UserRolesForm',{
             roleGroup.items.push(
                 {
                     boxLabel: role.get('roleName'),
-                    inputValue: role.get('roleId'),
+                    inputValue: role.get('recordId'),
                     name: 'userRoles',                            
                 });
         }        

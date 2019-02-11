@@ -76,12 +76,12 @@ public class SystemUserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public int delete(String[] userIdList){
+    public int delete(Long[] userIdList){
         //注意：正常来说，系统不允许删除账号
         //1.删除相关的权限信息
         //2.删除本身
         //3.通知系统管理员
-    	for(String userId:userIdList) {
+    	for(Long userId:userIdList) {
 	        roleUserDAO.revokeUserAllRoles(userId);
 	        int result = systemUserDAO.deleteById(userId);
 	        if(result!=1){
@@ -94,7 +94,7 @@ public class SystemUserService {
         return userIdList.length;
     }
 
-    public int addRole(String userId, String roleId) {
+    public int addRole(Long userId, Long roleId) {
         systemUserDAO.verifyExistsById(userId);
         systemRoleDAO.verifyExistsById(roleId);
 
@@ -105,7 +105,7 @@ public class SystemUserService {
         return roleUserDAO.insert(roleUser);
     }
 
-    public int removeRole(String userId, String roleId){
+    public int removeRole(Long userId, Long roleId){
         RoleUser roleUser = roleUserDAO.getByUserIdAndRoleId(userId, roleId);
         if (roleUser != null) {
             roleUserDAO.delete(roleUser);
@@ -113,13 +113,13 @@ public class SystemUserService {
         return 0;
     }
 
-    public int disableUser(String userId){
+    public int disableUser(Long userId){
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
         dbUser.setUserStatus(BCode.STATUS_DISABLED);
         return systemUserDAO.update(dbUser);
     }
 
-    public int enableUser(String userId){
+    public int enableUser(Long userId){
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
         dbUser.setUserStatus(BCode.STATUS_ENABLED);
         return systemUserDAO.update(dbUser);
@@ -130,7 +130,7 @@ public class SystemUserService {
     }
 
     @Transactional(rollbackFor = RuntimeException.class)
-    public int resetPassword(String userId) {
+    public int resetPassword(Long userId) {
         SystemUser dbUser =  this.systemUserDAO.verifyExistsById(userId);
         dbUser.setPassword(StringUtilsExt.getMd5(SystemUser.DEFAULT_PASSWORD));
         int result = systemUserDAO.update(dbUser);

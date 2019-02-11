@@ -214,8 +214,11 @@ Ext.define("app.ux.data.DataOperation", {
     },
 
     doSearch: function (column, operator, value) {
+        debugger;
+
         var grid = this;
         var expr = "";
+        grid.getStore().clearCustomerFilter();        
         if (column != null && operator != null && value != '' && value != null) {
             var model = grid.store.getModel();
             if (model == null) {
@@ -240,8 +243,7 @@ Ext.define("app.ux.data.DataOperation", {
                 expr = expr + "'" + value + "'";
             } else {
                 expr = expr + value;
-            }
-            grid.getStore().clearCustomerFilter();
+            }            
             grid.getStore().addCustomFilter(expr);
 
             // expr = Ext.util.Base64.encode(expr);

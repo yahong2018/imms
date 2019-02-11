@@ -11,6 +11,7 @@ Ext.define('app.view.admin.systemRole.region.SystemRoleGrid', {
     hideSearchBar:true,
     
     detailFormClass:'admin_systemRole_SystemRoleDetailForm',
+    detailWindowTitle: '系统角色',
     constructor: function (config) {
         var configBase = {
             store: Ext.create({ xtype: 'app_store_admin_SystemRoleStore' ,grid:this, listeners: {

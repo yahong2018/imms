@@ -6,9 +6,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import javax.swing.text.html.parser.Entity;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

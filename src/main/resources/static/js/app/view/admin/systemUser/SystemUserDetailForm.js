@@ -31,7 +31,7 @@ Ext.define('app.view.admin.systemUser.SystemUserDetailForm', {
             fieldLabel: '是否停用',
             allowBlank: false,
             xtype: 'checkbox',
-            inputValue: 'DISABLED'
+            inputValue: '1'
         }, {
             name: 'email',
             fieldLabel: 'Email',
