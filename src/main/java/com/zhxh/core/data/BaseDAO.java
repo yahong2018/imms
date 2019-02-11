@@ -1,5 +1,7 @@
 package com.zhxh.core.data;
 
+import com.zhxh.core.data.meta.annotation.AutoGenerationType;
+import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.exception.BusinessException;
 import com.zhxh.core.utils.BeanUtils;
@@ -23,7 +25,7 @@ public class BaseDAO {
     @Resource(name = "validator")
     private Validator validator;
 
-    @Resource(name="entitySqlMetaFactory")
+    @Resource(name = "entitySqlMetaFactory")
     private EntitySqlMetaFactory entitySqlMetaFactory;
 
     public BaseDAO() {
@@ -58,8 +60,11 @@ public class BaseDAO {
     public final int insert(Object item) throws BusinessException {
         if (item instanceof EntityObject) {
             EntityObject theItem = (EntityObject) item;
-            if (EMPTY_UUID.equals(theItem.getRecordId())||StringUtils.isEmpty(theItem.getRecordId().toString())) {
-                theItem.setRecordId(UUID.randomUUID().toString());
+            DataTableConfiguration tableConfiguration = item.getClass().getAnnotation(DataTableConfiguration.class);
+            if (tableConfiguration.keyCreateType() == AutoGenerationType.UUID) {
+                if (EMPTY_UUID.equals(theItem.getRecordId()) || StringUtils.isEmpty(theItem.getRecordId().toString())) {
+                    theItem.setRecordId(UUID.randomUUID().toString());
+                }
             }
         }
 

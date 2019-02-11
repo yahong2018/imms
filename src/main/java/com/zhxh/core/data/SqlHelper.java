@@ -6,16 +6,19 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import javax.swing.text.html.parser.Entity;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Component("sqlHelper")
 public class SqlHelper {
-    @Resource(name="sqlSession")
+    @Resource(name = "sqlSession")
     private SqlSessionTemplate sqlSession;
 
-    @Resource(name="entitySqlMetaFactory")
+    @Resource(name = "entitySqlMetaFactory")
     private EntitySqlMetaFactory entitySqlMetaFactory;
 
     public SqlSessionTemplate getSqlSession() {
@@ -34,9 +37,9 @@ public class SqlHelper {
     public int executeNoneQuery(String sql, Map parameters) {
         Map map = this.WrapParameterMap(sql, parameters, Integer.class);
         int result = sqlSession.update(SQL_EXECUTE_COMMAND, map);
-        if(map.containsKey("useGeneratedKeys")){
+        if (map.containsKey("useGeneratedKeys")) {
             String keyProperty = map.get("keyProperty").toString();
-            parameters.put(keyProperty,map.get(keyProperty));
+            parameters.put(keyProperty, map.get(keyProperty));
         }
         return result;
     }
@@ -48,9 +51,9 @@ public class SqlHelper {
 
     public int getPageListCount(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String sql = meta.buildSelectByPageSql(listMap,true);
+        String sql = meta.buildSelectByPageSql(listMap, true);
         Map<String, Object> map = fillPageParameters(listMap, parameters);
-        map.put("resultType",Integer.class);
+        map.put("resultType", Integer.class);
 
         return this.executeScalar(clazz, sql, map);
     }
@@ -68,36 +71,44 @@ public class SqlHelper {
 
     public List getPageList(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
-        String sql = meta.buildSelectByPageSql(listMap,false);
+        String sql = meta.buildSelectByPageSql(listMap, false);
         Map<String, Object> map = fillPageParameters(listMap, parameters);
 
         return this.executeList(clazz, sql, map);
     }
 
-    public List getList(Class<?> clazz,Map listMap, Map parameters) {
+    public List getList(Class<?> clazz, Map listMap, Map parameters) {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         String sql = meta.buildSelectSql(listMap);
         return this.executeList(clazz, sql, parameters);
     }
 
     public int insert(Object item) {
+        Class itemClass = item.getClass();
         Map<String, Object> itemMap = BeanUtils.getValues(item);
-        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(itemClass);
 
         String insertSql = meta.getSqlInsert();
-        if(meta.getDataTableConfigurationConfig().keyCreateType()== AutoGenerationType.AUTO_INCREMENT) {
-            itemMap.put("itemClass",item.getClass());
+        if (meta.getDataTableConfigurationConfig().keyCreateType() == AutoGenerationType.AUTO_INCREMENT) {
+            itemMap.put("itemClass", item.getClass());
             itemMap.put("useGeneratedKeys", true);
             itemMap.put("keyProperty", meta.getKeyProperty());
+            Class keyFieldClass = ((EntityObject) item).getKeyClass();
+            if (keyFieldClass == Long.class) {
+                itemMap.put(meta.getKeyProperty(), -1L);
+            } else {
+                itemMap.put(meta.getKeyProperty(), -1);
+            }
         }
         int result = this.executeNoneQuery(insertSql, itemMap);
-        if(meta.getDataTableConfigurationConfig().keyCreateType()== AutoGenerationType.AUTO_INCREMENT) {
+        if (meta.getDataTableConfigurationConfig().keyCreateType() == AutoGenerationType.AUTO_INCREMENT) {
             Object keyValue = itemMap.get(meta.getKeyProperty());
-            BeanUtils.setValue(item,meta.getKeyProperty(),keyValue);
+            BeanUtils.setValue(item, meta.getKeyProperty(), keyValue);
         }
 
         return result;
     }
+
 
     public int insert(Object item, String sqlId) {
         return this.sqlSession.insert(sqlId, item);
