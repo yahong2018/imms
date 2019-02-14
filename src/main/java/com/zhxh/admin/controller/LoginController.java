@@ -61,6 +61,14 @@ public class LoginController {
 
         Response response = client.newCall(request).execute();
 
+        返回结果如下：
+        {
+            "data": {
+                "code": 0,
+                "message": "登录成功！"
+            },
+            "success": true
+        }
        */
     }
 
