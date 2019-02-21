@@ -172,15 +172,19 @@ public class SystemUserService {
 	public boolean canRun(Long userId, String url) {
 	    List<SystemRole> roleList= this.getUserRoles(userId);
 	    String pureUrl = url.replace(SysEnv.getAppRoot(),"");
-		/**
-		 * 1.首页：所有人都有权限:  "/mes";"/"
-		 * 2.登录页：所有人都有权限:"/login"
-		 * 3.其他页：要根据权限判断
-		 */
-		if(SysEnv.getAppRoot().equals(pureUrl) || SysEnv.getUrlAppIndex().equals(pureUrl)
+        /**
+         * 1.首页：所有人都有权限:  "/mes";"/"
+         * 2.登录页：所有人都有权限:"/login"
+         * 3.*.handler页：都有权限，因为是系统调用，所以必须要给权限。
+         * 4.其他页：要根据权限判断
+         */
+        if(SysEnv.getAppRoot().equals(pureUrl) || SysEnv.getUrlAppIndex().equals(pureUrl)
                 || SysEnv.getAppAbsoluteRootPath().equals(pureUrl) || SysEnv.getUrlLoginPage().equals(pureUrl)) {
-			return true;
-		}
+            return true;
+        }
+        if(url.endsWith(".handler")){
+            return true;
+        }
 		SystemProgram program = systemProgramDAO.getSystemProgramByUrl(pureUrl);
 		if(program==null) {
 			return false;
