@@ -11,17 +11,25 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class ScheduleOrder extends TraceableEntity<Long> {
-    private String scheduleOrderStatus;
-    private String scheduleOrderCode;
-    private Long plantId;
-    private Long workCenterId;
-    private Long fgMaterialId;
-    private int plannedQty;
-    private String productionOrderCode;
-    private LocalDateTime requiredDeliveryDate;
-    private LocalDateTime plannedStartDate;
-    private LocalDateTime plannedEndDate;
-    private LocalDateTime actualStartDate;
-    private LocalDateTime actualEndDate;
+    private String scheduleOrderNo;
+    private String requirementOrderNo;
+    private String productionOrderNo;
 
+    private Long plantId;
+    private String plantNo;
+    private Long workCenterId;
+    private String workCenterNo;
+    private Long fgMaterialId;
+    private String fgMaterialNo;
+
+    private int qtyPlanned;
+    private int qtyActual;
+
+    private LocalDateTime dateRequiredDelivery;
+    private LocalDateTime datePlannedStart;
+    private LocalDateTime datePlannedEnd;
+    private LocalDateTime dateActualStart;
+    private LocalDateTime dateActualEnd;
+
+    private byte orderStatus;
 }

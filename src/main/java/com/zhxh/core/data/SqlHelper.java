@@ -1,8 +1,11 @@
 package com.zhxh.core.data;
 
+import com.zhxh.core.data.event.DataUpdateEvent;
 import com.zhxh.core.data.meta.annotation.AutoGenerationType;
 import com.zhxh.core.utils.BeanUtils;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.ApplicationEventPublisherAware;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -11,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component("sqlHelper")
-public class SqlHelper {
+public class SqlHelper implements ApplicationEventPublisherAware {
     @Resource(name = "sqlSession")
     private SqlSessionTemplate sqlSession;
 
@@ -102,13 +105,16 @@ public class SqlHelper {
             Object keyValue = itemMap.get(meta.getKeyProperty());
             BeanUtils.setValue(item, meta.getKeyProperty(), keyValue);
         }
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_INSERT));
 
         return result;
     }
 
 
     public int insert(Object item, String sqlId) {
-        return this.sqlSession.insert(sqlId, item);
+        int result = this.sqlSession.insert(sqlId, item);
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_INSERT));
+        return  result;
     }
 
     public int update(Object item) {
@@ -116,11 +122,15 @@ public class SqlHelper {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(item.getClass());
         String updateSql = meta.getSqlUpdate();
 
-        return this.executeNoneQuery(updateSql, itemMap);
+        int result = this.executeNoneQuery(updateSql, itemMap);
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_UPDATE));
+        return result;
     }
 
     public int update(Object item, String sqlId) {
-        return this.sqlSession.update(sqlId, item);
+        int result = this.sqlSession.update(sqlId, item);
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_UPDATE));
+        return result;
     }
 
     public int delete(Object item) {
@@ -130,11 +140,15 @@ public class SqlHelper {
         itemMap.put(meta.getKeyProperty(), keyValue);
         String deleteSql = meta.getSqlDeleteById();
 
-        return this.executeNoneQuery(deleteSql, itemMap);
+        int result = this.executeNoneQuery(deleteSql, itemMap);
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_DELETE));
+        return result;
     }
 
     public int delete(Object item, String sqlId) {
-        return this.sqlSession.delete(sqlId, item);
+        int result = this.sqlSession.delete(sqlId, item);
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_DELETE));
+        return result;
     }
 
     private Map WrapParameterMap(String sql, Map parameters, Class<?> clazz) {
@@ -149,6 +163,12 @@ public class SqlHelper {
 
 
     protected final static String SQL_EXECUTE_COMMAND = "com.zhxh.core.data.SqlHelper.executeCommand";
+
+    private ApplicationEventPublisher applicationEventPublisher;
+    @Override
+    public void setApplicationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+        this.applicationEventPublisher = applicationEventPublisher;
+    }
 }
 
 

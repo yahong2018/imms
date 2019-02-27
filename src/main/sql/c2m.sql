@@ -155,11 +155,6 @@ CREATE TABLE `material_match_rule_log`  (
   PRIMARY KEY (`id`)
 ) COMMENT = '物料匹配规则日志';
 
-
-
-
-
-
 CREATE TABLE `operator_check_in`  (
   `id`                         bigint(20)         NOT NULL AUTO_INCREMENT,
   `operator_id`                bigint(20)         NOT NULL           COMMENT '操作员主键',

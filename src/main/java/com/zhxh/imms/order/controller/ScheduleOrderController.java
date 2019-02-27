@@ -1,9 +1,9 @@
 package com.zhxh.imms.order.controller;
 
-import com.zhxh.imms.order.entity.ScheduleOrder;
 import com.zhxh.imms.order.service.ScheduleOrderService;
-import com.zhxh.imms.order.vo.RequirementOrderVO;
+import com.zhxh.imms.order.dto.ScheduleOrderDTO;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 
@@ -13,9 +13,9 @@ public class ScheduleOrderController {
     @Resource(name="scheduleOrderService")
     private ScheduleOrderService scheduleOrderService;
 
-    @RequestMapping(value = "release")
-    public String releaseScheduleOrder(RequirementOrderVO requirementOrderVO,ScheduleOrder scheduleOrder){
-        return this.scheduleOrderService.release(requirementOrderVO,scheduleOrder);
+    @RequestMapping(value = "receiveFromAps.handler")
+    public void receiveScheduleFromAps(ScheduleOrderDTO scheduleOrder){
+        this.scheduleOrderService.receiveScheduleFromAps(scheduleOrder);
     }
 
 }

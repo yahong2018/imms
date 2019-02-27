@@ -56,7 +56,7 @@ public abstract class ThreadService implements BaseService {
 
             private void sleep() {
                 try {
-                    Thread.sleep(getThreadSleepTime());
+                    Thread.sleep(getThreadCycle());
                 } catch (InterruptedException e) {
                     Logger.error(getName() + "线程内部循环 Sleep 出现异常", e);
                 }
@@ -150,12 +150,12 @@ public abstract class ThreadService implements BaseService {
         this.threadPriority = threadPriority;
     }
 
-    public int getThreadSleepTime() {
-        return threadSleepTime;
+    public int getThreadCycle() {
+        return threadCycle;
     }
 
-    public void setThreadSleepTime(int threadSleepTime) {
-        this.threadSleepTime = threadSleepTime;
+    public void setThreadCycle(int threadCycle) {
+        this.threadCycle = threadCycle;
     }
 
     public void interrupt() {
@@ -172,7 +172,7 @@ public abstract class ThreadService implements BaseService {
     private AutoResetEvent stopEvent = new AutoResetEvent();
     private AutoResetEvent startEvent = new AutoResetEvent(true);
 
-    private int threadSleepTime = 0;
+    private int threadCycle = 30; //默认30毫秒为一个周期
 
     protected boolean getTerminated() {
         return this.terminated;

@@ -1,5 +1,6 @@
 package com.zhxh.imms.kanban;
 
 public class EventType {
-    public final static String ISSUE_REQUIREMENT_ORDER="ISSUE_REQUIREMENT_ORDER";
+    //收到排程：内含需求订单
+    public final static String RECEIVE_SCHEDULE_ORDER="RECEIVE_SCHEDULE_ORDER";
 }

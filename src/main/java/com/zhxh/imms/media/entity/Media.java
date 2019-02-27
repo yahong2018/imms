@@ -1,4 +1,4 @@
-package com.zhxh.imms.misc.entity;
+package com.zhxh.imms.media.entity;
 
 import com.zhxh.core.data.EntityObject;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;

@@ -2,21 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.order.entity">
-    <resultMap id="RequirementOrder" type="com.zhxh.imms.order.entity.RequirementOrder">
-        <id property="requirementOrderId" column="requirement_order_id"/>
-
+    <resultMap id="ScheduleOrder" type="com.zhxh.imms.order.entity.ScheduleOrder"
+               extends="com.zhxh.core.data.TraceableEntity">
+        <result property="scheduleNo" column="schedule_no"/>
         <result property="requirementOrderNo" column="requirement_order_no"/>
-        <result property="requirementOrderType" column="requirement_order_type"/>
-        <result property="requirementOrderStatus" column="requirement_order_status"/>
-        <result property="requirementOrderPriority" column="requirement_order_priority"/>
-        <result property="requirementOrderPlantId" column="requirement_order_plant_id"/>
-        <result property="requirementOrderWorkCenterId" column="requirement_order_work_center_id"/>
-        <result property="requirementOrderFgMaterialId" column="requirement_order_fg_material_id"/>
-        <result property="requirementOrderPlannedQty" column="requirement_order_planned_qty"/>
-        <result property="requirementOrderRequiredDeliveryDate" column="requirement_order_required_delivery_date"/>
-        <result property="requirementOrderSaleOrderNo" column="requirement_order_sale_order_no"/>
-        <result property="requirementOrderRepeatType" column="requirement_order_repeat_type"/>
+        <result property="productionOrderId" column="production_order_id"/>
+        <result property="productionOrderNo" column="production_order_no"/>
+        <result property="planId" column="plan_id"/>
+        <result property="plantNo" column="plant_no"/>
+        <result property="workCenterId" column="work_center_id"/>
+        <result property="workCenterNo" column="work_center_no"/>
+        <result property="fgMaterialId" column="fg_material_id"/>
+        <result property="fgMaterialNo" column="fg_material_no"/>
+        <result property="qtyPlanned" column="qty_planned"/>
+        <result property="qtyActual" column="qty_actual"/>
+        <result property="dateRequiredDelivery" column="date_required_delivery"/>
+        <result property="datePlanStart" column="date_plan_start"/>
+        <result property="datePlanEnd" column="date_plan_end"/>
+        <result property="dateActualStart" column="date_actual_start"/>
+        <result property="dateActualEnd" column="date_actual_end"/>
+        <result property="orderStatus" column="order_status"/>
     </resultMap>
 
+    <resultMap id="OrderSize" type="com.zhxh.imms.order.entity.OrderSize" extends="com.zhxh.core.data.TraceableEntity">
+        <result property="orderId" column="order_id"/>
+        <result property="refRecordType" column="ref_record_type"/>
+        <result property="sizeId" column="size_id"/>
+        <result property="sizeCode" column="size_code"/>
+        <result property="qytPlanned" column="qyt_planned"/>
+    </resultMap>
+
+
+    <resultMap id="OrderMeasureData" type="com.zhxh.imms.order.entity.OrderMeasure" extends="com.zhxh.core.data.TraceableEntity">
+        <result property="orderId" column="order_id"/>
+        <result property="refRecordType" column="ref_record_type"/>
+        <result property="sizeId" column="size_id"/>
+        <result property="sizeCode" column="size_code"/>
+        <result property="qytPlanned" column="qyt_planned"/>
+    </resultMap>
 
 </mapper>

@@ -8,10 +8,11 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class EntityObject<K> implements Serializable {
+public abstract class EntityObject<K extends Comparable> implements Serializable, Comparable<EntityObject<K>> {
     private static long serialVersionUID = 1L;
 
     private K recordId;
+
     public K getRecordId() {
         return recordId;
     }
@@ -47,5 +48,14 @@ public abstract class EntityObject<K> implements Serializable {
             }
         }
         return keyMap.get(classHasCode);
+    }
+
+    @Override
+    public int compareTo(EntityObject<K> o) {
+        if (o == null || o.getRecordId() == null || this.getRecordId() == null) {
+            return -1;
+        }
+
+        return o.getRecordId().compareTo(this.getRecordId());
     }
 }

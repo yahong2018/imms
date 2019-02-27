@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.zhxh.imms.misc.entity">
-    <resultMap id="Media" type="com.zhxh.imms.misc.entity.Media" extends="com.zhxh.core.data.EntityObject">
+<mapper namespace="com.zhxh.imms.media.entity">
+    <resultMap id="Media" type="com.zhxh.imms.media.entity.Media" extends="com.zhxh.core.data.EntityObject">
         <result property="mediaName" column="media_name"/>
         <result property="belongToId" column="belong_to_id"/>
         <result property="mediaType" column="media_type"/>

@@ -1,6 +1,7 @@
 package com.zhxh.imms.order.service;
 
 import com.zhxh.core.data.DataCode.BCode;
+import com.zhxh.imms.GlobalConstants;
 import com.zhxh.imms.material.dao.BomDAO;
 import com.zhxh.imms.material.entity.BomOrder;
 import com.zhxh.imms.material.service.BomOrderService;
@@ -13,14 +14,12 @@ import com.zhxh.imms.routing.dao.OperationRoutingDAO;
 import com.zhxh.imms.routing.dao.OperationRoutingOrderDAO;
 import com.zhxh.imms.routing.entity.OperationRouting;
 import com.zhxh.imms.routing.entity.OperationRoutingOrder;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
@@ -121,18 +120,19 @@ public class ProductionOrderService {
         }
     }
 
-    private void saveMeasureData(ProductionOrderMeasureData[] measureDataList, ProductionOrder productionOrder) {
+    private void saveMeasureData(OrderMeasure[] measureDataList, ProductionOrder productionOrder) {
         for (int i = 0; i < measureDataList.length; i++) {
-            ProductionOrderMeasureData measureData = measureDataList[i];
-            measureData.setProductionOrderId(productionOrder.getRecordId());
+            OrderMeasure measureData = measureDataList[i];
+            measureData.setOrderId(productionOrder.getRecordId());
             productionOrderMeasureDataDAO.insert(measureData);
         }
     }
 
-    private void saveSize(ProductionOrderSize[] sizes, ProductionOrder productionOrder) {
+    private void saveSize(OrderSize[] sizes, ProductionOrder productionOrder) {
         for (int i = 0; i < sizes.length; i++) {
-            ProductionOrderSize productionOrderSize = sizes[i];
-            productionOrderSize.setProductionOrderId(productionOrder.getRecordId());
+            OrderSize productionOrderSize = sizes[i];
+            productionOrderSize.setOrderId(productionOrder.getRecordId());
+            productionOrderSize.setRefRecordType(GlobalConstants.RECORD_TYPE_PRODUCTION_ORDER);
             productionOrderSizeDAO.insert(productionOrderSize);
         }
     }
@@ -155,9 +155,9 @@ public class ProductionOrderService {
     }
 
     private void fillFromScheduleOrder(ScheduleOrder scheduleOrder, ProductionOrder productionOrder) {
-        productionOrder.setPlannedQty(scheduleOrder.getPlannedQty());
-        productionOrder.setPlannedStartDate(scheduleOrder.getPlannedStartDate());
-        productionOrder.setPlannedEndDate(scheduleOrder.getPlannedEndDate());
+        productionOrder.setPlannedQty(scheduleOrder.getQtyPlanned());
+        productionOrder.setPlannedStartDate(scheduleOrder.getDatePlannedStart());
+        productionOrder.setPlannedEndDate(scheduleOrder.getDatePlannedEnd());
     }
 
 }

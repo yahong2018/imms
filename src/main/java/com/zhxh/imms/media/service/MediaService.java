@@ -1,6 +1,6 @@
-package com.zhxh.imms.misc.service;
+package com.zhxh.imms.media.service;
 
-import com.zhxh.imms.misc.dao.MediaDAO;
+import com.zhxh.imms.media.dao.MediaDAO;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

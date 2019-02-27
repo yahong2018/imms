@@ -1,12 +1,8 @@
-package com.zhxh.imms.misc.dao;
+package com.zhxh.imms.media.dao;
 
 import com.zhxh.core.data.BaseDAOWithEntity;
-import com.zhxh.imms.misc.entity.Media;
-import org.apache.commons.lang3.StringUtils;
+import com.zhxh.imms.media.entity.Media;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
 
 @Component("mediaDAO")
 public class MediaDAO extends BaseDAOWithEntity<Media> {

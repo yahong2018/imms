@@ -5,12 +5,12 @@ import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
 
-@DataTableConfiguration("production_order_measure_data")
+@DataTableConfiguration("order_measure_data")
 @Getter
 @Setter
-public class ProductionOrderMeasureData extends EntityObject<Long> {
-    private Long productionOrderId;
-    private String measureBodyNo;
-    private String measureBody;
+public class OrderMeasure extends EntityObject<Long> {
+    private Long orderId;
+    private int refRecordType;
+    private String bodyNo;
     private String measureData;
 }

@@ -15,16 +15,16 @@ public class RequirementOrder extends EntityObject<Long> {
     private String requirementOrderNo;
     private int requirementOrderType;
     private int requirementOrderStatus;
-    private int    priority;
+    private int priority;
     private Long plantId;
     private Long workCenterId;
     private Long fgMaterialId;
-    private int    plannedQty;
+    private int plannedQty;
     private LocalDateTime requiredDeliveryDate;
     private String saleOrderNo;
     private int repeatType;
 
-    private ProductionOrderSize[] orderSizeList;
+    private OrderSize[] orderSizeList;
     private BomVO[] bomList;
-    private ProductionOrderMeasureData[] measureDataList;
+    private OrderMeasure[] measureDataList;
 }
