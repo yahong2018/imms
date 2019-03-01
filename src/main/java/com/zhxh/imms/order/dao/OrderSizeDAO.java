@@ -4,7 +4,7 @@ import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.imms.order.entity.OrderSize;
 import org.springframework.stereotype.Component;
 
-@Component("productionOrderSizeDAO")
+@Component("orderSizeDAO")
 public class OrderSizeDAO extends BaseDAOWithEntity<OrderSize> {
 
 }

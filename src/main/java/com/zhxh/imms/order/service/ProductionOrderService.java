@@ -4,6 +4,7 @@ import com.zhxh.core.data.DataCode.BCode;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.imms.material.dao.BomDAO;
 import com.zhxh.imms.material.service.BomOrderService;
+import com.zhxh.imms.material.vo.BomVO;
 import com.zhxh.imms.order.dao.OrderMeasureDAO;
 import com.zhxh.imms.order.dao.OrderSizeDAO;
 import com.zhxh.imms.order.dao.ProductionOrderDAO;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
@@ -25,26 +28,11 @@ import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("productionOrderService")
 public class ProductionOrderService {
-    @Resource(name = "bomOrderService")
-    private BomOrderService bomOrderService;
-
-    @Resource(name = "productionOrderDAO")
-    private ProductionOrderDAO productionOrderDAO;
-
-    @Resource(name = "orderSizeDAO")
-    private OrderSizeDAO orderSizeDAO;
-
-    @Resource(name = "orderMeasureDAO")
-    private OrderMeasureDAO orderMeasureDAO;
-
-    @Resource(name = "bomDAO")
-    private BomDAO bomDAO;
-
-    @Resource(name = "operationRoutingOrderDAO")
-    private OperationRoutingOrderDAO operationRoutingOrderDAO;
-
-    @Resource(name = "operationRoutingDAO")
-    private OperationRoutingDAO operationRoutingDAO;
+    public List<BomVO> getProductionOrderBom(ProductionOrder productionOrder){
+        Map parameters = new HashMap<>();
+        parameters.put("bomOrderId",productionOrder.getBomOrderId());
+        return bomDAO.getByWhere(BomVO.class,"bom_order_id=#{bomOrderId}",parameters);
+    }
 
     @Transactional(rollbackFor = RuntimeException.class)
     public ProductionOrder createProductionOrder(ScheduleOrder scheduleOrder) {
@@ -135,4 +123,25 @@ public class ProductionOrderService {
         productionOrder.setPlannedStartDate(scheduleOrder.getDatePlannedStart());
         productionOrder.setPlannedEndDate(scheduleOrder.getDatePlannedEnd());
     }
+
+    @Resource(name = "bomOrderService")
+    private BomOrderService bomOrderService;
+
+    @Resource(name = "productionOrderDAO")
+    private ProductionOrderDAO productionOrderDAO;
+
+    @Resource(name = "orderSizeDAO")
+    private OrderSizeDAO orderSizeDAO;
+
+    @Resource(name = "orderMeasureDAO")
+    private OrderMeasureDAO orderMeasureDAO;
+
+    @Resource(name = "bomDAO")
+    private BomDAO bomDAO;
+
+    @Resource(name = "operationRoutingOrderDAO")
+    private OperationRoutingOrderDAO operationRoutingOrderDAO;
+
+    @Resource(name = "operationRoutingDAO")
+    private OperationRoutingDAO operationRoutingDAO;
 }

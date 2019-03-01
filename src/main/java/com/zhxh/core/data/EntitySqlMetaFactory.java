@@ -11,7 +11,7 @@ import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-@Component("entitySqlMetaFactory")
+//@Component("entitySqlMetaFactory")
 public class EntitySqlMetaFactory {
     public void init() {
 //        for (Map.Entry<String, String> entry : SysEnv.getEntityTableMappingHolder().entrySet()) {
@@ -72,9 +72,9 @@ public class EntitySqlMetaFactory {
         metaMap.put(key, meta);
     }
 
-    @Resource(name="sqlSession")
+//    @Resource(name="sqlSession")
     private  SqlSessionTemplate sqlSession;
-    @Resource(name="sqlMetaCreator")
+//    @Resource(name="sqlMetaCreator")
     private  SqlMetaCreator sqlMetaCreator;
     protected final static Map<String, EntitySqlMeta> metaMap = new HashMap<>();
 
@@ -82,8 +82,15 @@ public class EntitySqlMetaFactory {
         return sqlMetaCreator;
     }
 
+    public void setSqlMetaCreator(SqlMetaCreator sqlMetaCreator) {
+        this.sqlMetaCreator = sqlMetaCreator;
+    }
+
     public  SqlSessionTemplate getSqlSession() {
         return sqlSession;
     }
 
+    public void setSqlSession(SqlSessionTemplate sqlSession) {
+        this.sqlSession = sqlSession;
+    }
 }

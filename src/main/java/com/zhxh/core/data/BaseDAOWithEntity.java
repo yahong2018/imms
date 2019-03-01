@@ -37,10 +37,14 @@ public class BaseDAOWithEntity<T /*extends Entity*/> extends BaseDAO implements 
     }
 
     public List<T> getByWhere(String where,Map parameter){
+        return this.getByWhere(this.clazz,where,parameter);
+    }
+
+    public <C extends T> List<C> getByWhere(Class<C> clazz, String where,Map parameter){
         Map listMap = new HashMap();
         listMap.put("where",where);
 
-        return this.getList(listMap,parameter);
+        return this.getList(clazz,listMap,parameter);
     }
 
     public List<T> getList(Map listMap, Map parameter) {

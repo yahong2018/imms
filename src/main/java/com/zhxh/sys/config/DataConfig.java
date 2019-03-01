@@ -101,27 +101,28 @@ public class DataConfig {
         return result;
     }
 
-    @Bean(name="sqlMetaCreator")
-    SqlMetaCreator createSqlMetaCreator(){
-        return new MySqlMetaCreator();
+//    @Bean(name="sqlMetaCreator")
+//    SqlMetaCreator createSqlMetaCreator(){
+//        return new MySqlMetaCreator();
+//    }
+
+    @Bean("entitySqlMetaFactory")
+    public EntitySqlMetaFactory createEntitySqlMetaFactory(SqlSessionTemplate sqlSession) {
+        EntitySqlMetaFactory result = new EntitySqlMetaFactory();
+        result.setSqlSession(sqlSession);
+        result.setSqlMetaCreator(new MySqlMetaCreator());
+        result.init();
+//        this.setCustomSelectSql(result,MaterialVO.class,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
+//        this.setCustomSelectSql(result,MaterialMediaVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_MEDIA_VO");
+//        this.setCustomSelectSql(result,BomVO.class,"com.zhxh.imms.material.dao.SQL_GET_BOM_VO");
+        return result;
     }
 
-//    @Bean
-//    public EntitySqlMetaFactory createEntitySqlMetaFactory(SqlSessionTemplate sqlSession) {
-//        EntitySqlMetaFactory result = new EntitySqlMetaFactory();
-//        result.setSqlSession(sqlSession);
-//        result.init();
-//        this.setCustomSelectSql(MaterialVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_VO");
-//        this.setCustomSelectSql(MaterialMediaVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_MATERIAL_MEDIA_VO");
-//        this.setCustomSelectSql(BomVO.class,sqlSession,"com.zhxh.imms.material.dao.SQL_GET_BOM_VO");
-//        return result;
-//    }
-//
-//    private void setCustomSelectSql(Class clazz, SqlSessionTemplate sqlSession,String sqlId){
-//        EntitySqlMeta meta = EntitySqlMetaFactory.getEntitySqlMeta(clazz);
-//        MappedStatement statement = sqlSession.getConfiguration().getMappedStatement(sqlId);
-//        String sql = statement.getSqlSource().getBoundSql(null).getSql();
-//        meta.setSqlSelect(sql);
-//        meta.setResultMap(statement.getResultMaps().get(0));
-//    }
+    private void setCustomSelectSql(EntitySqlMetaFactory factory, Class clazz, String sqlId){
+        EntitySqlMeta meta = factory.getEntitySqlMeta(clazz);
+        MappedStatement statement = factory.getSqlSession().getConfiguration().getMappedStatement(sqlId);
+        String sql = statement.getSqlSource().getBoundSql(null).getSql();
+        meta.setSqlSelect(sql);
+        meta.setResultMap(statement.getResultMaps().get(0));
+    }
 }
