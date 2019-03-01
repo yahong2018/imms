@@ -1,6 +1,6 @@
 package com.zhxh.imms.routing.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @DataTableConfiguration("operation_routing")
 @Getter
 @Setter
-public class OperationRouting extends EntityObject<Long> {
+public class OperationRouting extends Entity<Long> {
     private Long        operationId;
     private Long        operationRoutingOrderId;
     private String        qaProcedure;

@@ -1,6 +1,6 @@
 package com.zhxh.imms.factory.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @DataTableConfiguration("work_station")
 @Getter
 @Setter
-public class WorkStation extends EntityObject {
+public class WorkStation extends Entity {
     private String workStationNo;
     private String plantId;
     private String description;

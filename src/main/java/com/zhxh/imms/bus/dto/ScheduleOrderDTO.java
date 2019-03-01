@@ -1,4 +1,4 @@
-package com.zhxh.imms.order.dto;
+package com.zhxh.imms.bus.dto;
 
 import com.zhxh.imms.material.vo.BomVO;
 import com.zhxh.imms.order.entity.OrderMeasure;

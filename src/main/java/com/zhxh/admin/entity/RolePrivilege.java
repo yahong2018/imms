@@ -1,6 +1,6 @@
 package com.zhxh.admin.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @DataTableConfiguration("role_privilege")
 @Getter
 @Setter
-public class RolePrivilege extends EntityObject<Long> {
+public class RolePrivilege extends Entity<Long> {
     private Long programPrivilegeId;
     private Long roleId;
     private String programId;

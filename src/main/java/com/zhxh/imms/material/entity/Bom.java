@@ -1,6 +1,6 @@
 package com.zhxh.imms.material.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @DataTableConfiguration("bom")
 @Getter
 @Setter
-public class Bom extends EntityObject<Long> {
+public class Bom extends Entity<Long> {
     private Long bomOrderId;
     private String componentTypeNo;
     private Long componentMaterialId;

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.material.entity">
-    <resultMap id="Material" type="com.zhxh.imms.material.entity.Material" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Material" type="com.zhxh.imms.material.entity.Material" extends="com.zhxh.core.data.Entity">
         <result property="materialNo" column="material_no"/>
         <result property="materialTypeId" column="material_type_id"/>
         <result property="materialName" column="material_name"/>
@@ -15,12 +15,12 @@
         <result property="materialDescription" column="material_description"/>
     </resultMap>
 
-    <resultMap id="BomOrder" type="com.zhxh.imms.material.entity.BomOrder"  extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="BomOrder" type="com.zhxh.imms.material.entity.BomOrder"  extends="com.zhxh.core.data.Entity">
         <result property="bomOrderNo" column="bom_order_no"/>
         <result property="bomOrderTypeNo" column="bom_order_type_no"/>
     </resultMap>
 
-    <resultMap id="Bom" type="com.zhxh.imms.material.entity.Bom"  extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Bom" type="com.zhxh.imms.material.entity.Bom"  extends="com.zhxh.core.data.Entity">
         <result property="bomOrderId" column="bom_order_id"/>
         <result property="componentTypeNo" column="component_type_no"/>
         <result property="componentMaterialId" column="component_material_id"/>

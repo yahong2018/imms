@@ -1,6 +1,6 @@
 package com.zhxh.imms.material.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
@@ -12,7 +12,7 @@ import java.util.Map;
 @DataTableConfiguration("bom_order")
 @Getter
 @Setter
-public class BomOrder extends EntityObject<Long>{
+public class BomOrder extends Entity<Long> {
     @CheckUnique
     private String bomOrderNo;
     private int bomOrderTypeNo;

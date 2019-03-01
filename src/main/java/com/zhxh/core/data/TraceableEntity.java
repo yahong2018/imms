@@ -11,7 +11,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TraceableEntity<T extends Comparable> extends EntityObject<T> {
+public class TraceableEntity<T extends Comparable> extends Entity<T> {
     public static void fillCreateInfo(TraceableEntity entity){
         entity.setCreateBy(AuthenticateService.getCurrentLogin().getRecordId());
         entity.setCreateDate(new Date());

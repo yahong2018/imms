@@ -1,6 +1,6 @@
 package com.zhxh.imms.material.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.CheckUnique;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @DataTableConfiguration("material")
 @Getter
 @Setter
-public class Material extends EntityObject<Long> {
+public class Material extends Entity<Long> {
     @CheckUnique
     private String materialNo;
     private Long materialTypeId;

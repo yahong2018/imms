@@ -1,5 +1,6 @@
 package com.zhxh.core.data;
 
+import com.zhxh.core.GlobalConstants;
 import com.zhxh.core.data.event.DataUpdateEvent;
 import com.zhxh.core.data.meta.annotation.AutoGenerationType;
 import com.zhxh.core.utils.BeanUtils;
@@ -93,7 +94,7 @@ public class SqlHelper implements ApplicationEventPublisherAware {
             itemMap.put("itemClass", item.getClass());
             itemMap.put("useGeneratedKeys", true);
             itemMap.put("keyProperty", meta.getKeyProperty());
-            Class keyFieldClass = ((EntityObject) item).getKeyClass();
+            Class keyFieldClass = ((Entity) item).getKeyClass();
             if (keyFieldClass == Long.class) {
                 itemMap.put(meta.getKeyProperty(), -1L);
             } else {
@@ -105,7 +106,7 @@ public class SqlHelper implements ApplicationEventPublisherAware {
             Object keyValue = itemMap.get(meta.getKeyProperty());
             BeanUtils.setValue(item, meta.getKeyProperty(), keyValue);
         }
-        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_INSERT));
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item, GlobalConstants.DATA_OPERATION_INSERT));
 
         return result;
     }
@@ -113,7 +114,7 @@ public class SqlHelper implements ApplicationEventPublisherAware {
 
     public int insert(Object item, String sqlId) {
         int result = this.sqlSession.insert(sqlId, item);
-        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_INSERT));
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,GlobalConstants.DATA_OPERATION_INSERT));
         return  result;
     }
 
@@ -123,13 +124,13 @@ public class SqlHelper implements ApplicationEventPublisherAware {
         String updateSql = meta.getSqlUpdate();
 
         int result = this.executeNoneQuery(updateSql, itemMap);
-        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_UPDATE));
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,GlobalConstants.DATA_OPERATION_UPDATE));
         return result;
     }
 
     public int update(Object item, String sqlId) {
         int result = this.sqlSession.update(sqlId, item);
-        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_UPDATE));
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,GlobalConstants.DATA_OPERATION_UPDATE));
         return result;
     }
 
@@ -141,13 +142,13 @@ public class SqlHelper implements ApplicationEventPublisherAware {
         String deleteSql = meta.getSqlDeleteById();
 
         int result = this.executeNoneQuery(deleteSql, itemMap);
-        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_DELETE));
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,GlobalConstants.DATA_OPERATION_DELETE));
         return result;
     }
 
     public int delete(Object item, String sqlId) {
         int result = this.sqlSession.delete(sqlId, item);
-        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,BaseDAO.DATA_OPERATION_DELETE));
+        this.applicationEventPublisher.publishEvent(new DataUpdateEvent(this,item,GlobalConstants.DATA_OPERATION_DELETE));
         return result;
     }
 

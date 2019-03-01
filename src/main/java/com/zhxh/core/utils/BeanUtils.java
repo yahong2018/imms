@@ -69,7 +69,7 @@ public class BeanUtils {
                 field.set(dest, field.get(from));
                 fns.add(field.getName());
             } catch (Exception e) {
-                Logger.error("EntityObject.copy出现错误:" + e.getMessage());
+                Logger.error("Entity.copy出现错误:" + e.getMessage());
             }
         }
 

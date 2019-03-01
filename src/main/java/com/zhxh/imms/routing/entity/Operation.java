@@ -1,6 +1,6 @@
 package com.zhxh.imms.routing.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @DataTableConfiguration("operation")
 @Getter
 @Setter
-public class Operation extends EntityObject<Long> {
+public class Operation extends Entity<Long> {
     private String  operationNo;
     private String  operationName;
     private String  standardOperationProcedure;

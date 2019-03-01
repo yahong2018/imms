@@ -1,5 +1,5 @@
 package com.zhxh.imms.code.entity;
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @TreeTable
 @Getter
 @Setter
-public class DefectCode extends EntityObject<Long> {
+public class DefectCode extends Entity<Long> {
     @CheckUnique
     private String defectCodeNo;
     private String defectCodeName;

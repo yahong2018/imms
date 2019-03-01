@@ -3,7 +3,6 @@ package com.zhxh.imms.order.dao;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.data.BaseDAOWithEntity;
 import com.zhxh.core.data.DataCode.BCode;
-import com.zhxh.imms.GlobalConstants;
 import com.zhxh.imms.code.service.CodeSeedService;
 import com.zhxh.imms.material.entity.BomOrder;
 import com.zhxh.imms.material.service.BomOrderService;

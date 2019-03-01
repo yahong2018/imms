@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.factory.entity">
-    <resultMap id="Line" type="com.zhxh.imms.factory.entity.Line" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Line" type="com.zhxh.imms.factory.entity.Line" extends="com.zhxh.core.data.Entity">
         <result property="workCenterId" column="work_center_id"/>
         <result property="sequenceNumber" column="sequence_number"/>
         <result property="startMainLineId" column="start_main_line_id"/>
@@ -16,7 +16,7 @@
         <result property="productionLineCode" column="production_line_code"/>
     </resultMap>
 
-    <resultMap id="Machine" type="com.zhxh.imms.factory.entity.Machine" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Machine" type="com.zhxh.imms.factory.entity.Machine" extends="com.zhxh.core.data.Entity">
         <result property="machineNo" column="machine_no"/>
         <result property="machineName" column="machine_name"/>
         <result property="machineTypeId" column="machine_type_id"/>
@@ -25,20 +25,20 @@
         <result property="workStationId" column="work_station_id"/>
     </resultMap>
 
-    <resultMap id="Operator" type="com.zhxh.imms.factory.entity.Operator" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Operator" type="com.zhxh.imms.factory.entity.Operator" extends="com.zhxh.core.data.Entity">
         <result property="userId" column="user_id"/>
         <result property="plantId" column="plant_id"/>
         <result property="supervisorId" column="supervisor_id"/>
     </resultMap>
 
-    <resultMap id="Plant" type="com.zhxh.imms.factory.entity.Plant" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Plant" type="com.zhxh.imms.factory.entity.Plant" extends="com.zhxh.core.data.Entity">
         <result property="plantNo" column="plant_no"/>
         <result property="plantName" column="plant_name"/>
         <result property="description" column="description"/>
         <result property="costPriceRatio" column="cost_price_ratio"/>
     </resultMap>
 
-    <resultMap id="PrincipalAxis" type="com.zhxh.imms.factory.entity.PrincipalAxis" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="PrincipalAxis" type="com.zhxh.imms.factory.entity.PrincipalAxis" extends="com.zhxh.core.data.Entity">
         <result property="principalAxisNo" column="principal_axis_no"/>
         <result property="sequenceNumber" column="sequence_number"/>
         <result property="rotatingDirection" column="rotating_direction"/>
@@ -48,14 +48,14 @@
         <result property="workCenterId" column="work_center_id"/>
     </resultMap>
 
-    <resultMap id="WorkCenter" type="com.zhxh.imms.factory.entity.WorkCenter" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="WorkCenter" type="com.zhxh.imms.factory.entity.WorkCenter" extends="com.zhxh.core.data.Entity">
         <result property="workCenterNo" column="work_center_no"/>
         <result property="workCenterName" column="work_center_name"/>
         <result property="description" column="description"/>
         <result property="plantId" column="plant_id"/>
     </resultMap>
 
-    <resultMap id="WorkStation" type="com.zhxh.imms.factory.entity.WorkStation" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="WorkStation" type="com.zhxh.imms.factory.entity.WorkStation" extends="com.zhxh.core.data.Entity">
         <result property="workStationNo" column="work_station_no"/>
         <result property="plantId" column="plant_id"/>
         <result property="description" column="description"/>

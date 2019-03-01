@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zhxh.imms.code.entity">
-    <resultMap id="CodeSeed" type="com.zhxh.imms.code.entity.CodeSeed" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="CodeSeed" type="com.zhxh.imms.code.entity.CodeSeed" extends="com.zhxh.core.data.Entity">
         <result property="seedNo" column="seed_no"/>
         <result property="seedName" column="seed_name"/>
         <result property="initialValue" column="initial_value"/>
@@ -11,7 +11,7 @@
         <result property="totalLength" column="total_length"/>
     </resultMap>
 
-    <resultMap id="DefectCode" type="com.zhxh.imms.code.entity.DefectCode" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="DefectCode" type="com.zhxh.imms.code.entity.DefectCode" extends="com.zhxh.core.data.Entity">
         <result property="defectCodeNo" column="defect_code_no"/>
         <result property="defectCodeName" column="defect_code_name"/>
         <result property="defectCodeDescription" column="defect_code_description"/>
@@ -20,7 +20,7 @@
         <result property="defectCodeNamePath" column="defect_code_name_path"/>
     </resultMap>
 
-    <resultMap id="MachineType" type="com.zhxh.imms.code.entity.MachineType" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="MachineType" type="com.zhxh.imms.code.entity.MachineType" extends="com.zhxh.core.data.Entity">
         <result property="machineTypeNo" column="machine_type_no"/>
         <result property="machineTypeName" column="machine_type_name"/>
         <result property="machineTypeDescription" column="machine_type_description"/>
@@ -29,7 +29,7 @@
         <result property="machineTypeNamePath" column="machine_type_name_path"/>
     </resultMap>
 
-    <resultMap id="Size" type="com.zhxh.imms.code.entity.Size" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Size" type="com.zhxh.imms.code.entity.Size" extends="com.zhxh.core.data.Entity">
         <result property="sizeNo" column="size_no"/>
         <result property="sizeName" column="size_name"/>
         <result property="sizeDescription" column="size_description"/>
@@ -38,7 +38,7 @@
         <result property="sizeNamePath" column="size_name_path"/>
     </resultMap>
 
-    <resultMap id="MaterialType" type="com.zhxh.imms.code.entity.MaterialType" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="MaterialType" type="com.zhxh.imms.code.entity.MaterialType" extends="com.zhxh.core.data.Entity">
         <result property="materialTypeNo" column="material_type_no"/>
         <result property="materialTypeName" column="material_type_name"/>
         <result property="materialTypeDescription" column="material_type_description"/>
@@ -47,7 +47,7 @@
         <result property="materialTypeNamePath" column="material_type_name_path"/>
     </resultMap>
 
-    <resultMap id="Uom" type="com.zhxh.imms.code.entity.Uom" extends="com.zhxh.core.data.EntityObject">
+    <resultMap id="Uom" type="com.zhxh.imms.code.entity.Uom" extends="com.zhxh.core.data.Entity">
         <result property="uomNo" column="uom_no"/>
         <result property="uomName" column="uom_name"/>
         <result property="uomDescription" column="uom_description"/>

@@ -1,6 +1,6 @@
 package com.zhxh.core.data.DataCode;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import lombok.Setter;
 @DataTableConfiguration("data_code_type_c")
 @Getter
 @Setter
-public class CCode extends EntityObject {
+public class CCode extends Entity {
     private String codeNo;
     private String codeName;
     private int codeType;

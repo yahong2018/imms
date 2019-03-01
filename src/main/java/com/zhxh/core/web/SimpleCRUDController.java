@@ -1,7 +1,7 @@
 package com.zhxh.core.web;
 
 import com.zhxh.core.data.BaseDAOWithEntity;
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Map;
 
-public abstract class SimpleCRUDController<T extends EntityObject> {
+public abstract class SimpleCRUDController<T extends Entity> {
     @RequestMapping("getAll.handler")
     @ResponseBody
     public final List<T> getAll(HttpServletRequest request, HttpServletResponse response) {

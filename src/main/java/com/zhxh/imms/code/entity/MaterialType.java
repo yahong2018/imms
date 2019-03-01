@@ -1,6 +1,6 @@
 package com.zhxh.imms.code.entity;
 
-import com.zhxh.core.data.EntityObject;
+import com.zhxh.core.data.Entity;
 import com.zhxh.core.data.meta.annotation.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @TreeTable
 @Getter
 @Setter
-public class MaterialType extends EntityObject<Long> {
+public class MaterialType extends Entity<Long> {
     @CheckUnique
     private String materialTypeNo;
     private String materialTypeName;

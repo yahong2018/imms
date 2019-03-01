@@ -1,5 +1,6 @@
 package com.zhxh.core.data;
 
+import com.zhxh.core.GlobalConstants;
 import com.zhxh.core.data.meta.annotation.AutoGenerationType;
 import com.zhxh.core.data.meta.annotation.DataTableConfiguration;
 import com.zhxh.core.env.SysEnv;
@@ -16,10 +17,6 @@ import static com.zhxh.core.exception.ErrorCode.*;
 import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 public class BaseDAO {
-    public static final int DATA_OPERATION_INSERT = 1;
-    public static final int DATA_OPERATION_UPDATE = 2;
-    public static final int DATA_OPERATION_DELETE = 3;
-
     @Resource(name = "sqlHelper")
     protected SqlHelper sqlHelper;
     @Resource(name = "validator")
@@ -58,8 +55,8 @@ public class BaseDAO {
     private final static String EMPTY_UUID = new UUID(0, 0).toString();
 
     public final int insert(Object item) throws BusinessException {
-        if (item instanceof EntityObject) {
-            EntityObject theItem = (EntityObject) item;
+        if (item instanceof Entity) {
+            Entity theItem = (Entity) item;
             DataTableConfiguration tableConfiguration = item.getClass().getAnnotation(DataTableConfiguration.class);
             if (tableConfiguration.keyCreateType() == AutoGenerationType.UUID) {
                 if (EMPTY_UUID.equals(theItem.getRecordId()) || StringUtils.isEmpty(theItem.getRecordId().toString())) {
@@ -72,7 +69,7 @@ public class BaseDAO {
             TraceableEntity.fillCreateInfo((TraceableEntity) item);
         }
 
-        this.verify(item, DATA_OPERATION_INSERT);
+        this.verify(item, GlobalConstants.DATA_OPERATION_INSERT);
 
         return this.doInternalInsert(item);
     }
@@ -81,7 +78,7 @@ public class BaseDAO {
         if (item instanceof TraceableEntity) {
             TraceableEntity.fillUpdateInfo((TraceableEntity) item);
         }
-        this.verify(item, DATA_OPERATION_UPDATE);
+        this.verify(item, GlobalConstants.DATA_OPERATION_UPDATE);
 
         return this.doInternalUpdate(item);
     }
@@ -94,7 +91,7 @@ public class BaseDAO {
 
             throwException(ERROR_DATA_NOT_EXISTS, idLabel, keyValue);
         }
-        this.verify(item, DATA_OPERATION_DELETE);
+        this.verify(item, GlobalConstants.DATA_OPERATION_DELETE);
 
         return this.doInternalDelete(item);
     }
@@ -177,7 +174,7 @@ public class BaseDAO {
     public void verify(Object item, int operationCode) throws BusinessException {
         Class clazz = item.getClass();
 
-        if (operationCode == DATA_OPERATION_INSERT || operationCode == DATA_OPERATION_UPDATE) {
+        if (operationCode == GlobalConstants.DATA_OPERATION_INSERT || operationCode == GlobalConstants.DATA_OPERATION_UPDATE) {
             this.verifyBean(item, operationCode);
 
             EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
@@ -197,7 +194,7 @@ public class BaseDAO {
             }
         }
 
-        if (operationCode == DATA_OPERATION_INSERT) {
+        if (operationCode == GlobalConstants.DATA_OPERATION_INSERT) {
             if (this.exists(item)) {
                 String keyProperty = getKeyProperty(clazz);
                 Object keyValue = BeanUtils.getValue(item, keyProperty);
@@ -205,7 +202,7 @@ public class BaseDAO {
 
                 throwException(ERROR_DATA_ALREADY_EXISTS, idLabel, keyValue);
             }
-        } else if (operationCode == DATA_OPERATION_UPDATE) {
+        } else if (operationCode == GlobalConstants.DATA_OPERATION_UPDATE) {
             if (!this.exists(item)) {
                 String keyProperty = getKeyProperty(item.getClass());
                 Object keyValue = BeanUtils.getValue(item, keyProperty);
@@ -215,7 +212,7 @@ public class BaseDAO {
             }
         }
 
-        if (operationCode == DATA_OPERATION_DELETE) {
+        if (operationCode == GlobalConstants.DATA_OPERATION_DELETE) {
             if (this.isTreeRoot(item)) {
                 throwException(ERROR_ROOT_CANNOT_DELETE);
             }
