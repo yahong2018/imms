@@ -19,6 +19,8 @@ src/main/resources/static/js/ext.rar
 *.iws
 *.iml
 *.ipr
+*.uml
+*.~ml
 
 ### NetBeans ###
 /nbproject/private/
