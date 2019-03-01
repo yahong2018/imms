@@ -16,7 +16,6 @@ public class BomOrder extends EntityObject<Long>{
     @CheckUnique
     private String bomOrderNo;
     private int bomOrderTypeNo;
-    private Long refId;
 
     private final static Map<String, String> bomTypeNames = new HashMap<String, String>() {
         {

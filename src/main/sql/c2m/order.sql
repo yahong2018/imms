@@ -27,6 +27,7 @@ create table schedule_order(
   
   schedule_no                     varchar(12)                        not null,
   requirement_order_no            varchar(12)                        not null,
+  priority                        tinyint                            not null,
   production_order_id             bigint                             null,
   production_order_no             varchar(12)                        null,
 
@@ -132,7 +133,8 @@ create table order_measure  (
   optlock                      int                      not null default 0,
 
   primary key (record_id) ,
-  index idx_pro_order_md_01(order_id)
+  index idx_order_measure_01(order_id),
+  index idx_order_measure_02(ref_record_type)
 ) comment = '量体数据';
 
 #

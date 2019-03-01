@@ -86,7 +86,6 @@ public class BaseDAO {
         return this.doInternalUpdate(item);
     }
 
-
     public final int delete(Object item) {
         if (!this.exists(item)) {
             String keyProperty = getKeyProperty(item.getClass());
@@ -102,6 +101,22 @@ public class BaseDAO {
 
     public int executeNoneQuery(String sql, Map parameters) {
         return this.sqlHelper.executeNoneQuery(sql, parameters);
+    }
+
+    public int executeByIdentifiedQuery(String sqlIdentity){
+        return this.sqlHelper.getSqlSession().update(sqlIdentity);
+    }
+
+    public int executeByIdentifiedQuery(String sqlIdentity, Map parameters) {
+        return this.sqlHelper.getSqlSession().update(sqlIdentity, parameters);
+    }
+
+    public List selectByIdentitySql(String sqlIdentity){
+        return this.sqlHelper.getSqlSession().selectList(sqlIdentity);
+    }
+
+    public List selectByIdentitySql(String sqlIdentity,Map parameters){
+        return this.sqlHelper.getSqlSession().selectList(sqlIdentity,parameters);
     }
 
     public boolean exists(Object item) {

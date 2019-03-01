@@ -13,7 +13,10 @@ import java.time.LocalDateTime;
 public class ScheduleOrder extends TraceableEntity<Long> {
     private String scheduleOrderNo;
     private String requirementOrderNo;
+    private byte priority;
     private String productionOrderNo;
+    private Long bomOrderId;
+    private String bomOrderNo;
 
     private Long plantId;
     private String plantNo;

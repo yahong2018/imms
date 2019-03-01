@@ -14,7 +14,7 @@ public class Bom extends EntityObject<Long> {
     private Long componentMaterialId;
     private Long componentAbstractMaterialId;
     private double componentQty;
-    private String componentUomId;
+    private Long componentUomId;
     private String componentMaterialNoPath;
     private String componentMaterialNamePath;
     private Long componentMaterialMatchRuleId;

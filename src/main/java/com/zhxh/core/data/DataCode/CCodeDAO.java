@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component("cCodeCDAO")
+@Component("cCodeDAO")
 public class CCodeDAO extends BaseDAOWithEntity<CCode> {
     public List<CCode> getCodeByType(int type) {
 

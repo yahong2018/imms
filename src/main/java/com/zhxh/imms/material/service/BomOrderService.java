@@ -11,10 +11,9 @@ public class BomOrderService {
     @Resource(name="bomOrderDAO")
     private BomOrderDAO bomOrderDAO;
 
-    public BomOrder createBomOrder(int bomOrderTypeNo,Long refId) {
+    public BomOrder createBomOrder(int bomOrderTypeNo) {
         BomOrder bomOrder = new BomOrder();
         bomOrder.setBomOrderTypeNo(bomOrderTypeNo);
-        bomOrder.setRefId(refId);
         this.bomOrderDAO.insert(bomOrder);
 
         return bomOrder;

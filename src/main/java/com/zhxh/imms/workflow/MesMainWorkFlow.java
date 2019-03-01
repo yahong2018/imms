@@ -1,8 +1,8 @@
-package com.zhxh.imms.mes;
+package com.zhxh.imms.workflow;
 
 import com.zhxh.core.backservice.ThreadService;
 
-public class MainWorkFlow extends ThreadService {
+public class MesMainWorkFlow extends ThreadService {
     @Override
     protected void doInternalRun() {
 

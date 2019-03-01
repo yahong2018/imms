@@ -23,4 +23,27 @@
                                join work_center on requirement_order_work_center_id = work_center_id
 
     </select>
+
+    <insert id="INSERT_COPY_ORDER_SIZE_FROM_SCHEDULE_ORDER" parameterType="java.util.Map">
+        insert into order_size(order_id, ref_record_type,size_id, size_code, qyt_planned, create_by, create_date)
+        select #{productionOrderId}, #{refRecordTypeProductionOrder},size_id, size_code, qyt_planned, #{createBy},SYSDATE()
+          from order_size
+        where order_id = #{scheduleOrderId}
+          and ref_record_type=#{refRecordTypeScheduleOrder}
+    </insert>
+
+    <insert id="INSERT_COPY_MEASURE_DATA_FROM_SCHEDULE_ORDER" parameterType="java.util.Map">
+        insert into order_measure(order_id, ref_record_type,body_no, measure_data, create_by, create_date)
+        select #{productionOrderId}, #{refRecordTypeProductionOrder},body_no, measure_data, #{createBy},SYSDATE()
+        from order_measure
+        where order_id = #{scheduleOrderId}
+          and ref_record_type=#{refRecordTypeScheduleOrder}
+    </insert>
+
+    <insert id="INSERT_COPY_PRODUCTION_ORDER_BOM_FROM_SCHEDULE_ORDER" parameterType="java.util.Map">
+        insert into bom(bom_order_id,component_type,component_material_id,component_abstract_material_id,component_uom_id,component_material_match_rule_id,if_main_fabric,parent_bom_id)
+              select (#{bomOrderId},component_type,component_material_id,component_abstract_material_id,component_uom_id,component_material_match_rule_id,if_main_fabric,parent_bom_id)
+               from bom
+               where bom_order_id=#{scheduleBomOrderId}
+    </insert>
 </mapper>

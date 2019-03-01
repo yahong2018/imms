@@ -16,33 +16,33 @@ public class SystemProgramDAO extends BaseDAOWithEntity<SystemProgram> {
         Map parameters = new HashMap();
         parameters.put("programId", programId);
 
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_PROGRAM_PRIVILEGES, parameters);
+        return this.selectByIdentitySql(SQL_GET_PROGRAM_PRIVILEGES, parameters);
     }
 
     public List<SystemProgram> getUserProgramMenu(Long userId) {
         Map parameters = new HashMap();
         parameters.put("userId", userId);
-        return this.getSqlHelper().getSqlSession().selectList(SQL_GET_USER_PROGRAM_MENU, parameters);
+        return this.selectByIdentitySql(SQL_GET_USER_PROGRAM_MENU, parameters);
     }
 
     public SystemProgram getParent(String programId) {
         Map parameters = new HashMap();
         parameters.put("programId", programId);
-        return this.getSqlHelper().getSqlSession().selectOne(SQL_GET_PARENT_PROGRAM, parameters);
+        return (SystemProgram) this.selectByIdentitySql(SQL_GET_PARENT_PROGRAM, parameters).get(0);
     }
-    
+
     public SystemProgram getSystemProgramByUrl(String url) {
-		String where = "url = #{url}";
-		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("url",url);
-		
-		return this.getOne(where, parameters);
-	}
+        String where = "url = #{url}";
+        Map<String, Object> parameters = new HashMap<>();
+        parameters.put("url", url);
+
+        return this.getOne(where, parameters);
+    }
 
     public List<SystemProgram> getAllMenu() {
         return this.getSqlHelper().getSqlSession().selectList(SQL_GET_ALL_MENU);
     }
-    
+
     protected final static String SQL_GET_PROGRAM_PRIVILEGES = "com.zhxh.admin.dao.GET_PROGRAM_PRIVILEGES";
     protected final static String SQL_GET_USER_PROGRAM_MENU = "com.zhxh.admin.dao.GET_USER_PROGRAM_MENU";
     protected final static String SQL_GET_PARENT_PROGRAM = "com.zhxh.admin.dao.GET_PARENT_PROGRAM";

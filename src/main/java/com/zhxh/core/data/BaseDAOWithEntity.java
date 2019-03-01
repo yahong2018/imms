@@ -14,7 +14,7 @@ import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO implements Generic<T> {
 
-    @Resource(name="entitySqlMetaFactory")
+    @Resource(name = "entitySqlMetaFactory")
     private EntitySqlMetaFactory entitySqlMetaFactory;
 
     protected Class clazz;
@@ -24,27 +24,39 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
         this.clazz = (Class<T>) ((ParameterizedType) t).getActualTypeArguments()[0];
     }
 
-    public List getAll() {
+    public List<T> getAll() {
         return super.getAll(this.clazz);
     }
 
-    public List getList(Map listMap) {
+    public List<T> getList(Map listMap) {
         return this.getList(listMap, null);
     }
 
-    public List getList(Map listMap, Map parameter) {
-        return super.getList(clazz,listMap, parameter);
+    public List<T> getByWhere(String where){
+        return this.getByWhere(where);
+    }
+
+    public List<T> getByWhere(String where,Map parameter){
+        Map listMap = new HashMap();
+        listMap.put("where",where);
+
+        return this.getList(listMap,parameter);
+    }
+
+    public List<T> getList(Map listMap, Map parameter) {
+        return super.getList(clazz, listMap, parameter);
     }
 
     public int getPageListCount(Map map, Map parameters) {
-        return super.getPageListCount(this.clazz,map,parameters);
+        return super.getPageListCount(this.clazz, map, parameters);
     }
 
-    public List getPageList(Map map, Map parameters) {
-        return super.getPageList(clazz,map, parameters);
+    public List<T> getPageList(Map map, Map parameters) {
+        return super.getPageList(clazz, map, parameters);
     }
+
     public int getPageListCount(Map listMap) {
-        return this.getPageListCount(listMap,null);
+        return this.getPageListCount(listMap, null);
     }
 
 
@@ -55,10 +67,17 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
     public T getOne(String where, Map parameters) {
         EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(clazz);
         Map listMap = new HashMap();
-        listMap.put("where",where);
+        listMap.put("where", where);
         String sql = meta.buildSelectSql(listMap);
         T dbItem = sqlHelper.executeScalar(clazz, sql, parameters);
         return dbItem;
+    }
+
+    public T getOneByField(String fieldName, String propertyName, Object fieldValue) {
+        Map parameters = new HashMap();
+        parameters.put(propertyName, fieldValue);
+        String where = fieldName + "=#{" + propertyName + "}";
+        return this.getOne(where,parameters);
     }
 
     public final String getIdLabel() {
@@ -73,17 +92,17 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
         }
         return dbItem;
     }
-    
-    public final int deleteByWhere(String where,Map parameters) {
-    	EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(this.clazz);
-    	String deleteSql = meta.buildDeleteByWhereSql(where);
-    	
-    	return super.executeNoneQuery(deleteSql, parameters);
+
+    public final int deleteByWhere(String where, Map parameters) {
+        EntitySqlMeta meta = this.entitySqlMetaFactory.getEntitySqlMeta(this.clazz);
+        String deleteSql = meta.buildDeleteByWhereSql(where);
+
+        return super.executeNoneQuery(deleteSql, parameters);
     }
-    
+
     public final int deleteById(Object id) {
-   	    T dbItem = this.verifyExistsById(id);
-   	    return this.delete(dbItem);
+        T dbItem = this.verifyExistsById(id);
+        return this.delete(dbItem);
     }
 
 
@@ -99,7 +118,7 @@ public class BaseDAOWithEntity<T /*extends EntityObject*/> extends BaseDAO imple
 
     @Override
     protected final int doInternalInsert(Object item) {
-        return this.doInsert((T)item);
+        return this.doInsert((T) item);
     }
 
     @Override

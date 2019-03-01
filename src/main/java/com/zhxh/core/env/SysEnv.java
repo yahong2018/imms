@@ -2,6 +2,7 @@ package com.zhxh.core.env;
 
 import com.zhxh.core.backservice.ServiceManager;
 import com.zhxh.core.utils.PropertyLoader;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
@@ -11,6 +12,12 @@ import java.util.Map;
 
 @Component
 public class SysEnv implements ApplicationContextAware {
+    public final static int ENVIRONMENT_MODE_DEV=0;
+    public final static int ENVIRONMENT_MODE_TEST=1;
+    public final static int ENVIRONMENT_MODE_PRE_LIVE=2;
+    public final static int ENVIRONMENT_MODE_LIVE=3;
+    public final static int ENVIRONMENT_MODE_SIMULATE=9;
+
     private static String urlLoginPage = "";
     private static String urlAppIndex = "";
     private static String appAbsoluteRootPath = "";
@@ -24,6 +31,7 @@ public class SysEnv implements ApplicationContextAware {
 
     private static Map<String, String> errorsMessageHolder;
     private static Map<String, String> entityFieldLabelHolder;
+    private static int environmentMode = ENVIRONMENT_MODE_DEV;   // 0.开发      1.测试    2.预生产    3.生产    9.仿真
 
     private static final String configLocation = "classpath:config/settings/env.properties";
 
@@ -46,6 +54,11 @@ public class SysEnv implements ApplicationContextAware {
         errorsMessageHolder = PropertyLoader.getPropertyMap(messageErrorLocation);
         String fieldLabelLocation = propertyMap.get("sysenv.fieldLabelLocation");
         entityFieldLabelHolder = PropertyLoader.getPropertyMap(fieldLabelLocation);
+
+        String strEnvironmentMode = propertyMap.get("sysenv.environmentMode");
+        if (StringUtils.isNotEmpty(strEnvironmentMode)) {
+            environmentMode = Integer.parseInt(strEnvironmentMode);
+        }
     }
 
     public static ApplicationContext getApplicationContext() {
@@ -84,20 +97,24 @@ public class SysEnv implements ApplicationContextAware {
         return systemTitle;
     }
 
+    public static int getEnvironmentMode() {
+        return environmentMode;
+    }
 
-    public static String getErrorMessage(String errorCode){
-        if(errorsMessageHolder.containsKey(errorCode)){
+
+    public static String getErrorMessage(String errorCode) {
+        if (errorsMessageHolder.containsKey(errorCode)) {
             return errorsMessageHolder.get(errorCode);
         }
         return "";
     }
 
-    public static String getFieldLabel(String fieldName){
-        if(entityFieldLabelHolder.containsKey(fieldName)){
+    public static String getFieldLabel(String fieldName) {
+        if (entityFieldLabelHolder.containsKey(fieldName)) {
             return entityFieldLabelHolder.get(fieldName);
         }
         int index = fieldName.lastIndexOf(".");
-        return fieldName.substring(index+1);
+        return fieldName.substring(index + 1);
     }
 
     public static Object getBean(String name) {
