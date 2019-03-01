@@ -63,7 +63,7 @@ public class DataUpdateEventListener extends ThreadService implements Applicatio
             String key = event.getItem().getClass().getCanonicalName();
             for (DataUpdateConsumer consumer : this.consumerList) {
                 try {
-                    if (key.equalsIgnoreCase(consumer.getItemClassName())) {
+                    if (consumer.getSubscribeTable().contains(key)) {
                         consumer.consume(event);
                     }
                 } catch (Exception e) {

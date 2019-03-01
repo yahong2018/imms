@@ -1,6 +1,7 @@
 package com.zhxh.admin.controller;
 
-import com.zhxh.admin.misc.LoginResult;
+import com.zhxh.core.GlobalConstants;
+import com.zhxh.core.web.ApiCallResult;
 import com.zhxh.admin.service.AuthenticateService;
 import com.zhxh.core.env.SysEnv;
 import com.zhxh.core.utils.Logger;
@@ -29,17 +30,17 @@ public class LoginController {
 
     @RequestMapping(value = "/api/login/doLogin", method = RequestMethod.POST)
     @ResponseBody
-    public LoginResult doLoginByApi(@RequestBody Map user) {
-        LoginResult result = new LoginResult();
+    public ApiCallResult doLoginByApi(@RequestBody Map user) {
+        ApiCallResult result = new ApiCallResult();
         try {
             String userCode = user.get("userCode").toString();
             String password = user.get("password").toString();
             authenticateService.authenticate(userCode, password);
-            result.setCode(LoginResult.LOGIN_CODE_OK);
+            result.setCode(GlobalConstants.LOGIN_CODE_OK);
             result.setMessage("登录成功！");
 
         } catch (Exception e) {
-            result.setCode(LoginResult.LOGIN_CODE_ERROR);
+            result.setCode(GlobalConstants.LOGIN_CODE_ERROR);
             result.setMessage(e.getMessage());
         }
         return result;

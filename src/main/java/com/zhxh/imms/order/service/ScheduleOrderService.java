@@ -18,10 +18,9 @@ import com.zhxh.imms.material.vo.BomVO;
 import com.zhxh.imms.order.dao.OrderMeasureDAO;
 import com.zhxh.imms.order.dao.OrderSizeDAO;
 import com.zhxh.imms.order.dao.ScheduleOrderDAO;
-import com.zhxh.imms.order.dto.ScheduleOrderDTO;
+import com.zhxh.imms.bus.dto.ScheduleOrderDTO;
 import com.zhxh.imms.order.entity.OrderMeasure;
 import com.zhxh.imms.order.entity.OrderSize;
-import com.zhxh.imms.order.entity.ScheduleOrder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
