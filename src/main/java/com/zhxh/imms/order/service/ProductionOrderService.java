@@ -36,6 +36,9 @@ public class ProductionOrderService {
             //
             return null;
         }
+        //
+        //TODO:注意目前只支持单层Bom，不支持多层BOM。
+        //
         return productionOrderDAO.createProductionOrderMaterialPickingOrder(productionOrder);
     }
 
