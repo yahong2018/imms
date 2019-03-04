@@ -23,6 +23,12 @@ CREATE TABLE `material`
   INDEX `IDX_MATERIAL_04` (`material_size_id`)
 ) COMMENT = '物料';
 
+
+
+
+
+
+
 CREATE TABLE `bom_order`
 (
   `record_id`         bigint   auto_increment                                             NOT NULL,
@@ -50,6 +56,12 @@ CREATE TABLE `bom`
   `if_main_fabric`                   tinyint(1)                 NULL COMMENT '是否主面料',
   `parent_bom_id`                    bigint                     NULL COMMENT '上级BOM id',
 
+  create_by                   bigint            not null,
+  create_date                 datetime          not null,
+  update_by                   bigint            null,
+  update_date                 datetime          null,
+  optlock                     int               not null default 0,
+
   PRIMARY KEY (`record_id`),
   INDEX `IDX_BOM_01` (`component_material_id`),
   INDEX `IDX_BOM_02` (`component_abstract_material_id`),
@@ -57,6 +69,8 @@ CREATE TABLE `bom`
   INDEX `IDX_BOM_04` (`component_material_match_rule_id`),
   INDEX `IDX_BOM_05` (`bom_order_id`)
 ) COMMENT = '物料清单';
+
+
 
 
 #

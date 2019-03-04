@@ -2,12 +2,10 @@ package com.zhxh.imms.order.service;
 
 import com.zhxh.core.data.DataCode.BCode;
 import com.zhxh.core.env.SysEnv;
-import com.zhxh.imms.material.dao.BomDAO;
-import com.zhxh.imms.material.service.BomOrderService;
-import com.zhxh.imms.material.vo.BomVO;
 import com.zhxh.imms.order.dao.OrderMeasureDAO;
 import com.zhxh.imms.order.dao.OrderSizeDAO;
 import com.zhxh.imms.order.dao.ProductionOrderDAO;
+import com.zhxh.imms.order.entity.MaterialPickingSchedule;
 import com.zhxh.imms.order.entity.ProductionOrder;
 import com.zhxh.imms.order.entity.ScheduleOrder;
 import com.zhxh.imms.routing.dao.OperationRoutingDAO;
@@ -18,9 +16,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import static com.zhxh.core.exception.ErrorCode.ERROR_UNKNOWN_EXCEPTION;
@@ -28,22 +24,34 @@ import static com.zhxh.core.exception.ExceptionHelper.throwException;
 
 @Component("productionOrderService")
 public class ProductionOrderService {
-    public List<BomVO> getProductionOrderBom(ProductionOrder productionOrder){
-        Map parameters = new HashMap<>();
-        parameters.put("bomOrderId",productionOrder.getBomOrderId());
-        return bomDAO.getByWhere(BomVO.class,"bom_order_id=#{bomOrderId}",parameters);
+    //
+    // 创建生产计划所需的领料计划
+    //
+    @Transactional(rollbackFor = RuntimeException.class)
+    public MaterialPickingSchedule createProductionOrderPickingOrder(ProductionOrder productionOrder) {
+        if (productionOrder.getProductionOrderStatus() != BCode.ORDER_STATUS_RELEASED) {
+            //
+            //必须是已经下达的任务才可以开始领料：
+            //   1.  裁剪技术文件已准备好    2.工艺路线已准备好   3.Bom已准备好（个人认为其实就是物料已经准备好了）
+            //
+            return null;
+        }
+        return productionOrderDAO.createProductionOrderMaterialPickingOrder(productionOrder);
     }
 
+    //
+    // 根据生产排程创建生产计划
+    //
     @Transactional(rollbackFor = RuntimeException.class)
     public ProductionOrder createProductionOrder(ScheduleOrder scheduleOrder) {
         //1.创建单头
         ProductionOrder productionOrder = createOrderHeader(scheduleOrder);
         //2.保存尺码明细
-        productionOrderDAO.createOrderSizeFromSchedule(scheduleOrder, productionOrder);
+        productionOrderDAO.createProductionOrderOrderSize( productionOrder);
         //3.保存量体数据
-        productionOrderDAO.createMeasureDataFromSchedule(scheduleOrder, productionOrder);
+        productionOrderDAO.createProductionOrderMeasureData( productionOrder);
         //4.创建生产订单物料清单
-        productionOrderDAO.createBomFromSchedule(scheduleOrder, productionOrder);
+        productionOrderDAO.createProductionOrderBom( productionOrder);
 
         //5.如果是仿真环境，则自动创建工艺路线
         if (SysEnv.getEnvironmentMode() == SysEnv.ENVIRONMENT_MODE_SIMULATE) {
@@ -54,8 +62,11 @@ public class ProductionOrderService {
         return productionOrder;
     }
 
+    //
+    // 创建生产计划的工艺路线
+    //
     @Transactional(rollbackFor = RuntimeException.class)
-    public void createProductionOrderRouting(ProductionOrder productionOrder) {
+    public OperationRoutingOrder createProductionOrderRouting(ProductionOrder productionOrder) {
         OperationRoutingOrder materialOperationRoutingOrder = createOperationRoutingOrderHeader(productionOrder);
         long operationRoutingOrderId = materialOperationRoutingOrder.getRecordId();
         List<OperationRouting> routingList = operationRoutingDAO.getByOperationRoutingOrderId(materialOperationRoutingOrder.getRecordId());
@@ -82,6 +93,8 @@ public class ProductionOrderService {
                 next.get().setPreRoutingId(currentId);
             }
         }
+
+        return materialOperationRoutingOrder;
     }
 
     private void saveOperationRouting(OperationRouting operationRouting, Long routingOrderId) {
@@ -114,6 +127,7 @@ public class ProductionOrderService {
     }
 
     private void fillFromScheduleOrder(ScheduleOrder scheduleOrder, ProductionOrder productionOrder) {
+        productionOrder.setScheduleOrderId(scheduleOrder.getRecordId());
         productionOrder.setPriority(scheduleOrder.getPriority());
         productionOrder.setRequirementOrderId(scheduleOrder.getRecordId());
         productionOrder.setWorkCenterId(scheduleOrder.getWorkCenterId());
@@ -124,8 +138,6 @@ public class ProductionOrderService {
         productionOrder.setPlannedEndDate(scheduleOrder.getDatePlannedEnd());
     }
 
-    @Resource(name = "bomOrderService")
-    private BomOrderService bomOrderService;
 
     @Resource(name = "productionOrderDAO")
     private ProductionOrderDAO productionOrderDAO;
@@ -136,12 +148,13 @@ public class ProductionOrderService {
     @Resource(name = "orderMeasureDAO")
     private OrderMeasureDAO orderMeasureDAO;
 
-    @Resource(name = "bomDAO")
-    private BomDAO bomDAO;
+
 
     @Resource(name = "operationRoutingOrderDAO")
     private OperationRoutingOrderDAO operationRoutingOrderDAO;
 
     @Resource(name = "operationRoutingDAO")
     private OperationRoutingDAO operationRoutingDAO;
+
+
 }

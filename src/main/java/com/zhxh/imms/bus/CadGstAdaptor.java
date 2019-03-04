@@ -7,6 +7,7 @@ import com.zhxh.core.web.ApiCallResult;
 import com.zhxh.imms.bus.dto.CuttingOrderTechDTO;
 import com.zhxh.imms.bus.dto.OperationRoutingOrderDTO;
 import com.zhxh.imms.material.vo.BomVO;
+import com.zhxh.imms.order.dao.ProductionOrderDAO;
 import com.zhxh.imms.order.entity.ProductionOrder;
 import com.zhxh.imms.order.service.ProductionOrderService;
 import org.springframework.stereotype.Controller;
@@ -44,7 +45,7 @@ public class CadGstAdaptor implements DataUpdateConsumer {
         if(productionOrder==null){
             return;
         }
-        List<BomVO> boms = productionOrderService.getProductionOrderBom(productionOrder);
+        List<BomVO> boms = productionOrderDAO.getProductionOrderBom(productionOrder);
         //
         //TODO: 搬迁 ProductionOrderIssueMessageService
         //
@@ -64,6 +65,6 @@ public class CadGstAdaptor implements DataUpdateConsumer {
         return null;
     }
 
-    @Resource(name="productionOrderService")
-    private ProductionOrderService productionOrderService;
+    @Resource(name="productionOrderDAO")
+    private ProductionOrderDAO productionOrderDAO;
 }

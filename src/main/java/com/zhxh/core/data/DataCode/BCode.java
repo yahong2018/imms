@@ -11,7 +11,7 @@ public final class BCode {
     public final static int STATUS_ONLINE = 1;                       //1.在线
 
     //
-    //订单
+    //单据
     //
     public final static int ORDER_STATUS_PLANNED = 0;                          //0.已计划
     public final static int ORDER_STATUS_RELEASED = 30;                        //30.已下达
@@ -23,7 +23,10 @@ public final class BCode {
     public final static int ORDER_STATUS_CUTED = 200;                          //200.已裁剪
     public final static int ORDER_STATUS_HANG = 300;                           //300.已上吊挂线
     public final static int ORDER_STATUS_STITCHING = 400;                      //400.已缝制
-    public final static int ORDER_STATUS_FINISHED = 500;                       //500.已结束
+    public final static int ORDER_STATUS_FINISHED = 500;                       //500.已结束/已完工
+
+    public final static int ORDER_STATUS_PICKING=101;                          //领料中
+    public final static int ORDER_STATUS_IN_PROCESS=101;                       //在制
 
     //
     //C类编码类型
@@ -96,6 +99,16 @@ public final class BCode {
     public final static int BOM_TYPE_DESIGN = 3;                             //设计BOM
     public final static int BOM_TYPE_MANUFACTURE = 4;                        //生产BOM
     public final static int BOM_TYPE_WORK = 5;                               //制造BOM
+
+
+    //物料类型
+    public final static int MATERIAL_TYPE_STANDARD = 1;  //基准款
+    public final static int MATERIAL_TYPE_PART = 2;  //部件
+    public final static int MATERIAL_TYPE_COMMON_MATERIAL = 3;  //抽象材料
+    public final static int MATERIAL_TYPE_ACCESSORY_MATERIAL = 4;  //辅料
+    public final static int MATERIAL_TYPE_PRODUCTION = 5;  //成品
+    public final static int MATERIAL_TYPE_FABRIC = 6;  //面料
+    public final static int MATERIAL_TYPE_PACKING = 7;  //包装材料
 
 
     //

@@ -93,7 +93,7 @@ create table production_order  (
   create_by                   bigint            not null,
   create_date                 datetime          not null,
   update_by                   bigint            null,
-  update_date                 datetime          not null,
+  update_date                 datetime          null,
   optlock                     int               not null default 0,
 
   primary key (record_id)
@@ -152,73 +152,79 @@ create table order_measure  (
 # ) comment = '针对服装类型 定义量体选项的内容 ';
 
 
+create table material_picking_schedule  (
+  record_id                            bigint auto_increment        not null,
+  material_picking_order_no            varchar(30)                  not null,
+  production_order_id                  bigint                       not null,
+  material_picking_order_type          int                          not null ,
+  planned_picking_date                 datetime                     not null ,
+  actual_picking_date                  datetime                     null ,
+  operator_id                          bigint                       null ,
+
+  create_by                            bigint                       not null,
+  create_date                          datetime                     not null,
+  update_by                            bigint                       null,
+  update_date                          datetime                     null,
+  optlock                              int                          not null default 0,
+
+  primary key (record_id) ,
+  index idx_material_picking_schedule_01(material_picking_order_no) ,
+  index idx_material_picking_schedule_02(production_order_id)
+) comment = '领料计划';
+
+create table material_picking_schedule_bom  (
+  record_id                            bigint                       not null auto_increment,
+  material_picking_order_id            bigint                       not null,
+  component_material_id                bigint                       not null,
+  qty                                  double(8,2)                  not null,
+  component_material_uom_id            bigint                       null,
+  picked_qty                           double(8,2)                  not null,
+
+  create_by                            bigint                       not null,
+  create_date                          datetime                     not null,
+  update_by                            bigint                       null,
+  update_date                          datetime                     null,
+  optlock                              int                          not null default 0,
+
+  primary key (record_id) ,
+  index idx_material_picking_schedule_bom_01(component_material_id) ,
+  index idx_material_picking_schedule_bom_02(material_picking_order_id)
+) comment = '领料计划物料清单';
 
 
 create table material_picking_order  (
-  record_id                            char(36)           not null,
-  material_picking_order_no            varchar(64)        not null,
-  production_order_id                  char(36)           not null,
-  material_picking_order_status        tinyint            not null ,
-  material_picking_order_type          tinyint            not null ,
-  planned_picking_date                 datetime           null ,
-  actual_picking_date                  datetime           null ,
-  operator_id                          char(36)           null ,
+  record_id                            bigint                       not null auto_increment,
+  material_picking_schedule_id         bigint                       not null,
+  status                               int                          not null,
+  container_no                         varchar(64)                  not null,
 
-  create_by                   char(36)          not null,
-  create_date                 datetime          not null,
-  update_by                   char(36)          null,
-  update_date                 datetime          not null,
-  optlock                     int               not null default 0,
+  create_by                            bigint                       not null,
+  create_date                          datetime                     not null,
+  update_by                            bigint                       null,
+  update_date                          datetime                     null,
+  optlock                              int                          not null default 0,
 
   primary key (record_id) ,
-  index idx_material_po_01(material_picking_order_no) ,
-  index idx_material_po_02(production_order_id)
+  index idx_material_picking_order_01(container_no) ,
+  index idx_material_picking_order_02(material_picking_schedule_id)
 ) comment = '领料单';
 
 
+create table material_picking_order_detail  (
+  record_id                            bigint                       not null  auto_increment,
+  material_picking_order_id            bigint                       not null       comment '领料单明细主键',
+  material_id                          bigint                       null           comment '物料号',
+  picked_qty                           double                       null           comment '领用量',
 
-create table material_picking_order_bom  (
-  id                        bigint(20)         not null auto_increment,
-  component_material_id     bigint(200)        null       comment '组件主键',
-  qty                       double             null       comment '组件用量',
-  component_material_uom    varchar(20)        null       comment '组件单位',
-  picked_qty                double             null ,
-  material_picking_order_id bigint(20)         null ,
-
-  primary key (id) ,
-  index idx_material_pob_01(component_material_id) ,
-  index idx_material_pob_02(material_picking_order_id)
-) comment = '领料单物料清单';
-
-
-create table material_picking_list  (
-  id                        bigint(20)          not null auto_increment,
-  status                    varchar(10)         null          comment '状态',
-  -- line_no                   int(11)             null          comment '行项目',
-  container_no              varchar(64)         not null                  comment '领料容器',
-  material_picking_order_id bigint(20)          null          comment '领料单主键',
-
-  created_date datetime(0) not null,
-  created_by varchar(10) not null,
-  last_modified_date datetime(0) null ,
-  last_modified_by varchar(10) null ,
+  create_by                            bigint                       not null,
+  create_date                          datetime                     not null,
+  update_by                            bigint                       null,
+  update_date                          datetime                     null,
+  optlock                              int                          not null default 0,
 
   primary key (id) ,
-  index idx_material_pl_01(container_no) ,
-  index idx_material_pl_02(material_picking_order_id)
-) comment = '领料单明细';
-
-
-create table material_picking_list_detail  (
-  id                        bigint(20)         not null  auto_increment,
-  material_picking_list_id  bigint(20)         not null                   comment '领料单明细主键',
-  --  line_no                   int(11)            null           comment '行项目',
-  material_id               bigint(20)         null           comment '物料号',
-  picked_qty                double             null           comment '领用量',
-
-  primary key (id) ,
-  index idx_material_pld_01(material_picking_list_id) ,
-  index idx_material_pld_02(material_id)
+  index idx_material_picking_order_detail_01(material_picking_order_id) ,
+  index idx_material_picking_order_detail_02(material_id)
 ) comment = '领料明细';
 
 

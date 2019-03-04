@@ -24,4 +24,27 @@
                from bom
                where bom_order_id=#{scheduleBomOrderId}
     </insert>
+
+    <insert id="INSERT_CREATE_PRODUCTION_ORDER_PICKING_ORDER_BOM" parameterType="java.util.Map">
+        insert into material_picking_Schedule_bom(
+            material_picking_order_id,
+            component_material_id,
+            component_material_uom_id,
+            qty,
+            picked_qty,
+            create_by,
+            create_date
+        )
+        select
+            #{pickingOrderBomOrderId},
+            bm.component_material_id,
+            bm.component_uom_id,
+            ifnull(bm.component_qty,1) * #{qtyPlanned),
+            0.0,
+            #{createUserId},
+            SYSDATE()
+        from  bom bm join material m on m.record_id = bm.component_material_id
+        where bm.bom_order_id = #{productionOrderBomOrderId}
+          and m.material_type_id != #{materialTypeId}
+    </insert>
 </mapper>
