@@ -62,4 +62,16 @@
                                join operator on  operation_routing_operator_id = operator_id
                                join system_user on operator_user_id=user_id
     </select>
+
+    <update id="BUILD_OPERATION_ORDER_PRE_ROUTING_ID" parameterType="java.util.Map">
+        update opereation_routing
+          set a.pre_routing_id = (
+              select record_id from opereation_routing  b
+                 where b.operation_routing_order_id = a.operation_routing_order_id
+                   and a.pre_operation_id = b.operation_id
+                limit 1 -- 只选第一条记录，意味着一件衣服只能串行操作，不能并行操作。
+          )
+        from opereation_routing a
+        where a.operation_routing_order_id = #{operationRoutingOrderId}
+    </update>
 </mapper>

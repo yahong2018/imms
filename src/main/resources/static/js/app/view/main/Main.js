@@ -54,6 +54,10 @@ Ext.define('app.view.main.Main', {
 			});
 			mainView.getViewModel().set('system.autoRefreshTask', task);
 			task.start();
+
+			Ext.onReady(function(){
+				
+			})
 		}
 	},
 

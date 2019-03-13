@@ -14,15 +14,14 @@ public class Operation extends Entity<Long> {
     private String  standardOperationProcedure;
     private Long  machineTypeId;
     private float   standardTime;
-    private float   standardPrice;
-    private String  partType;
+    private double  standardPrice;
     private String  sectionType;
     private String  sectionName;
-    private boolean ifOutsource;
+    private Boolean ifOutsource;
     private String  qaProcedure;
     private String  requirement;
-    private String  level;
+    private String  requirementLevel;
     private String  designPartCode;
     private String  partCode;
-
+    private String  partType;
 }

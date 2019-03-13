@@ -11,10 +11,10 @@ import java.util.Map;
 
 @Component("operationRoutingOrderDAO")
 public class OperationRoutingOrderDAO extends BaseDAOWithEntity<OperationRoutingOrder> {
-    @Resource(name="codeSeedService")
+    @Resource(name = "codeSeedService")
     private CodeSeedService codeSeedService;
 
-    public OperationRoutingOrder getByRefId(Long refId){
+    public OperationRoutingOrder getByRefId(Long refId) {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("refId", refId);
 
@@ -28,4 +28,13 @@ public class OperationRoutingOrderDAO extends BaseDAOWithEntity<OperationRouting
 
         return super.doInsert(item);
     }
+
+    public int buildOperationOrderPreRoutingId(OperationRoutingOrder operationRoutingOrder) {
+        Map parameters = new HashMap();
+        parameters.put("operationRoutingOrderId", operationRoutingOrder.getRecordId());
+
+        return this.getSqlHelper().getSqlSession().update(BUILD_OPERATION_ORDER_PRE_ROUTING_ID, parameters);
+    }
+
+    private static final String BUILD_OPERATION_ORDER_PRE_ROUTING_ID = "BUILD_OPERATION_ORDER_PRE_ROUTING_ID";
 }

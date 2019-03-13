@@ -8,10 +8,9 @@
         "required":true,
         "unique":true,
         "primaryKey":"true",
-        "dataType":"string",
+        "dataType":"int",
         "listLabel":"用户Id",
-        "cardLabel":"用户Id",
-        "format":"([a-f]|[0-9]){8}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){4}-([a-f]|[0-9]){12}"
+        "cardLabel":"用户Id"
       },{
         "fieldName":"userCode",
         "required":true,

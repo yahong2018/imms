@@ -70,6 +70,9 @@ public class ProductionOrderService {
     //
     @Transactional(rollbackFor = RuntimeException.class)
     public OperationRoutingOrder createProductionOrderRouting(ProductionOrder productionOrder) {
+        //
+        //TODO:本方法实现错误，需要由前端指定OperationOrderId，因为某个款有多种工艺路线
+        //
         OperationRoutingOrder materialOperationRoutingOrder = createOperationRoutingOrderHeader(productionOrder);
         long operationRoutingOrderId = materialOperationRoutingOrder.getRecordId();
         List<OperationRouting> routingList = operationRoutingDAO.getByOperationRoutingOrderId(materialOperationRoutingOrder.getRecordId());
@@ -150,8 +153,6 @@ public class ProductionOrderService {
 
     @Resource(name = "orderMeasureDAO")
     private OrderMeasureDAO orderMeasureDAO;
-
-
 
     @Resource(name = "operationRoutingOrderDAO")
     private OperationRoutingOrderDAO operationRoutingOrderDAO;

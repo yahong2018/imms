@@ -11,26 +11,26 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 public class OperationRouting extends Entity<Long> {
-    private Long        operationId;
-    private Long        operationRoutingOrderId;
-    private String        qaProcedure;
-    private float         standardPrice;
-    private String        sectionType;
-    private Long        machineTypeId;
-    private Long        actualStationId;
-    private Long        operatorId;
-    private float         standardTime;
-    private float         actualTime;
-    private Long        preOperationId;
-    private String        sopFilePath;
-    private int           operationRoutingStatus;
-    private String        requiredLevel;
-    private int           scrapQty;
-    private int           completeQty;
-    private Long        preRoutingId;
-    private int           sequenceNo;
-    private String        partType;
-    private String        ifOutsource;
+    private Long operationRoutingOrderId;
+    private Long operationId;
+    private String qaProcedure;
+    private double standardPrice;
+    private String sectionType;
+    private Long machineTypeId;
+    private Long actualStationId;
+    private Long operatorId;
+    private float standardTime;
+    private float actualTime;
+    private Long preOperationId;
+    private Long preRoutingId;
+    private String sopFilePath;
+    private int operationRoutingStatus;
+    private String requiredLevel;
+    private int scrapQty;
+    private int completeQty;
+    private int sequenceNo;
+    private String partType;
+    private Boolean ifOutsource;
     private LocalDateTime pullInTime;
     private LocalDateTime pullOutTime;
 }

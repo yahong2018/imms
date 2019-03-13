@@ -77,6 +77,16 @@ public class BaseDAOWithEntity<T /*extends Entity*/> extends BaseDAO implements 
         return dbItem;
     }
 
+    protected EntitySqlMeta getEntitySqlMeta(){
+        return this.entitySqlMetaFactory.getEntitySqlMeta(this.clazz);
+    }
+
+    public T getOneByProperty(String propertyName,Object propertyValue){
+        EntitySqlMeta meta = this.getEntitySqlMeta();
+        String fieldName = meta.getPropertyColumns().get(propertyName);
+        return this.getOneByField(fieldName,propertyName,propertyValue);
+    }
+
     public T getOneByField(String fieldName, String propertyName, Object fieldValue) {
         Map parameters = new HashMap();
         parameters.put(propertyName, fieldValue);

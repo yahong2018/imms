@@ -9,5 +9,4 @@ import javax.annotation.Resource;
 public class OperationRoutingOrderService {
     @Resource(name="operationRoutingOrderDAO")
     private OperationRoutingOrderDAO operationRoutingOrderDAO;
-
 }
